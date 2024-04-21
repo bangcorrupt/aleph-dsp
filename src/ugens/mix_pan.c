@@ -57,10 +57,10 @@ static fract32 sineTab[PAN_SINE_BUF_SIZE] = {
 
 /*----- Extern function implementations ------------------------------*/
 
-//----------------------
-//--- equal-power balanced pan
+// Equal-power balanced pan
 
 fract32 pan_bal_mix(fract32 inX, fract32 inY, fract32 pan) {
+    /// TODO: Does this work?
     /*
     //  fix16 yIdx = fix16_mul_fract(FRACT_FIX16(pan), PAN_SINE_BUF_MAX16);
     // shift to get 16.16 idx
@@ -74,6 +74,7 @@ fract32 pan_bal_mix(fract32 inX, fract32 inY, fract32 pan) {
 }
 
 void pan_bal_coeff(fract32 *a, fract32 *b, fract32 pan) {
+    /// TODO: Does this work?
     /*
     fix16 yIdx = pan >> PAN_SINE_BUF_RSHIFT;
     fix16 xIdx = fix16_sub(PAN_SINE_BUF_MAX16, yIdx);

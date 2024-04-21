@@ -15,6 +15,9 @@
                        Copyright bangcorrupt 2024
 
 ----------------------------------------------------------------------*/
+
+/* Original work by monome, modified by bangcorrupt 2024. */
+
 /*
  * @file    pitch_detector.c
  *
@@ -24,8 +27,10 @@
 
 /*----- Includes -----------------------------------------------------*/
 
-#include "pitch_detector.h"
 #include "filter.h"
+#include "oscillator.h"
+
+#include "pitch_detector.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 
@@ -37,7 +42,7 @@
 
 /*----- Extern function implementations ------------------------------*/
 
-void pitchDetector_init(pitchDetector *p) {
+void PitchDetector_init(t_PitchDetector *p) {
     p->currentPeriod = 48 << PITCH_DETECTOR_RADIX_TOTAL;
     p->period = 48 << PITCH_DETECTOR_RADIX_TOTAL;
     p->lastIn = 1;
@@ -46,26 +51,17 @@ void pitchDetector_init(pitchDetector *p) {
     p->nFrames = 100;
     p->pitchOffset = FR32_MAX >> 2;
     /* p->pitchOffset = FR32_MAX / 2; */
-    hpf_init(&(p->dcBlocker));
-    lpf_init(&(p->adaptiveFilter));
-}
-
-fract32 pitchTrackOsc(pitchDetector *p) {
-    // Debug uncomment the line below to force 1k tone
-    /* p->currentPeriod = (48 << (PITCH_DETECTOR_RADIX_INTERNAL)); */
-    p->phase += (p->pitchOffset /
-                 shl_fr1x32(p->currentPeriod, -PITCH_DETECTOR_RADIX_INTERNAL))
-                << 3;
-    return osc(p->phase);
+    HPF_init(&(p->dcBlocker));
+    LPF_init(&(p->adaptiveFilter));
 }
 
 // This guy returns the current measured wave period (in subsamples)
-fract32 pitchTrack(pitchDetector *p, fract32 in) {
+fract32 PitchDetector_track(t_PitchDetector *p, fract32 in) {
     fract32 centreFreq = FR32_MAX / p->currentPeriod;
-    in = lpf_next_dynamic_precise(
+    in = LPF_next_dynamic_precise(
         &(p->adaptiveFilter), in,
         shl_fr1x32(centreFreq, PITCH_DETECTOR_RADIX_INTERNAL + 3));
-    in = hpf_next_dynamic_precise(
+    in = HPF_next_dynamic_precise(
         &(p->dcBlocker), in,
         shl_fr1x32(centreFreq, PITCH_DETECTOR_RADIX_INTERNAL - 3));
     if (p->lastIn <= 0 && in >= 0 && p->nFrames > 12) {
@@ -82,6 +78,15 @@ fract32 pitchTrack(pitchDetector *p, fract32 in) {
     p->lastIn = in;
     return (shl_fr1x32(p->currentPeriod, PITCH_DETECTOR_RADIX_EXTERNAL -
                                              PITCH_DETECTOR_RADIX_INTERNAL));
+}
+
+fract32 PitchDetector_track_osc(t_PitchDetector *p) {
+    // Debug uncomment the line below to force 1k tone
+    /* p->currentPeriod = (48 << (PITCH_DETECTOR_RADIX_INTERNAL)); */
+    p->phase += (p->pitchOffset /
+                 shl_fr1x32(p->currentPeriod, -PITCH_DETECTOR_RADIX_INTERNAL))
+                << 3;
+    return osc(p->phase);
 }
 
 /*----- Static function implementations ------------------------------*/

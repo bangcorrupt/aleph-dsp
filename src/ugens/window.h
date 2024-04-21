@@ -25,6 +25,8 @@
  *
  */
 
+/// TODO: Maybe fold this into another module, or move back to ricks_tricks.
+
 #ifndef ALEPH_WINDOW_H
 #define ALEPH_WINDOW_H
 
@@ -34,6 +36,8 @@ extern "C" {
 
 /*----- Includes -----------------------------------------------------*/
 
+#include <stdint.h>
+
 #include "types.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
@@ -42,8 +46,8 @@ extern "C" {
 
 /*----- Extern function prototypes -----------------------------------*/
 
-fract32 s32_flatTop_env(s32 pos, s32 fadeRatio);
-fract32 s32_halfWave_env(fract32 pos);
+fract32 flat_top_env(int32_t pos, int32_t fadeRatio);
+fract32 half_wave_env(fract32 pos);
 
 #ifdef __cplusplus
 }

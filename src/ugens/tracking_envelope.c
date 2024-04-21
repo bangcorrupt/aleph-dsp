@@ -43,24 +43,24 @@
 
 /*----- Extern function implementations ------------------------------*/
 
-void trackingEnvelopeLin_init(trackingEnvelopeLin *env) {
+void TrackingEnvLin_init(t_TrackingEnvLin *env) {
     env->val = 0;
     asymLinSlew_init(&(env->slew));
 }
 
-fract32 trackingEnvelopeLin_next(trackingEnvelopeLin *env, fract32 in) {
+fract32 TrackingEnvLin_next(t_TrackingEnvLin *env, fract32 in) {
     asymLinSlew_next(&(env->val), abs_fr1x32(in), &(env->slew));
     return env->val;
 }
 
-void trackingEnvelopeLog_init(trackingEnvelopeLog *env) {
+void TrackingEnvLog_init(t_TrackingEnvLog *env) {
     env->val = 0;
     env->up = SLEW_10MS;
     env->down = SLEW_100MS;
     env->gate = FR32_MAX / 500;
 }
 
-fract32 trackingEnvelopeLog_next(trackingEnvelopeLog *env, fract32 in) {
+fract32 TrackingEnvLog_next(t_TrackingEnvLog *env, fract32 in) {
     fract32 target = abs_fr1x32(in);
     if (target > env->val)
         simple_slew(env->val, target, env->up);

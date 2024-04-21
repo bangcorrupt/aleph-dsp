@@ -15,27 +15,41 @@
                        Copyright bangcorrupt 2024
 
 ----------------------------------------------------------------------*/
+
+/* Original work by monome, modified by bangcorrupt 2024. */
+
 /*
- * @file    aleph-test.c
+ * @file    osc_polyblep.h
  *
- * @brief   Template for source files.
+ * @brief   Public API for oscillator polyblep.
  *
  */
 
+#ifndef ALEPH_OSC_POLYBLEP_H
+#define ALEPH_OSC_POLYBLEP_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*----- Includes -----------------------------------------------------*/
 
-#include "aleph.h"
+#include "types.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 
-/*----- Static variable definitions ----------------------------------*/
+/*----- Extern variable declarations ---------------------------------*/
 
-/*----- Extern variable definitions ----------------------------------*/
+/*----- Extern function prototypes -----------------------------------*/
 
-/*----- Static function prototypes -----------------------------------*/
+fract16 saw_polyblep(fract32 p, fract32 dp);
+fract16 square_polyblep(fract32 p, fract32 dp);
+fract16 sine_polyblep(fract32 phase);
+fract16 triangle_polyblep(fract32 phase);
 
-/*----- Extern function implementations ------------------------------*/
-
-/*----- Static function implementations ------------------------------*/
+#ifdef __cplusplus
+}
+#endif
+#endif
 
 /*----- End of file --------------------------------------------------*/

@@ -29,12 +29,8 @@
 
 #include "aleph.h"
 
-#include "fix.h"
-#include "fract_math.h"
-// #include "sin_fr32.h"
 #include "filter_svf.h"
-#include "ricks_tricks.h"
-// #include "table.h"
+#include "soft_clip.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 
@@ -44,9 +40,9 @@
 
 /*----- Static function prototypes -----------------------------------*/
 
-static void _filter_svf_calc_frame(t_FilterSVF *f, fract32 in);
-static void _filter_svf_softclip_calc_frame(t_FilterSVF *f, fract32 in);
-static void _filter_svf_softclip_asym_calc_frame(t_FilterSVF *f, fract32 in);
+static void _FilterSVF_calc_frame(t_FilterSVF *f, fract32 in);
+static void _FilterSVF_softclip_calc_frame(t_FilterSVF *f, fract32 in);
+static void _FilterSVF_softclip_asym_calc_frame(t_FilterSVF *f, fract32 in);
 
 /*----- Extern function implementations ------------------------------*/
 
@@ -95,70 +91,70 @@ fract32 FilterSVF_mix_outputs(t_FilterSVF *f) {
 // get next value (with input)
 fract32 FilterSVF_next(t_FilterSVF *f, fract32 in) {
     // process 2x and average
-    _filter_svf_calc_frame(f, in);
+    _FilterSVF_calc_frame(f, in);
     fract32 out = shr_fr1x32(FilterSVF_mix_outputs(f), 1);
-    _filter_svf_calc_frame(f, in);
+    _FilterSVF_calc_frame(f, in);
     out = add_fr1x32(out, shr_fr1x32(FilterSVF_mix_outputs(f), 1));
     return out;
 }
 
 fract32 FilterSVF_lpf_next(t_FilterSVF *f, fract32 in) {
-    _filter_svf_calc_frame(f, in);
+    _FilterSVF_calc_frame(f, in);
     return f->low;
 }
 
 fract32 FilterSVF_bpf_next(t_FilterSVF *f, fract32 in) {
-    _filter_svf_calc_frame(f, in);
+    _FilterSVF_calc_frame(f, in);
     return f->band;
 }
 
 fract32 FilterSVF_hpf_next(t_FilterSVF *f, fract32 in) {
-    _filter_svf_calc_frame(f, in);
+    _FilterSVF_calc_frame(f, in);
     return f->high;
 }
 
 fract32 FilterSVF_notch_next(t_FilterSVF *f, fract32 in) {
-    _filter_svf_calc_frame(f, in);
+    _FilterSVF_calc_frame(f, in);
     return add_fr1x32(f->low, f->high);
 }
 
 fract32 FilterSVF_softclip_lpf_next(t_FilterSVF *f, fract32 in) {
-    _filter_svf_softclip_calc_frame(f, in);
+    _FilterSVF_softclip_calc_frame(f, in);
     return f->low;
 }
 
 fract32 FilterSVF_softclip_bpf_next(t_FilterSVF *f, fract32 in) {
-    _filter_svf_softclip_calc_frame(f, in);
+    _FilterSVF_softclip_calc_frame(f, in);
     return f->band;
 }
 
 fract32 FilterSVF_softclip_notch_next(t_FilterSVF *f, fract32 in) {
-    _filter_svf_softclip_calc_frame(f, in);
+    _FilterSVF_softclip_calc_frame(f, in);
     return add_fr1x32(f->low, f->high);
 }
 
 fract32 FilterSVF_softclip_hpf_next(t_FilterSVF *f, fract32 in) {
-    _filter_svf_softclip_calc_frame(f, in);
+    _FilterSVF_softclip_calc_frame(f, in);
     return f->high;
 }
 
 fract32 FilterSVF_softclip_asym_lpf_next(t_FilterSVF *f, fract32 in) {
-    _filter_svf_softclip_asym_calc_frame(f, in);
+    _FilterSVF_softclip_asym_calc_frame(f, in);
     return f->low;
 }
 
 fract32 FilterSVF_softclip_asym_bpf_next(t_FilterSVF *f, fract32 in) {
-    _filter_svf_softclip_asym_calc_frame(f, in);
+    _FilterSVF_softclip_asym_calc_frame(f, in);
     return f->band;
 }
 
 fract32 FilterSVF_softclip_asym_hpf_next(t_FilterSVF *f, fract32 in) {
-    _filter_svf_softclip_asym_calc_frame(f, in);
+    _FilterSVF_softclip_asym_calc_frame(f, in);
     return f->high;
 }
 
 fract32 FilterSVF_softclip_asym_notch_next(t_FilterSVF *f, fract32 in) {
-    _filter_svf_softclip_asym_calc_frame(f, in);
+    _FilterSVF_softclip_asym_calc_frame(f, in);
     return add_fr1x32(f->low, f->high);
 }
 
@@ -172,7 +168,7 @@ const p_svf_func FilterSVF_func[3][4] = {
 
 /*----- Static function implementations ------------------------------*/
 
-static void _filter_svf_calc_frame(t_FilterSVF *f, fract32 in) {
+static void _FilterSVF_calc_frame(t_FilterSVF *f, fract32 in) {
     f->low = add_fr1x32(f->low, mult_fr1x32x32(f->freq, f->band));
 
     f->high = sub_fr1x32(
@@ -182,7 +178,7 @@ static void _filter_svf_calc_frame(t_FilterSVF *f, fract32 in) {
     f->band = add_fr1x32(f->band, mult_fr1x32x32(f->freq, f->high));
 }
 
-static void _filter_svf_softclip_calc_frame(t_FilterSVF *f, fract32 in) {
+static void _FilterSVF_softclip_calc_frame(t_FilterSVF *f, fract32 in) {
     char clip_radix = 0;
     f->low = shr_fr1x32(
         soft_clip(
@@ -207,7 +203,7 @@ static void _filter_svf_softclip_calc_frame(t_FilterSVF *f, fract32 in) {
         clip_radix);
 }
 
-static void _filter_svf_softclip_asym_calc_frame(t_FilterSVF *f, fract32 in) {
+static void _FilterSVF_softclip_asym_calc_frame(t_FilterSVF *f, fract32 in) {
     char clip_radix = 0;
 
     f->low = shr_fr1x32(

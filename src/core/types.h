@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+/// TODO: Fold this into core header.
+
 //---- basic numerical datatypes
 #ifndef DEFINED_BASIC_TYPES
 typedef int8_t s8;    //!< 8-bit signed integer.

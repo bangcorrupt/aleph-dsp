@@ -24,8 +24,7 @@
 
 /*----- Includes -----------------------------------------------------*/
 
-#include "fix.h"
-#include "types.h"
+#include "aleph.h"
 
 #include "phasor.h"
 

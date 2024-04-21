@@ -32,9 +32,7 @@ extern "C" {
 
 /*----- Includes -----------------------------------------------------*/
 
-#include "fix.h"
-#include "fract_math.h"
-#include "types.h"
+#include "aleph.h"
 
 #include "interpolate.h"
 
@@ -43,49 +41,51 @@ extern "C" {
 typedef struct {
     fract32 lastIn;
     fract32 lastOut;
-} hpf;
+} t_HPF;
 
 typedef struct {
     fract32 lastOut;
-} lpf;
+} t_LPF;
 
 typedef struct {
-    lpf lpf;
-    hpf hpf;
-} bpf;
+    t_LPF lp;
+    t_HPF hp;
+} t_BPF;
 
 /*----- Extern variable declarations ---------------------------------*/
 
+/*----- Extern function prototypes -----------------------------------*/
+
+fract32 HPF_next_dynamic_precise(t_HPF *hpf, fract32 in, fract32 freq);
+void HPF_init(t_HPF *hpf);
+fract32 HPF_next_dynamic(t_HPF *hpf, fract32 in, fract32 freq);
+
+void LPF_init(t_LPF *lpf);
+fract32 LPF_next_dynamic(t_LPF *lpf, fract32 in, fract32 freq);
+fract32 LPF_next_dynamic_precise(t_LPF *lpf, fract32 in, fract32 freq);
+
+void BPF_init(t_BPF *bpf);
+fract32 BPF_next_dynamic_precise(t_BPF *bpf, fract32 in, fract32 hp_freq,
+                                 fract32 lp_freq);
+
+fract32 HPF_dc_block(t_HPF *hpf, fract32 in);
+fract32 HPF_dc_block2(t_HPF *hpf, fract32 in);
+
 /*----- Static function implementations ------------------------------*/
 
-static inline fract32 hpf_freq_calc(fract32 freq) {
+/// TODO: Move these to filter.c if they are not used elsewhere.
+
+static inline fract32 _hpf_freq_calc(fract32 freq) {
     // 1.0 / (2.0 * pi * dt * fc + 1.0)
     return one_over_x_16_16(
         add_fr1x32(mult_fr1x32x32(TWO_PI_16_16, freq), 1 << 16));
 }
 
-static inline fract32 lpf_freq_calc(fract32 freq) {
+static inline fract32 _lpf_freq_calc(fract32 freq) {
     // 1.0 / ((1 / 2.0 * pi * dt * fc) + 1.0)
     fract32 temp = mult_fr1x32x32(TWO_PI_16_16, freq);
     return ((temp << 12) / ((1 << 16) + temp)) << 19;
 }
-
-/*----- Extern function prototypes -----------------------------------*/
-
-fract32 hpf_next_dynamic_precise(hpf *myHpf, fract32 in, fract32 freq);
-void hpf_init(hpf *myHpf);
-fract32 hpf_next_dynamic(hpf *myHpf, fract32 in, fract32 freq);
-
-void lpf_init(lpf *myLpf);
-fract32 lpf_next_dynamic(lpf *myLpf, fract32 in, fract32 freq);
-fract32 lpf_next_dynamic_precise(lpf *myLpf, fract32 in, fract32 freq);
-
-void bpf_init(bpf *myBpf);
-fract32 bpf_next_dynamic_precise(bpf *myBpf, fract32 in, fract32 hpf_freq,
-                                 fract32 lpf_freq);
-
-fract32 dc_block(hpf *myHpf, fract32 in);
-fract32 dc_block2(hpf *myHpf, fract32 in);
 
 #ifdef __cplusplus
 }

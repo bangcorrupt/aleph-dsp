@@ -10,7 +10,7 @@
 
             Aleph dedicated to the public domain by monome.
 
-                Aleph Copyright Jeff Snyder et. al. 2020
+                LEAF Copyright Jeff Snyder et. al. 2020
 
                        Copyright bangcorrupt 2024
 

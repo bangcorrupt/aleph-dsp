@@ -25,6 +25,8 @@
  *
  */
 
+/// TODO: Maybe fold this into another module or move back to ricks_tricks.
+
 /*----- Includes -----------------------------------------------------*/
 
 #include "fix.h"

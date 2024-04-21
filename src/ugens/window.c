@@ -44,7 +44,7 @@
 /*----- Extern function implementations ------------------------------*/
 
 // This guy is a tophat with rounded edges
-fract32 s32_flatTop_env(fract32 pos, fract32 fadeRatio) {
+fract32 flat_top_env(fract32 pos, fract32 fadeRatio) {
     pos = max_fr1x32(pos, 0);
     if (pos <= fadeRatio)
         return fadeIn(mult_fr1x32x32(FR32_MAX / fadeRatio, pos));
@@ -54,7 +54,7 @@ fract32 s32_flatTop_env(fract32 pos, fract32 fadeRatio) {
         return FR32_MAX;
 }
 
-fract32 s32_halfWave_env(fract32 pos) {
+fract32 half_wave_env(fract32 pos) {
     pos = max_fr1x32(pos, 0);
     if (pos <= FR32_MAX / 2)
         return fadeIn(pos * 2);

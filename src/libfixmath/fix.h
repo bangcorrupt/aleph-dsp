@@ -1,34 +1,22 @@
 /*----------------------------------------------------------------------
 
-                     This file is part of Freetribe
+                     This file is part of Aleph DSP
 
-                https://github.com/bangcorrupt/freetribe
+                https://github.com/bangcorrupt/aleph-dsp
 
-                                License
+         Aleph DSP is based on monome/Aleph and spiricom/LEAF.
 
-                   GNU AFFERO GENERAL PUBLIC LICENSE
-                      Version 3, 19 November 2007
+                              MIT License
 
-                           AGPL-3.0-or-later
+            Aleph dedicated to the public domain by monome.
 
- Freetribe is free software: you can redistribute it and/or modify it
-under the terms of the GNU Affero General Public License as published by
-   the Free Software Foundation, either version 3 of the License, or
-                  (at your option) any later version.
+                LEAF Copyright Jeff Snyder et. al. 2020
 
-     Freetribe is distributed in the hope that it will be useful,
-      but WITHOUT ANY WARRANTY; without even the implied warranty
-        of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-          See the GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
- along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-                       Copyright bangcorrupt 2023
+                       Copyright bangcorrupt 2024
 
 ----------------------------------------------------------------------*/
 
-/* Original work by monome, modified by bangcorrupt 2023 */
+/* Original work by monome, modified by bangcorrupt 2024 */
 
 /*
  * @file    fix.h

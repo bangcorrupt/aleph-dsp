@@ -32,8 +32,7 @@ extern "C" {
 
 /*----- Includes -----------------------------------------------------*/
 
-#include "fix.h"
-#include "types.h"
+#include "aleph.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 

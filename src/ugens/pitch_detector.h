@@ -32,6 +32,8 @@ extern "C" {
 
 /*----- Includes -----------------------------------------------------*/
 
+#include <stdint.h>
+
 #include "filter.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
@@ -46,20 +48,20 @@ typedef struct {
     fract32 lastIn;
     fract32 period;
     fract32 phase;
-    s32 nsamples;
-    s32 nFrames;
-    hpf dcBlocker;
-    lpf adaptiveFilter;
+    int32_t nsamples;
+    int32_t nFrames;
+    t_HPF dcBlocker;
+    t_LPF adaptiveFilter;
     fract32 pitchOffset;
-} pitchDetector;
+} t_PitchDetector;
 
 /*----- Extern variable declarations ---------------------------------*/
 
 /*----- Extern function prototypes -----------------------------------*/
 
-void pitchDetector_init(pitchDetector *p);
-fract32 pitchTrack(pitchDetector *p, fract32 preIn);
-fract32 pitchTrackOsc(pitchDetector *p);
+void PitchDetector_init(t_PitchDetector *p);
+fract32 PitchDetector_track(t_PitchDetector *p, fract32 preIn);
+fract32 PitchDetector_track_osc(t_PitchDetector *p);
 
 #ifdef __cplusplus
 }

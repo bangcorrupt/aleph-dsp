@@ -35,7 +35,6 @@ extern "C" {
 /*----- Includes -----------------------------------------------------*/
 
 #include "fix.h"
-#include "fract_math.h"
 #include "types.h"
 
 #include "ricks_tricks.h"
