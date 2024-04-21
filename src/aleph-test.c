@@ -15,6 +15,7 @@
                        Copyright bangcorrupt 2024
 
 ----------------------------------------------------------------------*/
+
 /*
  * @file    aleph-test.c
  *
@@ -25,10 +26,18 @@
 /*----- Includes -----------------------------------------------------*/
 
 #include "aleph.h"
+#include "filter_svf.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 
+#define SAMPLERATE 48000
+#define MEMPOOL_SIZE 0x4000
+
 /*----- Static variable definitions ----------------------------------*/
+
+static Aleph *g_aleph;
+
+static char g_mempool[MEMPOOL_SIZE];
 
 /*----- Extern variable definitions ----------------------------------*/
 
@@ -36,7 +45,16 @@
 
 /*----- Extern function implementations ------------------------------*/
 
-int main(void) { return 0; }
+int main(void) {
+
+    t_FilterSVF *svf;
+
+    Aleph_init(g_aleph, SAMPLERATE, g_mempool, MEMPOOL_SIZE, NULL);
+
+    FilterSVF_init(svf, g_aleph);
+
+    return 0;
+}
 
 /*----- Static function implementations ------------------------------*/
 

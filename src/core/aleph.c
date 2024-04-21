@@ -28,6 +28,7 @@
 /*----- Includes -----------------------------------------------------*/
 
 #include "aleph.h"
+#include <stdint.h>
 
 /*----- Macros and Definitions ---------------------------------------*/
 
@@ -39,16 +40,16 @@
 
 /*----- Extern function implementations ------------------------------*/
 
-void Aleph_init(Aleph *const aleph, fract32 sr, char *memory, size_t memorysize,
-                fract32 (*random)(void)) {
-    aleph->_internal_mempool.aleph = aleph;
+void Aleph_init(Aleph *const aleph, uint32_t samplerate, char *memory,
+                size_t memorysize, fract32 (*random)(void)) {
+    aleph->_internal_mempool->aleph = aleph;
     aleph_pool_init(aleph, memory, memorysize);
 
-    aleph->samplerate = sr;
+    aleph->samplerate = samplerate;
 
-    aleph->inv_samplerate = 1.0f / sr;
-
-    aleph->twopi_inv_samplerate = aleph->inv_samplerate * TWO_PI;
+    // aleph->inv_samplerate = 1.0f / samplerate;
+    //
+    // aleph->twopi_inv_samplerate = aleph->inv_samplerate * TWO_PI;
 
     aleph->random = random;
 
@@ -65,10 +66,10 @@ void Aleph_init(Aleph *const aleph, fract32 sr, char *memory, size_t memorysize,
     aleph->free_count = 0;
 }
 
-void Aleph_set_samplerate(Aleph *const aleph, fract32 samplerate) {
+void Aleph_set_samplerate(Aleph *const aleph, uint32_t samplerate) {
     aleph->samplerate = samplerate;
-    aleph->inv_samplerate = 1.0f / samplerate;
-    aleph->twopi_inv_samplerate = aleph->inv_samplerate * TWO_PI;
+    // aleph->inv_samplerate = 1.0f / samplerate;
+    // aleph->twopi_inv_samplerate = aleph->inv_samplerate * TWO_PI;
 }
 
 fract32 Aleph_get_samplerate(Aleph *const aleph) { return aleph->samplerate; }
@@ -90,6 +91,9 @@ void Aleph_set_error_callback(Aleph *const aleph,
                                                e_Aleph_error_type)) {
     aleph->error_callback = callback;
 }
+
+// Return pointer to Aleph mempool.
+t_Mempool *Aleph_get_mempool(Aleph *const aleph) { return aleph->mempool; }
 
 /*----- Static function implementations ------------------------------*/
 

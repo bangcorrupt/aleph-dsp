@@ -69,30 +69,26 @@ static inline void delink_node(t_mpool_node *node);
 
 /*----- Extern function implementations ------------------------------*/
 
-void Mempool_init(t_Mempool *const mp, char *memory, size_t size,
-                  Aleph *const aleph) {
-    Mempool_init_to_pool(mp, memory, size, &aleph->mempool);
+void Mempool_init(t_Mempool *mp, char *memory, size_t size, Aleph *aleph) {
+    Mempool_init_to_pool(mp, memory, size, aleph->mempool);
 }
 
-void Mempool_free(t_Mempool *const mp) {
-    _t_Mempool *m = *mp;
+void Mempool_free(t_Mempool *mp) { mpool_free((char *)mp, mp->mempool); }
 
-    mpool_free((char *)m, m->mempool);
-}
+void Mempool_init_to_pool(t_Mempool *mp, char *memory, size_t size,
+                          t_Mempool *mem) {
 
-void Mempool_init_to_pool(t_Mempool *const mp, char *memory, size_t size,
-                          t_Mempool *const mem) {
-    _t_Mempool *mm = *mem;
-    _t_Mempool *m = *mp = (_t_Mempool *)mpool_alloc(sizeof(_t_Mempool), mm);
-    m->aleph = mm->aleph;
+    mp = (t_Mempool *)mpool_alloc(sizeof(t_Mempool), mem);
+    mp->aleph = mem->aleph;
 
-    mpool_create(memory, size, m);
+    mpool_create(memory, size, mp);
 }
 
 /**
  * create memory pool
  */
-void mpool_create(char *memory, size_t size, _t_Mempool *pool) {
+void mpool_create(char *memory, size_t size, t_Mempool *pool) {
+
     pool->aleph->header_size = mpool_align(sizeof(t_mpool_node));
 
     pool->mpool = (char *)memory;
@@ -107,16 +103,16 @@ void mpool_create(char *memory, size_t size, _t_Mempool *pool) {
                              pool->aleph->header_size);
 }
 
-void aleph_pool_init(Aleph *const aleph, char *memory, size_t size) {
-    mpool_create(memory, size, &aleph->_internal_mempool);
+void aleph_pool_init(Aleph *aleph, char *memory, size_t size) {
+    mpool_create(memory, size, aleph->_internal_mempool);
 
-    aleph->mempool = &aleph->_internal_mempool;
+    aleph->mempool = aleph->_internal_mempool;
 }
 
 /**
  * allocate memory from memory pool
  */
-char *mpool_alloc(size_t asize, _t_Mempool *pool) {
+char *mpool_alloc(size_t asize, t_Mempool *pool) {
     pool->aleph->alloc_count++;
 #if Aleph_DEBUG
     DBG("alloc " + String(asize));
@@ -210,7 +206,7 @@ char *mpool_alloc(size_t asize, _t_Mempool *pool) {
 /**
  * allocate memory from memory pool and also clear that memory to be blank
  */
-char *mpool_calloc(size_t asize, _t_Mempool *pool) {
+char *mpool_calloc(size_t asize, t_Mempool *pool) {
     pool->aleph->alloc_count++;
 #if Aleph_DEBUG
     DBG("calloc " + String(asize));
@@ -297,15 +293,15 @@ char *mpool_calloc(size_t asize, _t_Mempool *pool) {
 
 char *aleph_alloc(Aleph *const aleph, size_t size) {
     // printf("alloc %i\n", size);
-    return mpool_alloc(size, &aleph->_internal_mempool);
+    return mpool_alloc(size, aleph->_internal_mempool);
 }
 
 char *aleph_calloc(Aleph *const aleph, size_t size) {
     // printf("alloc %i\n", size);
-    return mpool_calloc(size, &aleph->_internal_mempool);
+    return mpool_calloc(size, aleph->_internal_mempool);
 }
 
-void mpool_free(char *ptr, _t_Mempool *pool) {
+void mpool_free(char *ptr, t_Mempool *pool) {
     pool->aleph->free_count++;
 #if Aleph_DEBUG
     DBG("free");
@@ -381,23 +377,23 @@ void mpool_free(char *ptr, _t_Mempool *pool) {
 }
 
 void aleph_free(Aleph *const aleph, char *ptr) {
-    mpool_free(ptr, &aleph->_internal_mempool);
+    mpool_free(ptr, aleph->_internal_mempool);
 }
 
-size_t mpool_get_size(_t_Mempool *pool) { return pool->msize; }
+size_t mpool_get_size(t_Mempool *pool) { return pool->msize; }
 
-size_t mpool_get_used(_t_Mempool *pool) { return pool->usize; }
+size_t mpool_get_used(t_Mempool *pool) { return pool->usize; }
 
 size_t aleph_pool_get_size(Aleph *const aleph) {
-    return mpool_get_size(&aleph->_internal_mempool);
+    return mpool_get_size(aleph->_internal_mempool);
 }
 
 size_t aleph_pool_get_used(Aleph *const aleph) {
-    return mpool_get_used(&aleph->_internal_mempool);
+    return mpool_get_used(aleph->_internal_mempool);
 }
 
 char *aleph_pool_get_pool(Aleph *const aleph) {
-    char *buff = aleph->_internal_mempool.mpool;
+    char *buff = aleph->_internal_mempool->mpool;
 
     return buff;
 }

@@ -91,12 +91,10 @@ typedef struct t_mpool_node {
     size_t size;
 } t_mpool_node;
 
-typedef struct _t_Mempool _t_Mempool;
+typedef struct t_Mempool t_Mempool;
 
-typedef _t_Mempool *t_Mempool;
-
-struct _t_Mempool {
-    t_Mempool mempool;
+struct t_Mempool {
+    t_Mempool *mempool;
     Aleph *aleph;
     char *mpool;        // start of the mpool
     size_t usize;       // used size of the pool
@@ -145,15 +143,15 @@ void Mempool_init_to_pool(t_Mempool *const mp, char *memory, size_t size,
 //        t_mpool_node* head;        // first node of memory pool free list
 //    } mpool_t;
 
-void mpool_create(char *memory, size_t size, _t_Mempool *pool);
+void mpool_create(char *memory, size_t size, t_Mempool *pool);
 
-char *mpool_alloc(size_t size, _t_Mempool *pool);
-char *mpool_calloc(size_t asize, _t_Mempool *pool);
+char *mpool_alloc(size_t size, t_Mempool *pool);
+char *mpool_calloc(size_t asize, t_Mempool *pool);
 
-void mpool_free(char *ptr, _t_Mempool *pool);
+void mpool_free(char *ptr, t_Mempool *pool);
 
-size_t mpool_get_size(_t_Mempool *pool);
-size_t mpool_get_used(_t_Mempool *pool);
+size_t mpool_get_size(t_Mempool *pool);
+size_t mpool_get_used(t_Mempool *pool);
 
 void aleph_pool_init(Aleph *const aleph, char *memory, size_t size);
 
