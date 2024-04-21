@@ -27,6 +27,7 @@
 #ifndef ALEPH_FILTER_SVF_H
 #define ALEPH_FILTER_SVF_H
 
+#include "aleph-mempool.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -60,6 +61,8 @@ typedef struct {
     // Kinda weird, but use rshift for rq values >=1
     uint8_t rqShift;
 
+    t_Mempool mempool;
+
 } t_FilterSVF;
 
 typedef fract32 (*p_svf_func)(t_FilterSVF *f, fract32 in);
@@ -71,7 +74,8 @@ const extern p_svf_func FilterSVF_func[3][4];
 /*----- Extern function prototypes -----------------------------------*/
 
 // init
-void FilterSVF_init(t_FilterSVF *f);
+void FilterSVF_init(t_FilterSVF *f, Aleph *aleph);
+void FilterSVF_init_to_pool(t_FilterSVF *f, t_Mempool *mp);
 // set cutoff in hz
 //  void t_FilterSVF_set_hz    ( t_FilterSVF* f, fix16 hz );
 // set cutoff coefficient

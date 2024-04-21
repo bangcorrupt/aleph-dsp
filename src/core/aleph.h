@@ -43,26 +43,30 @@ extern "C" {
 #include "fract_math.h"
 #include "types.h"
 
-
 /*----- Macros and Definitions ---------------------------------------*/
 
 #define TWO_PI 6
 
 struct Aleph {
     ///@{
-    fract32 samplerate;           //!< The current audio sample rate. Set with
-                                  //!< Aleph_set_samplerate().
-    fract32 inv_samplerate;       //!< The inverse of the current sample rate.
-    int block_size;               //!< The audio block size.
-    fract32 twopi_inv_samplerate; //!<  Two-pi times the inverse of the
-                                  //!<  current sample rate.
+    uint32_t samplerate; //!< The current audio sample rate. Set with
+                         //!< Aleph_set_samplerate().
+    uint32_t block_size; //!< The audio block size.
+
+    /// TODO: Calculate fract32 values.
+    //
+    /* fract32 inv_samplerate;       //!< The inverse of the current sample
+     * rate. */
+    /* fract32 twopi_inv_samplerate; //!<  Two-pi times the inverse of the */
+    //!<  current sample rate.
+
     fract32 (*random)(void); //!< A pointer to the random() function provided on
                              //!< initialization.
     bool clear_on_alloc;     //!< A flag that determines whether memory
                              //!< allocated from the Aleph memory pool will be
                              //!< cleared.
-    t_Mempool mempool;       //!< The default Aleph mempool object.
-    _t_Mempool _internal_mempool;
+    t_Mempool *mempool;      //!< The default Aleph mempool object.
+    t_Mempool *_internal_mempool;
     size_t header_size; //!< The size in bytes of memory region headers within
                         //!< mempools.
     void (*error_callback)(
@@ -71,8 +75,8 @@ struct Aleph {
                              //!< Aleph errors. Can be set by the user.
     int error_state[ALEPH_ERROR_NIL]; //!< An array of flags that indicate which
                                       //!< errors have occurred.
-    unsigned int alloc_count;         //!< A count of Aleph memory allocations.
-    unsigned int free_count;          //!< A count of Aleph memory frees.
+    uint32_t alloc_count;             //!< A count of Aleph memory allocations.
+    uint32_t free_count;              //!< A count of Aleph memory frees.
                                       ///@}
 };
 
@@ -91,38 +95,41 @@ struct Aleph {
  @param random A pointer to a random number function. Should return a fract32 >=
  0 and < 1.
  */
-void Aleph_init(Aleph *const leaf, fract32 samplerate, char *memory,
+void Aleph_init(Aleph *const aleph, uint32_t samplerate, char *memory,
                 size_t memory_size, fract32 (*random)(void));
 
 //! Set the sample rate of Aleph.
 /*!
  @param samplerate The new audio sample rate.
  */
-void Aleph_set_samplerate(Aleph *const leaf, fract32 samplerate);
+void Aleph_set_samplerate(Aleph *const aleph, uint32_t samplerate);
 
 //! Get the sample rate of Aleph.
 /*!
  @return The current sample rate as a fract32.
  */
-fract32 Aleph_get_samplerate(Aleph *const leaf);
+fract32 Aleph_get_samplerate(Aleph *const aleph);
 
 //! The default callback function for Aleph errors.
 /*!
  @param error_type The type of the error that has occurred.
  */
-void Aleph_default_error_callback(Aleph *const leaf,
+void Aleph_default_error_callback(Aleph *const aleph,
                                   e_Aleph_error_type error_type);
 
-void Aleph_internal_error_callback(Aleph *const leaf,
+void Aleph_internal_error_callback(Aleph *const aleph,
                                    e_Aleph_error_type whichone);
 
 //! Set the callback function for Aleph errors.
 /*!
  @param callback A pointer to the callback function.
  */
-void Aleph_set_error_callback(Aleph *const leaf,
+void Aleph_set_error_callback(Aleph *const aleph,
                               void (*callback)(Aleph *const,
                                                e_Aleph_error_type));
+
+// Return pointer to Aleph mempool.
+t_Mempool *Aleph_get_mempool(Aleph *const aleph);
 
 /*! @} */
 
