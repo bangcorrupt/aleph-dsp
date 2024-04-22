@@ -38,51 +38,52 @@
 
 /*----- Extern function implementations ------------------------------*/
 
-void phasor_init(phasor *phasor) { phasor->phase = 0; }
+void Phasor_init(t_Phasor *phasor) { phasor->phase = 0; }
 
-s32 phasor_next_dynamic(phasor *phasor, fract32 freq) {
+int32_t Phasor_next_dynamic(t_Phasor *phasor, fract32 freq) {
     phasor->phase += freq;
     return phasor->phase;
 }
 
-s32 phasor_next(phasor *phasor) {
+int32_t Phasor_next(t_Phasor *phasor) {
     phasor->phase += phasor->freq;
     return phasor->phase;
 }
 
-s32 phasor_read(phasor *phasor, s32 freq) { return phasor->phase; }
+int32_t Phasor_read(t_Phasor *phasor, int32_t freq) { return phasor->phase; }
 
-s32 phasor_pos_next_dynamic(phasor *phasor, fract32 freq) {
+int32_t Phasor_pos_next_dynamic(t_Phasor *phasor, fract32 freq) {
     phasor->phase += freq;
     return ((u32)phasor->phase) / 2;
 }
 
-s32 phasor_pos_read(phasor *phasor) { return ((u32)phasor->phase) / 2; }
+int32_t Phasor_pos_read(t_Phasor *phasor) { return ((u32)phasor->phase) / 2; }
 
-void quadraturePhasor_init(quadraturePhasor *phasor) {
+void QuadraturePhasor_init(t_QuadraturePhasor *phasor) {
     phasor->sinPhase = 0;
     phasor->cosPhase = FR32_MAX / 2;
 }
 
-void quadraturePhasor_pos_next_dynamic(quadraturePhasor *phasor, fract32 freq) {
+void QuadraturePhasor_pos_next_dynamic(t_QuadraturePhasor *phasor,
+                                       fract32 freq) {
     phasor->cosPhase += freq;
     phasor->sinPhase = phasor->cosPhase + FR32_MAX;
 }
 
-s32 quadraturePhasor_sinRead(quadraturePhasor *phasor) {
+int32_t QuadraturePhasor_sinRead(t_QuadraturePhasor *phasor) {
     return phasor->sinPhase;
 }
 
-s32 quadraturePhasor_cosRead(quadraturePhasor *phasor) {
+int32_t QuadraturePhasor_cosRead(t_QuadraturePhasor *phasor) {
     return phasor->cosPhase;
 }
 
-s32 quadraturePhasor_pos_sinRead(quadraturePhasor *phasor) {
-    return (s32)(((u32)phasor->sinPhase) / (u32)2);
+int32_t QuadraturePhasor_pos_sinRead(t_QuadraturePhasor *phasor) {
+    return (int32_t)(((u32)phasor->sinPhase) / (u32)2);
 }
 
-s32 quadraturePhasor_pos_cosRead(quadraturePhasor *phasor) {
-    return (s32)(((u32)phasor->cosPhase) / (u32)2);
+int32_t QuadraturePhasor_pos_cosRead(t_QuadraturePhasor *phasor) {
+    return (int32_t)(((u32)phasor->cosPhase) / (u32)2);
 }
 
 /*----- Static function implementations ------------------------------*/

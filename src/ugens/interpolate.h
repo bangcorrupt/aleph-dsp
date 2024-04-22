@@ -147,6 +147,8 @@ void AsymLinSlew_next(t_AsymLinSlew *slewm, fract32 *current, fract32 target);
 void RadixLogSlew_init(t_RadixLogSlew *slew, fract32 rate, uint16_t radix);
 void RadixLogSlew_next(t_RadixLogSlew *slew, fract32 *current, fract32 target);
 
+/// TODO: Refactor these as above.
+//
 void fine_log_slew(fract32 *current, fract32 target, fract32 speed);
 
 void coarse_log_slew(fract32 *current, fract32 target, fract32 speed);
