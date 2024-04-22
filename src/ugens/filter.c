@@ -77,7 +77,7 @@ fract32 HPF_next_dynamic(t_HPF *hpf, fract32 in, fract32 freq) {
 
 // the frequency unit is fraction of samplerate
 fract32 LPF_next_dynamic(t_LPF *lpf, fract32 in, fract32 freq) {
-    return simple_slew(lpf->lastOut, in, TWOPI * freq);
+    return SIMPLE_SLEW(lpf->lastOut, in, TWOPI * freq);
 }
 
 fract32 LPF_next_dynamic_precise(t_LPF *lpf, fract32 in, fract32 freq) {

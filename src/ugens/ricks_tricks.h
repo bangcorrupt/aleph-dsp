@@ -45,28 +45,27 @@ extern "C" {
 #define TWO_PI_16_16 411775
 
 #define SR 48000
-#define hzToDimensionless(hz) ((fract32)((fract32)hz * (FR32_MAX / SR)))
-#define hzToDimensionless16(hz) ((fract16)((fract16)hz * (FR16_MAX / SR)))
-
-#define fadeOut(x) sub_fr1x32(FR32_MAX, mult_fr1x32x32(x, x))
-#define fadeIn(x) fadeOut(sub_fr1x32(FR32_MAX, x))
 
 // freq_to_phase in 2.30
 #define FREQ_TO_PHASE_CONST 0x57619F00
 
+#define NORMALISED_FREQUENCY(hz) ((fract32)((fract32)hz * (FR32_MAX / SR)))
+#define NORMALISED_FREQUENCY_16(hz) ((fract16)((fract16)hz * (FR16_MAX / SR)))
+
+#define FADE_OUT(x) sub_fr1x32(FR32_MAX, mult_fr1x32x32(x, x))
+#define FADE_IN(x) FADE_OUT(sub_fr1x32(FR32_MAX, x))
+
 /*----- Extern variable declarations ---------------------------------*/
 
-/// TODO: Are these better as macros?
-//
-/* #define FR32_1_OVER_3 = FR32_MAX / 3; */
-/* #define FR16_1_OVER_3 = FR16_MAX / 3; */
-static const fract32 FR32_1_OVER_3 = FR32_MAX / 3;
-static const fract32 FR16_1_OVER_3 = FR16_MAX / 3;
+#define FR32_1_OVER_3 (FR32_MAX / 3)
+#define FR16_1_OVER_3 (FR16_MAX / 3)
 
 /*----- Extern function prototypes -----------------------------------*/
 
 /*----- Static function implementations ------------------------------*/
 
+/// TODO: Maybe make this a macro.
+//
 // Takes a fraction in 16_16 radix, returns it in 0_32
 static inline fract32 one_over_x_16_16(fract32 x_16_16) {
     return shl_fr1x32(FR32_MAX / x_16_16, 16);

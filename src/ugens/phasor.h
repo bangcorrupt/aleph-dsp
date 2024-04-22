@@ -37,30 +37,34 @@ extern "C" {
 /*----- Macros and Definitions ---------------------------------------*/
 
 typedef struct {
-    s32 phase;
+    int32_t phase;
     fract32 freq;
-} phasor;
+} t_Phasor;
 
 typedef struct {
-    s32 cosPhase;
-    s32 sinPhase;
-} quadraturePhasor;
+    int32_t cos_phase;
+    int32_t sin_phase;
+} t_QuadraturePhasor;
 
 /*----- Extern variable declarations ---------------------------------*/
 
-void phasor_init(phasor *phasor);
-s32 phasor_next_dynamic(phasor *phasor, fract32 freq);
-s32 phasor_next(phasor *phasor);
-s32 phasor_read(phasor *phasor, s32 freq);
-s32 phasor_pos_next_dynamic(phasor *phasor, fract32 freq);
-s32 phasor_pos_read(phasor *phasor);
+/// TODO: Functions to set frequency.
+///         QuadraturePhasor_next()
+//
+void Phasor_init(t_Phasor *phasor);
+int32_t Phasor_next_dynamic(t_Phasor *phasor, fract32 freq);
+int32_t Phasor_next(t_Phasor *phasor);
+int32_t Phasor_read(t_Phasor *phasor, int32_t freq);
+int32_t Phasor_pos_next_dynamic(t_Phasor *phasor, fract32 freq);
+int32_t Phasor_pos_read(t_Phasor *phasor);
 
-void quadraturePhasor_init(quadraturePhasor *phasor);
-void quadraturePhasor_pos_next_dynamic(quadraturePhasor *phasor, fract32 freq);
-s32 quadraturePhasor_pos_sinRead(quadraturePhasor *phasor);
-s32 quadraturePhasor_pos_cosRead(quadraturePhasor *phasor);
-s32 quadraturePhasor_sinRead(quadraturePhasor *phasor);
-s32 quadraturePhasor_cosRead(quadraturePhasor *phasor);
+void QuadraturePhasor_init(t_QuadraturePhasor *phasor);
+void QuadraturePhasor_pos_next_dynamic(t_QuadraturePhasor *phasor,
+                                       fract32 freq);
+int32_t QuadraturePhasor_pos_sin_read(t_QuadraturePhasor *phasor);
+int32_t QuadraturePhasor_pos_cos_read(t_QuadraturePhasor *phasor);
+int32_t QuadraturePhasor_sin_read(t_QuadraturePhasor *phasor);
+int32_t QuadraturePhasor_cos_read(t_QuadraturePhasor *phasor);
 
 /*----- Extern function prototypes -----------------------------------*/
 
