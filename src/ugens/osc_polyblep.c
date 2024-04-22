@@ -53,9 +53,9 @@ fract16 square_polyblep(fract32 p, fract32 dp) {
     fix16 square_raw = 0xFFFF;
     if (p < 0)
         square_raw *= -1;
-    fix16 square_polyblep = add_fr1x32(square_raw, polyblep(p + FR32_MAX, dp));
-    square_polyblep = sub_fr1x32(square_polyblep, polyblep(p, dp));
-    return (fract16)shr_fr1x32(square_polyblep, 1);
+    fix16 square_pb = add_fr1x32(square_raw, polyblep(p + FR32_MAX, dp));
+    square_pb = sub_fr1x32(square_pb, polyblep(p, dp));
+    return (fract16)shr_fr1x32(square_pb, 1);
 }
 
 fract16 saw_polyblep(fract32 p, fract32 dp) {
