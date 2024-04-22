@@ -40,13 +40,13 @@
 
 void Phasor_init(t_Phasor *phasor) { phasor->phase = 0; }
 
-int32_t Phasor_next_dynamic(t_Phasor *phasor, fract32 freq) {
-    phasor->phase += freq;
+int32_t Phasor_next(t_Phasor *phasor) {
+    phasor->phase += phasor->freq;
     return phasor->phase;
 }
 
-int32_t Phasor_next(t_Phasor *phasor) {
-    phasor->phase += phasor->freq;
+int32_t Phasor_next_dynamic(t_Phasor *phasor, fract32 freq) {
+    phasor->phase += freq;
     return phasor->phase;
 }
 
