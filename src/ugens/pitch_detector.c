@@ -80,13 +80,15 @@ fract32 PitchDetector_track(t_PitchDetector *p, fract32 in) {
                                              PITCH_DETECTOR_RADIX_INTERNAL));
 }
 
+/// TODO: Select waveform shape.
+//
 fract32 PitchDetector_track_osc(t_PitchDetector *p) {
     // Debug uncomment the line below to force 1k tone
     /* p->currentPeriod = (48 << (PITCH_DETECTOR_RADIX_INTERNAL)); */
     p->phase += (p->pitchOffset /
                  shl_fr1x32(p->currentPeriod, -PITCH_DETECTOR_RADIX_INTERNAL))
                 << 3;
-    return osc(p->phase);
+    return osc_sin(p->phase);
 }
 
 /*----- Static function implementations ------------------------------*/

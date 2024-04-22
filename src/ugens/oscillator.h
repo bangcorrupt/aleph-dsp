@@ -42,11 +42,12 @@ extern "C" {
 
 /*----- Extern function prototypes -----------------------------------*/
 
-fract32 osc(fract32 phase);
-fract16 osc16(fract32 phase);
+fract32 osc_sin(fract32 phase);
+fract16 osc_sin16(fract32 phase);
 fract32 osc_triangle(fract32 phase);
 fract16 osc_triangle16(fract32 phase);
 fract32 osc_square(fract32 phase);
+fract16 osc_square16(fract32 phase);
 
 #ifdef __cplusplus
 }
