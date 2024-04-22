@@ -72,19 +72,19 @@ void QuadraturePhasor_pos_next_dynamic(t_QuadraturePhasor *phasor,
     phasor->sin_phase = phasor->cos_phase + FR32_MAX;
 }
 
-int32_t QuadraturePhasor_sinRead(t_QuadraturePhasor *phasor) {
+int32_t QuadraturePhasor_sin_read(t_QuadraturePhasor *phasor) {
     return phasor->sin_phase;
 }
 
-int32_t QuadraturePhasor_cosRead(t_QuadraturePhasor *phasor) {
+int32_t QuadraturePhasor_cos_read(t_QuadraturePhasor *phasor) {
     return phasor->cos_phase;
 }
 
-int32_t QuadraturePhasor_pos_sinRead(t_QuadraturePhasor *phasor) {
+int32_t QuadraturePhasor_pos_sin_read(t_QuadraturePhasor *phasor) {
     return (int32_t)(((uint32_t)phasor->sin_phase) / (uint32_t)2);
 }
 
-int32_t QuadraturePhasor_pos_cosRead(t_QuadraturePhasor *phasor) {
+int32_t QuadraturePhasor_pos_cos_read(t_QuadraturePhasor *phasor) {
     return (int32_t)(((uint32_t)phasor->cos_phase) / (uint32_t)2);
 }
 

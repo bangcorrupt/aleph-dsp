@@ -48,6 +48,9 @@ typedef struct {
 
 /*----- Extern variable declarations ---------------------------------*/
 
+/// TODO: Functions to set frequency.
+///         QuadraturePhasor_next()
+//
 void Phasor_init(t_Phasor *phasor);
 int32_t Phasor_next_dynamic(t_Phasor *phasor, fract32 freq);
 int32_t Phasor_next(t_Phasor *phasor);
@@ -58,10 +61,10 @@ int32_t Phasor_pos_read(t_Phasor *phasor);
 void QuadraturePhasor_init(t_QuadraturePhasor *phasor);
 void QuadraturePhasor_pos_next_dynamic(t_QuadraturePhasor *phasor,
                                        fract32 freq);
-int32_t QuadraturePhasor_pos_sinRead(t_QuadraturePhasor *phasor);
-int32_t QuadraturePhasor_pos_cosRead(t_QuadraturePhasor *phasor);
-int32_t QuadraturePhasor_sinRead(t_QuadraturePhasor *phasor);
-int32_t QuadraturePhasor_cosRead(t_QuadraturePhasor *phasor);
+int32_t QuadraturePhasor_pos_sin_read(t_QuadraturePhasor *phasor);
+int32_t QuadraturePhasor_pos_cos_read(t_QuadraturePhasor *phasor);
+int32_t QuadraturePhasor_sin_read(t_QuadraturePhasor *phasor);
+int32_t QuadraturePhasor_cos_read(t_QuadraturePhasor *phasor);
 
 /*----- Extern function prototypes -----------------------------------*/
 
