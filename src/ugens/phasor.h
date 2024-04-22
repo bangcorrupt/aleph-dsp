@@ -42,8 +42,8 @@ typedef struct {
 } t_Phasor;
 
 typedef struct {
-    int32_t cosPhase;
-    int32_t sinPhase;
+    int32_t cos_phase;
+    int32_t sin_phase;
 } t_QuadraturePhasor;
 
 /*----- Extern variable declarations ---------------------------------*/
