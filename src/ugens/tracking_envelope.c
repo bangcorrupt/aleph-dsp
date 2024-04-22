@@ -26,9 +26,7 @@
 
 /*----- Includes -----------------------------------------------------*/
 
-#include "fix.h"
-#include "fract_math.h"
-#include "types.h"
+#include "aleph.h"
 
 #include "interpolate.h"
 #include "tracking_envelope.h"
@@ -45,11 +43,11 @@
 
 void TrackingEnvLin_init(t_TrackingEnvLin *env) {
     env->val = 0;
-    asymLinSlew_init(&(env->slew));
+    AsymLinSlew_init(&(env->slew), LINSLEW_10MS, LINSLEW_100MS);
 }
 
 fract32 TrackingEnvLin_next(t_TrackingEnvLin *env, fract32 in) {
-    asymLinSlew_next(&(env->val), abs_fr1x32(in), &(env->slew));
+    AsymLinSlew_next(&(env->slew), &(env->val), abs_fr1x32(in));
     return env->val;
 }
 

@@ -66,25 +66,30 @@ extern "C" {
 #define SLEW_1S_16 (FR16_MAX - 1)
 
 typedef struct {
-    unsigned short radix;
+    uint16_t radix;
     fract32 remainder;
-    u32 slewRate;
-} radixLinSlew;
+    fract32 rate;
+} t_RadixLinSlew;
 
 typedef struct {
     fract32 up;
     fract32 down;
-} asymLinSlew;
+} t_AsymLinSlew;
 
 typedef struct {
     unsigned short radix;
     fract32 remainder;
-    fract32 speed;
-} logSlew;
+    fract32 rate;
+} t_RadixLogSlew;
+
+typedef struct {
+    fract32 rate;
+} t_LinSlew;
 
 /*----- Extern variable declarations ---------------------------------*/
 
 static const fract32 LINSLEW_1MS = FR32_MAX / 48;
+
 static const fract32 LINSLEW_10MS = FR32_MAX / 48 / 10;
 static const fract32 LINSLEW_100MS = FR32_MAX / 48 / 100;
 static const fract32 LINSLEW_1S = FR32_MAX / 48 / 1000;
@@ -130,17 +135,25 @@ static inline fract32 interp_bspline_fract32(fract32 x, fract32 _y, fract32 y,
 
 /*----- Extern function prototypes -----------------------------------*/
 
-void radixLinSlew_init(radixLinSlew *slew, unsigned short radix);
-void radixLinSlew_next(fract32 *current, fract32 target, radixLinSlew *slew);
-void linSlew_next(fract32 *current, fract32 target, fract32 slewRate);
-void asymLinSlew_init(asymLinSlew *slew);
-void asymLinSlew_next(fract32 *current, fract32 target, asymLinSlew *slew);
-void radixLogSlew_init(logSlew *slew, unsigned short radix);
-void radixLogSlew_next(fract32 *current, fract32 target, logSlew *slew);
-void fine_logSlew(fract32 *current, fract32 target, fract32 speed);
-void coarse_logSlew(fract32 *current, fract32 target, fract32 speed);
-void normalised_logSlew(fract32 *current, fract32 target, fract32 speed);
-void normalised_logSlew_16(fract16 *current, fract16 target, fract16 speed);
+void RadixLinSlew_init(t_RadixLinSlew *slew, fract32 rate, uint16_t radix);
+void RadixLinSlew_next(t_RadixLinSlew *slew, fract32 *current, fract32 target);
+
+void LinSlew_init(t_LinSlew *slew, fract32 rate);
+void LinSlew_next(t_LinSlew *slew, fract32 *current, fract32 target);
+
+void AsymLinSlew_init(t_AsymLinSlew *slew, fract32 slew_up, fract32 slew_down);
+void AsymLinSlew_next(t_AsymLinSlew *slewm, fract32 *current, fract32 target);
+
+void RadixLogSlew_init(t_RadixLogSlew *slew, fract32 rate, uint16_t radix);
+void RadixLogSlew_next(t_RadixLogSlew *slew, fract32 *current, fract32 target);
+
+void fine_log_slew(fract32 *current, fract32 target, fract32 speed);
+
+void coarse_log_slew(fract32 *current, fract32 target, fract32 speed);
+
+void normalised_log_slew(fract32 *current, fract32 target, fract32 speed);
+void normalised_log_slew_16(fract16 *current, fract16 target, fract16 speed);
+
 float interp_bspline_float(float x, float _y, float y, float y_, float y__);
 
 #ifdef __cplusplus

@@ -42,7 +42,7 @@ extern "C" {
 
 typedef struct {
     fract32 val;
-    asymLinSlew slew;
+    t_AsymLinSlew slew;
 
 } t_TrackingEnvLin;
 

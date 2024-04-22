@@ -28,6 +28,7 @@
 /*----- Includes -----------------------------------------------------*/
 
 #include "interpolate.h"
+#include <stdint.h>
 
 /*----- Macros and Definitions ---------------------------------------*/
 
@@ -44,6 +45,7 @@
 // 4-point, 3rd-order B-spline (x-form) from
 // http://yehar.com/blog/wp-content/uploads/2009/08/deip.pdf
 float interp_bspline_float(float x, float _y, float y, float y_, float y__) {
+
     float ym1py1 = _y + y_;
     float c0 = 1 / 6.0 * ym1py1 + 2 / 3.0 * y;
     float c1 = 1 / 2.0 * (y_ - _y);
@@ -52,64 +54,81 @@ float interp_bspline_float(float x, float _y, float y, float y_, float y__) {
     return ((c3 * x + c2) * x + c1) * x + c0;
 }
 
-void radixLinSlew_init(radixLinSlew *slew, unsigned short radix) {
+void RadixLinSlew_init(t_RadixLinSlew *slew, fract32 rate, uint16_t radix) {
+
     slew->radix = radix;
     slew->remainder = 0;
-    slew->slewRate = LINSLEW_100MS;
+    slew->rate = rate; // Previously  LINSLEW_100MS.
 }
 
 // This guy slews between target and current at *fractional* constant speed
-void radixLinSlew_next(fract32 *current, fract32 target, radixLinSlew *slew) {
+void RadixLinSlew_next(t_RadixLinSlew *slew, fract32 *current, fract32 target) {
+
     fract32 difference = abs_fr1x32(sub_fr1x32(target, *current));
+
     fract32 fract_slew =
-        min_fr1x32(shl_fr1x32(difference, slew->radix), slew->slewRate);
+        min_fr1x32(shl_fr1x32(difference, slew->radix), slew->rate);
     fract_slew += slew->remainder;
-    u32 remainderMask = ~(0xFFFFFFFF << slew->radix);
-    slew->remainder = remainderMask & fract_slew;
-    u32 inc = shl_fr1x32(fract_slew, -slew->radix);
+
+    uint32_t remainder_mask = ~(0xFFFFFFFF << slew->radix);
+    slew->remainder = remainder_mask & fract_slew;
+
+    uint32_t inc = shl_fr1x32(fract_slew, -slew->radix);
     if (*current > target)
         *current -= inc;
     else if (*current < target)
         *current += inc;
 }
 
+void LinSlew_init(t_LinSlew *slew, fract32 rate) {
+    //
+    slew->rate = rate;
+}
+
 // This guy slews between target and current at constant speed
-void linSlew_next(fract32 *current, fract32 target, fract32 slewRate) {
+void LinSlew_next(t_LinSlew *slew, fract32 *current, fract32 target) {
+
     if (*current > target)
-        *current -= min_fr1x32(abs_fr1x32(target - *current), slewRate);
+        *current -= min_fr1x32(abs_fr1x32(target - *current), slew->rate);
     else if (*current < target)
-        *current += min_fr1x32(abs_fr1x32(target - *current), slewRate);
+        *current += min_fr1x32(abs_fr1x32(target - *current), slew->rate);
 }
 
-void asymLinSlew_init(asymLinSlew *slew) {
-    slew->up = LINSLEW_10MS;
-    slew->down = LINSLEW_100MS;
+void AsymLinSlew_init(t_AsymLinSlew *slew, fract32 slew_up, fract32 slew_down) {
+
+    slew->up = slew_up;     //  Previously  LINSLEW_10MS.
+    slew->down = slew_down; //  Previously  LINSLEW_100MS.
 }
 
 // This guy slews between target and current at constant speed
-void asymLinSlew_next(fract32 *current, fract32 target, asymLinSlew *slew) {
+void AsymLinSlew_next(t_AsymLinSlew *slew, fract32 *current, fract32 target) {
+
     if (*current > target)
         *current -= min_fr1x32(abs_fr1x32(target - *current), slew->down);
     else if (*current < target)
         *current += min_fr1x32(abs_fr1x32(target - *current), slew->up);
 }
 
-void radixLogSlew_init(logSlew *slew, unsigned short radix) {
+void RadixLogSlew_init(t_RadixLogSlew *slew, fract32 rate, uint16_t radix) {
+
     slew->radix = radix;
     slew->remainder = 0;
-    slew->speed = SLEW_1S;
+    slew->rate = rate; // Previously SLEW_1S;
 }
 
 // This guy slews correctly when the slew rate is less than 1 per audio frame
-void radixLogSlew_next(fract32 *current, fract32 target, logSlew *slew) {
-    fract32 ratio = slew->speed;
+void RadixLogSlew_next(t_RadixLogSlew *slew, fract32 *current, fract32 target) {
+
+    fract32 ratio = slew->rate;
     fract32 difference = abs_fr1x32(sub_fr1x32(target, *current));
     fract32 fract_slew =
         mult_fr1x32x32(shl_fr1x32(difference, slew->radix), ratio);
+
     fract_slew = add_fr1x32(fract_slew, slew->remainder);
-    u32 remainderMask = ~(0xFFFFFFFF << slew->radix);
+
+    uint32_t remainderMask = ~(0xFFFFFFFF << slew->radix);
     slew->remainder = remainderMask & fract_slew;
-    u32 inc = shl_fr1x32(fract_slew, -slew->radix);
+    uint32_t inc = shl_fr1x32(fract_slew, -slew->radix);
     if (target > *current)
         *current = add_fr1x32(*current, inc);
     else if (target < *current)
@@ -117,7 +136,8 @@ void radixLogSlew_next(fract32 *current, fract32 target, logSlew *slew) {
 }
 
 // This guy slews correctly between *small* parameters
-void fine_logSlew(fract32 *current, fract32 target, fract32 speed) {
+void fine_log_slew(fract32 *current, fract32 target, fract32 speed) {
+
     fract32 ratio = FR32_MAX - speed;
     fract32 difference = sub_fr1x32(*current, target);
     fract32 inc = mult_fr1x32x32(ratio, shl_fr1x32(difference, 12));
@@ -125,14 +145,16 @@ void fine_logSlew(fract32 *current, fract32 target, fract32 speed) {
 }
 
 // This guy slews correctly between *large* parameters
-void coarse_logSlew(fract32 *current, fract32 target, fract32 speed) {
+void coarse_log_slew(fract32 *current, fract32 target, fract32 speed) {
+
     fract32 ratio = FR32_MAX - speed;
     fract32 inc = mult_fr1x32x32(ratio, sub_fr1x32(*current, target));
     *current = add_fr1x32(target, inc);
 }
 
 // This guy auto-adjusts the radix - poor man's float I guess...
-void normalised_logSlew(fract32 *current, fract32 target, fract32 speed) {
+void normalised_log_slew(fract32 *current, fract32 target, fract32 speed) {
+
     fract32 ratio = FR32_MAX - speed;
     fract32 difference = sub_fr1x32(target, *current);
     int radix = norm_fr1x32(difference);
@@ -140,7 +162,8 @@ void normalised_logSlew(fract32 *current, fract32 target, fract32 speed) {
     *current = add_fr1x32(*current, shl_fr1x32(inc, -radix));
 }
 
-void normalised_logSlew_16(fract16 *current, fract16 target, fract16 speed) {
+void normalised_log_slew_16(fract16 *current, fract16 target, fract16 speed) {
+
     fract16 ratio = FR32_MAX - speed;
     fract16 difference = sub_fr1x16(target, *current);
     int radix = norm_fr1x16(difference);
