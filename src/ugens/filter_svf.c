@@ -177,7 +177,7 @@ const p_svf_func FilterSVF_func[3][4] = {
 
 /*----- Static function implementations ------------------------------*/
 
-static void _FilterSVF_calc_frame(t_FilterSVF *f, fract32 in) {
+static void _calc_frame(t_FilterSVF *f, fract32 in) {
     f->low = add_fr1x32(f->low, mult_fr1x32x32(f->freq, f->band));
 
     f->high = sub_fr1x32(
@@ -187,7 +187,7 @@ static void _FilterSVF_calc_frame(t_FilterSVF *f, fract32 in) {
     f->band = add_fr1x32(f->band, mult_fr1x32x32(f->freq, f->high));
 }
 
-static void _FilterSVF_softclip_calc_frame(t_FilterSVF *f, fract32 in) {
+static void _softclip_calc_frame(t_FilterSVF *f, fract32 in) {
     char clip_radix = 0;
     f->low = shr_fr1x32(
         soft_clip(
@@ -212,7 +212,7 @@ static void _FilterSVF_softclip_calc_frame(t_FilterSVF *f, fract32 in) {
         clip_radix);
 }
 
-static void _FilterSVF_softclip_asym_calc_frame(t_FilterSVF *f, fract32 in) {
+static void _softclip_asym_calc_frame(t_FilterSVF *f, fract32 in) {
     char clip_radix = 0;
 
     f->low = shr_fr1x32(
