@@ -45,7 +45,7 @@
 
 /*----- Static function prototypes -----------------------------------*/
 
-static inline fix16 polyblep(fract32 p, fract32 dp);
+static inline fix16 _polyblep(fract32 p, fract32 dp);
 
 /*----- Extern function implementations ------------------------------*/
 
@@ -53,13 +53,13 @@ fract16 square_polyblep(fract32 p, fract32 dp) {
     fix16 square_raw = 0xFFFF;
     if (p < 0)
         square_raw *= -1;
-    fix16 square_pb = add_fr1x32(square_raw, polyblep(p + FR32_MAX, dp));
-    square_pb = sub_fr1x32(square_pb, polyblep(p, dp));
+    fix16 square_pb = add_fr1x32(square_raw, _polyblep(p + FR32_MAX, dp));
+    square_pb = sub_fr1x32(square_pb, _polyblep(p, dp));
     return (fract16)shr_fr1x32(square_pb, 1);
 }
 
 fract16 saw_polyblep(fract32 p, fract32 dp) {
-    return shr_fr1x32(sub_fr1x32(shr_fr1x32(p, 15), polyblep(p, dp)), 1);
+    return shr_fr1x32(sub_fr1x32(shr_fr1x32(p, 15), _polyblep(p, dp)), 1);
 }
 
 fract16 sine_polyblep(fract32 phase) {
@@ -92,7 +92,7 @@ fract16 triangle_polyblep(fract32 phase) {
 
 /*----- Static function implementations ------------------------------*/
 
-static inline fix16 polyblep(fract32 p, fract32 dp) {
+static inline fix16 _polyblep(fract32 p, fract32 dp) {
     fix16 dp_inv = FR32_MAX / shr_fr1x32(dp, 16);
 
     fix16 p_by_dp = fix16_mul_fract(dp_inv, shr_fr1x32(p, 15));
