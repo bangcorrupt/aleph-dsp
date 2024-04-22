@@ -61,9 +61,9 @@ void TrackingEnvLog_init(t_TrackingEnvLog *env) {
 fract32 TrackingEnvLog_next(t_TrackingEnvLog *env, fract32 in) {
     fract32 target = abs_fr1x32(in);
     if (target > env->val)
-        simple_slew(env->val, target, env->up);
+        SIMPLE_SLEW(env->val, target, env->up);
     else if (target < env->val)
-        simple_slew(env->val, target, env->down);
+        SIMPLE_SLEW(env->val, target, env->down);
     return env->val;
 }
 

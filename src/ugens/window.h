@@ -46,7 +46,7 @@ extern "C" {
 
 /*----- Extern function prototypes -----------------------------------*/
 
-fract32 flat_top_env(int32_t pos, int32_t fadeRatio);
+fract32 flat_top_env(int32_t pos, int32_t fade_ratio);
 fract32 half_wave_env(fract32 pos);
 
 #ifdef __cplusplus

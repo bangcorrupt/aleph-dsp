@@ -41,29 +41,35 @@ extern "C" {
 
 /*----- Macros and Definitions ---------------------------------------*/
 
-#define simple_slew(x, y, slew)                                                \
-    (x = add_fr1x32((fract32)(y),                                              \
-                    mult_fr1x32x32(sub_fr1x32(FR32_MAX, (fract32)(slew)),      \
-                                   sub_fr1x32((fract32)(x), (fract32)(y)))))
-
-#define simple_slew_cheat(x, y, slew)                                          \
-    (x = add_fr1x32(                                                           \
-         (fract32)(y),                                                         \
-         mult_fr1x32x32_cheat(sub_fr1x32(FR32_MAX, (fract32)(slew)),           \
-                              sub_fr1x32((fract32)(x), (fract32)(y)))))
-
-#define simple_lpf(x, y, hz) simple_slew(x, y, TWOPI *hzToDimensionless(hz))
-
-#define SLEW_1MS (FR32_MAX - (TWOPI * hzToDimensionless(1000)))
-#define SLEW_10MS (FR32_MAX - (TWOPI * hzToDimensionless(100)))
-#define SLEW_100MS (FR32_MAX - (TWOPI * hzToDimensionless(10)))
-#define SLEW_1S (FR32_MAX - (TWOPI * hzToDimensionless(1)))
+#define SLEW_1MS (FR32_MAX - (TWOPI * NORMALISED_FREQUENCY(1000)))
+#define SLEW_10MS (FR32_MAX - (TWOPI * NORMALISED_FREQUENCY(100)))
+#define SLEW_100MS (FR32_MAX - (TWOPI * NORMALISED_FREQUENCY(10)))
+#define SLEW_1S (FR32_MAX - (TWOPI * NORMALISED_FREQUENCY(1)))
 #define SLEW_4S (FR32_MAX - (1 << 16))
 
 #define SLEW_1MS_16 (FR16_MAX - 1024)
 #define SLEW_10MS_16 (FR16_MAX - 180)
 #define SLEW_100MS_16 (FR16_MAX - 8)
 #define SLEW_1S_16 (FR16_MAX - 1)
+
+#define LINSLEW_1MS (FR32_MAX / 48)
+#define LINSLEW_10MS (FR32_MAX / 48 / 10)
+#define LINSLEW_100MS (FR32_MAX / 48 / 100)
+#define LINSLEW_1S (FR32_MAX / 48 / 1000)
+#define LINSLEW_10S (FR32_MAX / 48 / 10000)
+
+#define SIMPLE_SLEW(x, y, slew)                                                \
+    (x = add_fr1x32((fract32)(y),                                              \
+                    mult_fr1x32x32(sub_fr1x32(FR32_MAX, (fract32)(slew)),      \
+                                   sub_fr1x32((fract32)(x), (fract32)(y)))))
+
+#define SIMPLE_SLEW_CHEAT(x, y, slew)                                          \
+    (x = add_fr1x32(                                                           \
+         (fract32)(y),                                                         \
+         mult_fr1x32x32_cheat(sub_fr1x32(FR32_MAX, (fract32)(slew)),           \
+                              sub_fr1x32((fract32)(x), (fract32)(y)))))
+
+#define SIMPLE_LPF(x, y, hz) SIMPLE_SLEW(x, y, TWOPI *NORMALISED_FREQUENCY(hz))
 
 typedef struct {
     uint16_t radix;
@@ -88,14 +94,9 @@ typedef struct {
 
 /*----- Extern variable declarations ---------------------------------*/
 
-static const fract32 LINSLEW_1MS = FR32_MAX / 48;
-
-static const fract32 LINSLEW_10MS = FR32_MAX / 48 / 10;
-static const fract32 LINSLEW_100MS = FR32_MAX / 48 / 100;
-static const fract32 LINSLEW_1S = FR32_MAX / 48 / 1000;
-static const fract32 LINSLEW_10S = FR32_MAX / 48 / 10000;
-
 /*----- Static function implementations ------------------------------*/
+
+/// TODO: Is there any actual performance advantage defining this here?
 
 static inline fract16 interp_bspline_fract16(fract16 x, fract16 _y, fract16 y,
                                              fract16 y_, fract16 y__) {
