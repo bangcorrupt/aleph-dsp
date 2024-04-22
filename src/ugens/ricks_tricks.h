@@ -64,6 +64,8 @@ extern "C" {
 
 /*----- Static function implementations ------------------------------*/
 
+/// TODO: Maybe make this a macro.
+//
 // Takes a fraction in 16_16 radix, returns it in 0_32
 static inline fract32 one_over_x_16_16(fract32 x_16_16) {
     return shl_fr1x32(FR32_MAX / x_16_16, 16);
