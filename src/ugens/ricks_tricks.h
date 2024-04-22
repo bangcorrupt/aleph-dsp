@@ -57,12 +57,8 @@ extern "C" {
 
 /*----- Extern variable declarations ---------------------------------*/
 
-/// TODO: Are these better as macros?
-//
-/* #define FR32_1_OVER_3 = FR32_MAX / 3; */
-/* #define FR16_1_OVER_3 = FR16_MAX / 3; */
-static const fract32 FR32_1_OVER_3 = FR32_MAX / 3;
-static const fract32 FR16_1_OVER_3 = FR16_MAX / 3;
+#define FR32_1_OVER_3 (FR32_MAX / 3)
+#define FR16_1_OVER_3 (FR16_MAX / 3)
 
 /*----- Extern function prototypes -----------------------------------*/
 
