@@ -32,7 +32,6 @@
 #include "fract_math.h"
 #include "types.h"
 
-#include "biquad.h"
 #include "ricks_tricks.h"
 
 #include "osc_polyblep.h"
