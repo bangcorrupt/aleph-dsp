@@ -38,14 +38,32 @@
 
 /*----- Extern function implementations ------------------------------*/
 
-void Phasor_init(t_Phasor *phasor) { phasor->phase = 0; }
+void Phasor_init(t_Phasor *phasor, t_Aleph *aleph) {
+
+    Phasor_init_to_pool(phasor, aleph->mempool);
+}
+
+void Phasor_init_to_pool(t_Phasor *phasor, t_Mempool *mempool) {
+
+    phasor = (t_Phasor *)mpool_alloc(sizeof(t_Phasor), mempool);
+
+    phasor->phase = 0;
+    phasor->freq = 1;
+}
 
 int32_t Phasor_next(t_Phasor *phasor) {
     phasor->phase += phasor->freq;
     return phasor->phase;
 }
 
+void Phasor_set_freq(t_Phasor *phasor, fract32 freq) { phasor->freq = freq; }
+
+void Phasor_set_phase(t_Phasor *phasor, int32_t phase) {
+    phasor->phase = phase;
+}
+
 int32_t Phasor_next_dynamic(t_Phasor *phasor, fract32 freq) {
+
     phasor->phase += freq;
     return phasor->phase;
 }

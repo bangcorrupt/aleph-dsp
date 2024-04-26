@@ -25,9 +25,13 @@
 
 /*----- Includes -----------------------------------------------------*/
 
+#include <stdint.h>
+
 #include "aleph-mempool.h"
 #include "aleph.h"
 
+#include "ugens/osc_polyblep.h"
+#include "ugens/phasor.h"
 #include "ugens/waveform.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
@@ -49,17 +53,55 @@ void Waveform_init_to_pool(t_Waveform *wave, t_Mempool *mempool) {
 
     wave = (t_Waveform *)mpool_alloc(sizeof(t_Waveform), mempool);
 
-    wave->freq = 0;
-    wave->phase = 0;
-    wave->shape = 0;
+    wave->shape = WAVEFORM_SHAPE_SINE;
+
+    Phasor_init(wave->phasor, mempool->aleph);
+    Phasor_set_freq(wave->phasor, WAVEFORM_DEFAULT_FREQ);
 }
 
-void Waveform_next(t_Waveform *wave) {
-    //
+fract32 Waveform_next(t_Waveform *wave) {
+
+    fract32 next;
+
+    switch (wave->shape) {
+
+    case WAVEFORM_SHAPE_SINE:
+        next = sine_polyblep(wave->phasor->phase);
+        break;
+
+    case WAVEFORM_SHAPE_TRIANGLE:
+        next = triangle_polyblep(wave->phasor->phase);
+        break;
+
+    case WAVEFORM_SHAPE_SAW:
+        next = saw_polyblep(wave->phasor->phase, wave->phasor->freq);
+        break;
+
+    case WAVEFORM_SHAPE_SQUARE:
+        next = square_polyblep(wave->phasor->phase, wave->phasor->freq);
+        break;
+
+    default:
+        next = 0;
+        break;
+    }
+
+    return next;
 }
 
-void Waveform_set_freq(t_Waveform *wave) {
+void Waveform_set_shape(t_Waveform *wave, uint8_t shape) {
     //
+    wave->shape = shape;
+}
+
+void Waveform_set_freq(t_Waveform *wave, fract32 freq) {
+    //
+    Phasor_set_freq(wave->phasor, freq);
+}
+
+void Waveform_set_phase(t_Waveform *wave, int32_t phase) {
+    //
+    Phasor_set_phase(wave->phasor, phase);
 }
 
 /*----- Static function implementations ------------------------------*/

@@ -26,6 +26,7 @@
 #ifndef ALEPH_PHASOR_H
 #define ALEPH_PHASOR_H
 
+#include <stdint.h>
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -51,9 +52,12 @@ typedef struct {
 /// TODO: Functions to set frequency.
 ///         QuadraturePhasor_next()
 //
-void Phasor_init(t_Phasor *phasor);
-int32_t Phasor_next_dynamic(t_Phasor *phasor, fract32 freq);
+void Phasor_init(t_Phasor *phasor, t_Aleph *aleph);
+void Phasor_init_to_pool(t_Phasor *phasor, t_Mempool *mempool);
 int32_t Phasor_next(t_Phasor *phasor);
+void Phasor_set_freq(t_Phasor *phasor, fract32 freq);
+void Phasor_set_phase(t_Phasor *phasor, int32_t phase);
+int32_t Phasor_next_dynamic(t_Phasor *phasor, fract32 freq);
 int32_t Phasor_read(t_Phasor *phasor, int32_t freq);
 int32_t Phasor_pos_next_dynamic(t_Phasor *phasor, fract32 freq);
 int32_t Phasor_pos_read(t_Phasor *phasor);
