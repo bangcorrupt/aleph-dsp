@@ -45,6 +45,9 @@ typedef struct {
 /*----- Extern variable declarations ---------------------------------*/
 
 void Waveform_init(t_Waveform *wave, t_Aleph *aleph);
+void Waveform_init_to_pool(t_Waveform *wave, t_Mempool *mp);
+void Waveform_next(t_Waveform *wave);
+void Waveform_set_freq(t_Waveform *wave);
 
 /*----- Extern function prototypes -----------------------------------*/
 

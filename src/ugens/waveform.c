@@ -25,6 +25,11 @@
 
 /*----- Includes -----------------------------------------------------*/
 
+#include "aleph-mempool.h"
+#include "aleph.h"
+
+#include "ugens/waveform.h"
+
 /*----- Macros and Definitions ---------------------------------------*/
 
 /*----- Static variable definitions ----------------------------------*/
@@ -34,6 +39,28 @@
 /*----- Static function prototypes -----------------------------------*/
 
 /*----- Extern function implementations ------------------------------*/
+
+void Waveform_init(t_Waveform *wave, t_Aleph *aleph) {
+    //
+    Waveform_init_to_pool(wave, aleph->mempool);
+}
+
+void Waveform_init_to_pool(t_Waveform *wave, t_Mempool *mempool) {
+
+    wave = (t_Waveform *)mpool_alloc(sizeof(t_Waveform), mempool);
+
+    wave->freq = 0;
+    wave->phase = 0;
+    wave->shape = 0;
+}
+
+void Waveform_next(t_Waveform *wave) {
+    //
+}
+
+void Waveform_set_freq(t_Waveform *wave) {
+    //
+}
 
 /*----- Static function implementations ------------------------------*/
 
