@@ -47,7 +47,7 @@ static void _softclip_asym_calc_frame(t_FilterSVF *f, fract32 in);
 
 /*----- Extern function implementations ------------------------------*/
 
-void FilterSVF_init(t_FilterSVF *f, Aleph *const aleph) {
+void FilterSVF_init(t_FilterSVF *f, t_Aleph *const aleph) {
 
     FilterSVF_init_to_pool(f, aleph->mempool);
 }

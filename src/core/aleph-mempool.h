@@ -67,7 +67,9 @@ extern "C" {
 
 #define MPOOL_ALIGN_SIZE (8)
 
-typedef struct Aleph Aleph;
+/// TODO: Find a better place for this.
+//
+typedef struct t_Aleph t_Aleph;
 
 typedef enum {
     ALEPH_MEMPOOL_OVERRUN = 0,
@@ -95,7 +97,7 @@ typedef struct t_Mempool t_Mempool;
 
 struct t_Mempool {
     t_Mempool *mempool;
-    Aleph *aleph;
+    t_Aleph *aleph;
     char *mpool;        // start of the mpool
     size_t usize;       // used size of the pool
     size_t msize;       // max size of the pool
@@ -111,7 +113,7 @@ struct t_Mempool {
  @param aleph A pointer to the aleph instance.
  */
 void Mempool_init(t_Mempool *const pool, char *memory, size_t size,
-                  Aleph *const aleph);
+                  t_Aleph *const aleph);
 
 //! Free a t_Mempool from its mempool.
 /*!
@@ -153,17 +155,17 @@ void mpool_free(char *ptr, t_Mempool *pool);
 size_t mpool_get_size(t_Mempool *pool);
 size_t mpool_get_used(t_Mempool *pool);
 
-void aleph_pool_init(Aleph *const aleph, char *memory, size_t size);
+void aleph_pool_init(t_Aleph *const aleph, char *memory, size_t size);
 
-char *aleph_alloc(Aleph *const aleph, size_t size);
-char *aleph_calloc(Aleph *const aleph, size_t size);
+char *aleph_alloc(t_Aleph *const aleph, size_t size);
+char *aleph_calloc(t_Aleph *const aleph, size_t size);
 
-void aleph_free(Aleph *const aleph, char *ptr);
+void aleph_free(t_Aleph *const aleph, char *ptr);
 
-size_t aleph_pool_get_size(Aleph *const aleph);
-size_t aleph_pool_get_used(Aleph *const aleph);
+size_t aleph_pool_get_size(t_Aleph *const aleph);
+size_t aleph_pool_get_used(t_Aleph *const aleph);
 
-char *aleph_pool_get_pool(Aleph *const aleph);
+char *aleph_pool_get_pool(t_Aleph *const aleph);
 
 #ifdef __cplusplus
 }

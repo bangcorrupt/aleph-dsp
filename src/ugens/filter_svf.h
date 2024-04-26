@@ -74,7 +74,7 @@ const extern p_svf_func FilterSVF_func[3][4];
 /*----- Extern function prototypes -----------------------------------*/
 
 // init
-void FilterSVF_init(t_FilterSVF *f, Aleph *aleph);
+void FilterSVF_init(t_FilterSVF *f, t_Aleph *aleph);
 void FilterSVF_init_to_pool(t_FilterSVF *f, t_Mempool *mp);
 // set cutoff in hz
 //  void t_FilterSVF_set_hz    ( t_FilterSVF* f, fix16 hz );

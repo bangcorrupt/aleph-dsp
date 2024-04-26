@@ -17,44 +17,23 @@
 ----------------------------------------------------------------------*/
 
 /*
- * @file    aleph-test.c
+ * @file    waveform.c
  *
- * @brief   Tests for Aleph DSP.
+ * @brief   Anti-aliased basic waveform oscillators.
  *
  */
 
 /*----- Includes -----------------------------------------------------*/
 
-#include "aleph.h"
-#include "filter_svf.h"
-
 /*----- Macros and Definitions ---------------------------------------*/
 
-#define SAMPLERATE 48000
-#define MEMPOOL_SIZE 0x4000
-
 /*----- Static variable definitions ----------------------------------*/
-
-static Aleph *g_aleph;
-
-static char g_mempool[MEMPOOL_SIZE];
 
 /*----- Extern variable definitions ----------------------------------*/
 
 /*----- Static function prototypes -----------------------------------*/
 
 /*----- Extern function implementations ------------------------------*/
-
-int main(void) {
-
-    t_FilterSVF *svf;
-
-    Aleph_init(g_aleph, SAMPLERATE, g_mempool, MEMPOOL_SIZE, NULL);
-
-    FilterSVF_init(svf, g_aleph);
-
-    return 0;
-}
 
 /*----- Static function implementations ------------------------------*/
 
