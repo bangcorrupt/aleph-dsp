@@ -23,8 +23,8 @@
  *
  */
 
-#ifndef FILTER_H
-#define FILTER_H
+#ifndef ALEPH_FILTER_H
+#define ALEPH_FILTER_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -56,9 +56,9 @@ typedef struct {
 
 /*----- Extern function prototypes -----------------------------------*/
 
-fract32 HPF_next_dynamic_precise(t_HPF *hpf, fract32 in, fract32 freq);
 void HPF_init(t_HPF *hpf);
 fract32 HPF_next_dynamic(t_HPF *hpf, fract32 in, fract32 freq);
+fract32 HPF_next_dynamic_precise(t_HPF *hpf, fract32 in, fract32 freq);
 
 void LPF_init(t_LPF *lpf);
 fract32 LPF_next_dynamic(t_LPF *lpf, fract32 in, fract32 freq);
