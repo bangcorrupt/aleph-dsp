@@ -46,6 +46,7 @@ void Phasor_init(t_Phasor *phasor, t_Aleph *aleph) {
 void Phasor_init_to_pool(t_Phasor *phasor, t_Mempool *mempool) {
 
     phasor = (t_Phasor *)mpool_alloc(sizeof(t_Phasor), mempool);
+    phasor->mempool = mempool;
 
     phasor->phase = 0;
     phasor->freq = 1;

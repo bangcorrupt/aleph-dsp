@@ -66,7 +66,7 @@ struct t_Aleph {
                              //!< allocated from the Aleph memory pool will be
                              //!< cleared.
     t_Mempool *mempool;      //!< The default Aleph mempool object.
-    t_Mempool *_internal_mempool;
+    t_Mempool _internal_mempool;
     size_t header_size; //!< The size in bytes of memory region headers within
                         //!< mempools.
     void (*error_callback)(

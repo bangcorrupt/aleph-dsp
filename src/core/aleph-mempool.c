@@ -73,13 +73,17 @@ void Mempool_init(t_Mempool *mp, char *memory, size_t size, t_Aleph *aleph) {
     Mempool_init_to_pool(mp, memory, size, aleph->mempool);
 }
 
+/// TODO: Is this correct?
+//          Check memory is freed.
 void Mempool_free(t_Mempool *mp) { mpool_free((char *)mp, mp->mempool); }
+
+// void Mempool_free(t_Mempool *mp) { mpool_free((char *)mp, mp); }
 
 void Mempool_init_to_pool(t_Mempool *mp, char *memory, size_t size,
                           t_Mempool *mem) {
 
     mp = (t_Mempool *)mpool_alloc(sizeof(t_Mempool), mem);
-    mp->aleph = mem->aleph;
+    mp->aleph = *(&mem->aleph);
 
     mpool_create(memory, size, mp);
 }
@@ -104,9 +108,10 @@ void mpool_create(char *memory, size_t size, t_Mempool *pool) {
 }
 
 void aleph_pool_init(t_Aleph *aleph, char *memory, size_t size) {
-    mpool_create(memory, size, aleph->_internal_mempool);
 
-    aleph->mempool = aleph->_internal_mempool;
+    mpool_create(memory, size, &aleph->_internal_mempool);
+
+    aleph->mempool = &aleph->_internal_mempool;
 }
 
 /**
@@ -293,12 +298,12 @@ char *mpool_calloc(size_t asize, t_Mempool *pool) {
 
 char *aleph_alloc(t_Aleph *const aleph, size_t size) {
     // printf("alloc %i\n", size);
-    return mpool_alloc(size, aleph->_internal_mempool);
+    return mpool_alloc(size, &aleph->_internal_mempool);
 }
 
 char *aleph_calloc(t_Aleph *const aleph, size_t size) {
     // printf("alloc %i\n", size);
-    return mpool_calloc(size, aleph->_internal_mempool);
+    return mpool_calloc(size, &aleph->_internal_mempool);
 }
 
 void mpool_free(char *ptr, t_Mempool *pool) {
@@ -377,7 +382,7 @@ void mpool_free(char *ptr, t_Mempool *pool) {
 }
 
 void aleph_free(t_Aleph *const aleph, char *ptr) {
-    mpool_free(ptr, aleph->_internal_mempool);
+    mpool_free(ptr, &aleph->_internal_mempool);
 }
 
 size_t mpool_get_size(t_Mempool *pool) { return pool->msize; }
@@ -385,15 +390,15 @@ size_t mpool_get_size(t_Mempool *pool) { return pool->msize; }
 size_t mpool_get_used(t_Mempool *pool) { return pool->usize; }
 
 size_t aleph_pool_get_size(t_Aleph *const aleph) {
-    return mpool_get_size(aleph->_internal_mempool);
+    return mpool_get_size(&aleph->_internal_mempool);
 }
 
 size_t aleph_pool_get_used(t_Aleph *const aleph) {
-    return mpool_get_used(aleph->_internal_mempool);
+    return mpool_get_used(&aleph->_internal_mempool);
 }
 
 char *aleph_pool_get_pool(t_Aleph *const aleph) {
-    char *buff = aleph->_internal_mempool->mpool;
+    char *buff = aleph->_internal_mempool.mpool;
 
     return buff;
 }

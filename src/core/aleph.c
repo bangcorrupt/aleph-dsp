@@ -41,9 +41,11 @@
 /*----- Extern function implementations ------------------------------*/
 
 void Aleph_init(t_Aleph *const aleph, uint32_t samplerate, char *memory,
-                size_t memorysize, fract32 (*random)(void)) {
-    aleph->_internal_mempool->aleph = aleph;
-    aleph_pool_init(aleph, memory, memorysize);
+                size_t memory_size, fract32 (*random)(void)) {
+
+    aleph->_internal_mempool.aleph = aleph;
+
+    aleph_pool_init(aleph, memory, memory_size);
 
     aleph->samplerate = samplerate;
 

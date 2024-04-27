@@ -26,6 +26,7 @@
 #ifndef ALEPH_PHASOR_H
 #define ALEPH_PHASOR_H
 
+#include "aleph-mempool.h"
 #include <stdint.h>
 #ifdef __cplusplus
 extern "C" {
@@ -38,6 +39,7 @@ extern "C" {
 /*----- Macros and Definitions ---------------------------------------*/
 
 typedef struct {
+    t_Mempool *mempool;
     int32_t phase;
     fract32 freq;
 } t_Phasor;

@@ -32,6 +32,7 @@ extern "C" {
 #endif
 
 /*----- Includes -----------------------------------------------------*/
+#include <stdint.h>
 
 #include "aleph.h"
 
@@ -42,6 +43,7 @@ extern "C" {
 #define WAVEFORM_DEFAULT_FREQ (220 << 16)
 
 typedef struct {
+    t_Mempool *mempool;
     t_Phasor *phasor;
     uint8_t shape;
 } t_Waveform;
@@ -60,7 +62,7 @@ void Waveform_init_to_pool(t_Waveform *wave, t_Mempool *mp);
 fract32 Waveform_next(t_Waveform *wave);
 void Waveform_set_shape(t_Waveform *wave, uint8_t shape);
 void Waveform_set_freq(t_Waveform *wave, fract32 freq);
-void Waveform_set_phase(t_Waveform *wave, fract32 phase);
+void Waveform_set_phase(t_Waveform *wave, int32_t phase);
 
 /*----- Extern function prototypes -----------------------------------*/
 
