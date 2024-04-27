@@ -53,12 +53,14 @@ void Waveform_init(t_Waveform *wave, t_Aleph *aleph) {
 
 void Waveform_init_to_pool(t_Waveform *wave, t_Mempool *mempool) {
 
-    wave = (t_Waveform *)mpool_alloc(sizeof(t_Waveform), mempool);
-    wave->mempool = mempool;
+    t_Mempool *mp = mempool;
+
+    wave = (t_Waveform *)mpool_alloc(sizeof(t_Waveform), mp);
+    wave->mempool = mp;
 
     wave->shape = WAVEFORM_SHAPE_SINE;
 
-    Phasor_init_to_pool(wave->phasor, mempool);
+    Phasor_init(wave->phasor, mempool->aleph);
     Phasor_set_freq(wave->phasor, WAVEFORM_DEFAULT_FREQ);
 }
 

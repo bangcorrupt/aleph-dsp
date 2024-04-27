@@ -51,6 +51,8 @@ typedef struct {
 
 /*----- Extern variable declarations ---------------------------------*/
 
+/*----- Extern function prototypes -----------------------------------*/
+
 /// TODO: Functions to set frequency.
 ///         QuadraturePhasor_next()
 //
@@ -71,8 +73,6 @@ int32_t QuadraturePhasor_pos_sin_read(t_QuadraturePhasor *phasor);
 int32_t QuadraturePhasor_pos_cos_read(t_QuadraturePhasor *phasor);
 int32_t QuadraturePhasor_sin_read(t_QuadraturePhasor *phasor);
 int32_t QuadraturePhasor_cos_read(t_QuadraturePhasor *phasor);
-
-/*----- Extern function prototypes -----------------------------------*/
 
 #ifdef __cplusplus
 }
