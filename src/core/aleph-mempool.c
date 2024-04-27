@@ -203,6 +203,8 @@ char *mpool_alloc(size_t asize, t_Mempool *pool) {
             new_pool[i] = 0;
     }
 
+    while (true)
+        ;
     // Return the pool of the allocated node;
     return node_to_alloc->pool;
 #endif

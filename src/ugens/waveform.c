@@ -57,6 +57,7 @@ void Waveform_init_to_pool(t_Waveform *wave, t_Mempool *mempool) {
 
     wave = (t_Waveform *)mpool_alloc(sizeof(t_Waveform), mp);
     wave->mempool = mp;
+    // wave->mempool->aleph = mempool->aleph;
 
     wave->shape = WAVEFORM_SHAPE_SINE;
 
