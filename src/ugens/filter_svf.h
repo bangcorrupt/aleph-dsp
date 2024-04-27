@@ -43,6 +43,9 @@ extern "C" {
 /*----- Macros and Definitions ---------------------------------------*/
 
 typedef struct {
+
+    t_Mempool *mempool;
+
     fract32 freq; // normalized frequency
     fract32 rq;   // reciprocal of q (resonance / bandwidth)
                   // range is [0, 2]
@@ -52,20 +55,20 @@ typedef struct {
     fract32 notch;
 
     // output mix
-    fract32 lowMix;
-    fract32 highMix;
-    fract32 bandMix;
-    fract32 notchMix;
-    fract32 peakMix;
+    fract32 low_mix;
+    fract32 high_mix;
+    fract32 band_mix;
+    fract32 notch_mix;
+    fract32 peak_mix;
 
     // Kinda weird, but use rshift for rq values >=1
-    uint8_t rqShift;
-
-    t_Mempool mempool;
+    uint8_t rq_shift;
 
 } t_FilterSVF;
 
-typedef fract32 (*p_svf_func)(t_FilterSVF *f, fract32 in);
+typedef t_FilterSVF *FilterSVF;
+
+typedef fract32 (*p_svf_func)(FilterSVF *const filter, fract32 in);
 
 /*----- Extern variable declarations ---------------------------------*/
 
@@ -74,36 +77,37 @@ const extern p_svf_func FilterSVF_func[3][4];
 /*----- Extern function prototypes -----------------------------------*/
 
 // init
-void FilterSVF_init(t_FilterSVF *f, t_Aleph *aleph);
-void FilterSVF_init_to_pool(t_FilterSVF *f, t_Mempool *mp);
+void FilterSVF_init(FilterSVF *const filter, t_Aleph *const aleph);
+void FilterSVF_init_to_pool(FilterSVF *const filter, Mempool *const mempool);
+void FilterSVF_free(FilterSVF *const filter);
 // set cutoff in hz
 //  void t_FilterSVF_set_hz    ( t_FilterSVF* f, fix16 hz );
 // set cutoff coefficient
-void FilterSVF_set_coeff(t_FilterSVF *f, fract32 coeff);
+void FilterSVF_set_coeff(FilterSVF *const filter, fract32 coeff);
 
 // set RQ (reciprocal of q: resonance/bandwidth)
-void FilterSVF_set_rq(t_FilterSVF *f, fract32 rq);
+void FilterSVF_set_rq(FilterSVF *const filter, fract32 rq);
 // set output mixes
-void FilterSVF_set_low(t_FilterSVF *f, fract32 mix);
-void FilterSVF_set_high(t_FilterSVF *f, fract32 mix);
-void FilterSVF_set_band(t_FilterSVF *f, fract32 mix);
-void FilterSVF_set_notch(t_FilterSVF *f, fract32 mix);
-void FilterSVF_set_peak(t_FilterSVF *f, fract32 mix);
+void FilterSVF_set_low(FilterSVF *const filter, fract32 mix);
+void FilterSVF_set_high(FilterSVF *const filter, fract32 mix);
+void FilterSVF_set_band(FilterSVF *const filter, fract32 mix);
+void FilterSVF_set_notch(FilterSVF *const filter, fract32 mix);
+void FilterSVF_set_peak(FilterSVF *const filter, fract32 mix);
 // get next value (with input)
 
-fract32 FilterSVF_next(t_FilterSVF *f, fract32 in);
-fract32 FilterSVF_hpf_next(t_FilterSVF *f, fract32 in);
-fract32 FilterSVF_bpf_next(t_FilterSVF *f, fract32 in);
-fract32 FilterSVF_lpf_next(t_FilterSVF *f, fract32 in);
-fract32 FilterSVF_notch_next(t_FilterSVF *f, fract32 in);
-fract32 FilterSVF_softclip_hpf_next(t_FilterSVF *f, fract32 in);
-fract32 FilterSVF_softclip_bpf_next(t_FilterSVF *f, fract32 in);
-fract32 FilterSVF_softclip_lpf_next(t_FilterSVF *f, fract32 in);
-fract32 FilterSVF_softclip_notch_next(t_FilterSVF *f, fract32 in);
-fract32 FilterSVF_softclip_asym_lpf_next(t_FilterSVF *f, fract32 in);
-fract32 FilterSVF_softclip_asym_bpf_next(t_FilterSVF *f, fract32 in);
-fract32 FilterSVF_softclip_asym_hpf_next(t_FilterSVF *f, fract32 in);
-fract32 FilterSVF_softclip_asym_notch_next(t_FilterSVF *f, fract32 in);
+fract32 FilterSVF_next(FilterSVF *const filter, fract32 in);
+fract32 FilterSVF_hpf_next(FilterSVF *const filter, fract32 in);
+fract32 FilterSVF_bpf_next(FilterSVF *const filter, fract32 in);
+fract32 FilterSVF_lpf_next(FilterSVF *const filter, fract32 in);
+fract32 FilterSVF_notch_next(FilterSVF *const filter, fract32 in);
+fract32 FilterSVF_softclip_hpf_next(FilterSVF *const filter, fract32 in);
+fract32 FilterSVF_softclip_bpf_next(FilterSVF *const filter, fract32 in);
+fract32 FilterSVF_softclip_lpf_next(FilterSVF *const filter, fract32 in);
+fract32 FilterSVF_softclip_notch_next(FilterSVF *const filter, fract32 in);
+fract32 FilterSVF_softclip_asym_lpf_next(FilterSVF *const filter, fract32 in);
+fract32 FilterSVF_softclip_asym_bpf_next(FilterSVF *const filter, fract32 in);
+fract32 FilterSVF_softclip_asym_hpf_next(FilterSVF *const filter, fract32 in);
+fract32 FilterSVF_softclip_asym_notch_next(FilterSVF *const filter, fract32 in);
 
 #ifdef __cplusplus
 }
