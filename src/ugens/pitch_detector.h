@@ -26,6 +26,7 @@
 #ifndef ALEPH_PITCH_DETECTOR_H
 #define ALEPH_PITCH_DETECTOR_H
 
+#include "aleph-mempool.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
