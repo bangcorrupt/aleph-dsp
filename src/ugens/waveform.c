@@ -64,6 +64,7 @@ void Waveform_init_to_pool(Waveform *const wave, Mempool *const mempool) {
     // Phasor_init(&wv->phasor, mp->leaf);
     Phasor_init_to_pool(&wv->phasor, mempool);
     Phasor_set_freq(&wv->phasor, WAVEFORM_DEFAULT_FREQ);
+    Phasor_set_phase(&wv->phasor, WAVEFORM_DEFAULT_PHASE);
 }
 
 void Waveform_free(Waveform *const wave) {
@@ -109,7 +110,7 @@ fract32 Waveform_next(Waveform *const wave) {
     return shl_fr1x32(next, 16);
 }
 
-void Waveform_set_shape(Waveform *const wave, uint8_t shape) {
+void Waveform_set_shape(Waveform *const wave, e_Waveform_shape shape) {
     //
     t_Waveform *wv = *wave;
 
