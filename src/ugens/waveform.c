@@ -111,21 +111,21 @@ fract32 Waveform_next(Waveform *const wave) {
 }
 
 void Waveform_set_shape(Waveform *const wave, e_Waveform_shape shape) {
-    //
+
     t_Waveform *wv = *wave;
 
     wv->shape = shape;
 }
 
 void Waveform_set_freq(Waveform *const wave, fract32 freq) {
-    //
+
     t_Waveform *wv = *wave;
 
     Phasor_set_freq(&wv->phasor, freq);
 }
 
 void Waveform_set_phase(Waveform *const wave, int32_t phase) {
-    //
+
     t_Waveform *wv = *wave;
 
     Phasor_set_phase(&wv->phasor, phase);
