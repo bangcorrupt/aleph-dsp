@@ -61,6 +61,7 @@ typedef enum {
 
 void Waveform_init(Waveform *const wave, t_Aleph *aleph);
 void Waveform_init_to_pool(Waveform *const wave, t_Mempool **mp);
+void Waveform_free(Waveform *const wave);
 fract32 Waveform_next(Waveform *const wave);
 void Waveform_set_shape(Waveform *const wave, uint8_t shape);
 void Waveform_set_freq(Waveform *const wave, fract32 freq);

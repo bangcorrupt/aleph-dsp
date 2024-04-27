@@ -55,6 +55,13 @@ void Phasor_init_to_pool(Phasor *const phasor, Mempool *const mempool) {
     ph->freq = 1;
 }
 
+void Phasor_free(Phasor *const phasor) {
+
+    t_Phasor *ph = *phasor;
+
+    mpool_free((char *)ph, ph->mempool);
+}
+
 int32_t Phasor_next(Phasor *const phasor) {
 
     t_Phasor *ph = *phasor;

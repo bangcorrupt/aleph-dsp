@@ -66,6 +66,15 @@ void Waveform_init_to_pool(Waveform *const wave, Mempool *const mempool) {
     Phasor_set_freq(&wv->phasor, WAVEFORM_DEFAULT_FREQ);
 }
 
+void Waveform_free(Waveform *const wave) {
+
+    t_Waveform *wv = *wave;
+
+    Phasor_free(&wv->phasor);
+
+    mpool_free((char *)wv, wv->mempool);
+}
+
 fract32 Waveform_next(Waveform *const wave) {
 
     t_Waveform *wv = *wave;

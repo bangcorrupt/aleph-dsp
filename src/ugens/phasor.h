@@ -60,6 +60,7 @@ typedef struct {
 //
 void Phasor_init(Phasor *const phasor, t_Aleph *aleph);
 void Phasor_init_to_pool(Phasor *const phasor, t_Mempool **mempool);
+void Phasor_free(Phasor *const phasor);
 int32_t Phasor_next(Phasor *const phasor);
 void Phasor_set_freq(Phasor *const phasor, fract32 freq);
 void Phasor_set_phase(Phasor *const phasor, int32_t phase);
