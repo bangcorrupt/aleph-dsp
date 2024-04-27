@@ -63,7 +63,8 @@ void FilterSVF_init_to_pool(FilterSVF *const filter, Mempool *const mempool) {
 
     fl->freq = 0;
     fl->low = fl->high = fl->band = fl->notch = 0;
-    fl->lowMix = fl->highMix = fl->bandMix = fl->notchMix = fl->peakMix = 0;
+    fl->low_mix = fl->high_mix = fl->band_mix = fl->notch_mix = fl->peak_mix =
+        0;
 }
 
 void FilterSVF_free(FilterSVF *const filter) {
@@ -82,8 +83,8 @@ void FilterSVF_set_rq(FilterSVF *const filter, fract32 rq) {
     // fract32 positive range is [0, .9999...]
     // so: move the radix to interpret rq as 2.0
 
-    fl->rqShift = norm_fr1x32(rq);
-    fl->rq = shl_fr1x32(rq, fl->rqShift);
+    fl->rq_shift = norm_fr1x32(rq);
+    fl->rq = shl_fr1x32(rq, fl->rq_shift);
 }
 
 // Set cutoff coefficient directly.
@@ -272,7 +273,7 @@ static void _calc_frame(FilterSVF *const filter, fract32 in) {
 
     fl->high =
         sub_fr1x32(sub_fr1x32(in, shr_fr1x32(mult_fr1x32x32(fl->rq, fl->band),
-                                             fl->rqShift)),
+                                             fl->rq_shift)),
                    fl->low);
 
     fl->band = add_fr1x32(fl->band, mult_fr1x32x32(fl->freq, fl->high));
@@ -295,7 +296,7 @@ static void _softclip_calc_frame(FilterSVF *const filter, fract32 in) {
             shl_fr1x32(
                 sub_fr1x32(
                     sub_fr1x32(in, shr_fr1x32(mult_fr1x32x32(fl->rq, fl->band),
-                                              fl->rqShift)),
+                                              fl->rq_shift)),
                     fl->low),
                 clip_radix)),
         clip_radix);
@@ -325,7 +326,7 @@ static void _softclip_asym_calc_frame(FilterSVF *const filter, fract32 in) {
             shl_fr1x32(
                 sub_fr1x32(
                     sub_fr1x32(in, shr_fr1x32(mult_fr1x32x32(fl->rq, fl->band),
-                                              fl->rqShift)),
+                                              fl->rq_shift)),
                     fl->low),
                 clip_radix)),
         clip_radix);

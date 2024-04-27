@@ -55,14 +55,14 @@ typedef struct {
     fract32 notch;
 
     // output mix
-    fract32 lowMix;
-    fract32 highMix;
-    fract32 bandMix;
-    fract32 notchMix;
-    fract32 peakMix;
+    fract32 low_mix;
+    fract32 high_mix;
+    fract32 band_mix;
+    fract32 notch_mix;
+    fract32 peak_mix;
 
     // Kinda weird, but use rshift for rq values >=1
-    uint8_t rqShift;
+    uint8_t rq_shift;
 
 } t_FilterSVF;
 
