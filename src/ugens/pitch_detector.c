@@ -28,10 +28,11 @@
 /*----- Includes -----------------------------------------------------*/
 
 #include "aleph-mempool.h"
-#include "filter.h"
-#include "oscillator.h"
 
-#include "pitch_detector.h"
+#include "ugens/filter.h"
+#include "ugens/oscillator.h"
+
+#include "ugens/pitch_detector.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 

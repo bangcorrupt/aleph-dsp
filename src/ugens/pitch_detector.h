@@ -23,10 +23,9 @@
  *
  */
 
-#ifndef TEMPLATE_H
-#define TEMPLATE_H
+#ifndef ALEPH_PITCH_DETECTOR_H
+#define ALEPH_PITCH_DETECTOR_H
 
-#include "aleph-mempool.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -35,7 +34,9 @@ extern "C" {
 
 #include <stdint.h>
 
-#include "filter.h"
+#include "aleph-mempool.h"
+
+#include "ugens/filter.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 
