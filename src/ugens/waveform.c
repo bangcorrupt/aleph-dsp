@@ -61,7 +61,8 @@ void Waveform_init_to_pool(Waveform *const wave, t_Mempool **mempool) {
 
     wv->shape = WAVEFORM_SHAPE_SINE;
 
-    Phasor_init(&wv->phasor, mp->leaf);
+    // Phasor_init(&wv->phasor, mp->leaf);
+    Phasor_init_to_pool(&wv->phasor, mempool);
     Phasor_set_freq(&wv->phasor, WAVEFORM_DEFAULT_FREQ);
 }
 
