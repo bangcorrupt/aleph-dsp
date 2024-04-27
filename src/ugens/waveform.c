@@ -46,7 +46,7 @@
 
 /*----- Extern function implementations ------------------------------*/
 
-void Waveform_init(Waveform *const wave, t_Aleph *aleph) {
+void Waveform_init(Waveform *const wave, t_Aleph *const aleph) {
     //
     Waveform_init_to_pool(wave, &aleph->mempool);
 }

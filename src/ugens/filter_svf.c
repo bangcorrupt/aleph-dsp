@@ -100,35 +100,35 @@ void FilterSVF_set_low(FilterSVF *const filter, fract32 mix) {
 
     t_FilterSVF *fl = *filter;
 
-    fl->lowMix = mix;
+    fl->low_mix = mix;
 }
 
 void FilterSVF_set_high(FilterSVF *const filter, fract32 mix) {
 
     t_FilterSVF *fl = *filter;
 
-    fl->highMix = mix;
+    fl->high_mix = mix;
 }
 
 void FilterSVF_set_band(FilterSVF *const filter, fract32 mix) {
 
     t_FilterSVF *fl = *filter;
 
-    fl->bandMix = mix;
+    fl->band_mix = mix;
 }
 
 void FilterSVF_set_notch(FilterSVF *const filter, fract32 mix) {
 
     t_FilterSVF *fl = *filter;
 
-    fl->notchMix = mix;
+    fl->notch_mix = mix;
 }
 
 void FilterSVF_set_peak(FilterSVF *const filter, fract32 mix) {
 
     t_FilterSVF *fl = *filter;
 
-    fl->peakMix = mix;
+    fl->peak_mix = mix;
 }
 
 fract32 FilterSVF_mix_outputs(FilterSVF *const filter) {
@@ -137,11 +137,11 @@ fract32 FilterSVF_mix_outputs(FilterSVF *const filter) {
 
     fl->notch = add_fr1x32(fl->low, fl->high);
 
-    fract32 out = mult_fr1x32x32(fl->low, fl->lowMix);
-    out = add_fr1x32(out, mult_fr1x32x32(fl->low, fl->lowMix));
-    out = add_fr1x32(out, mult_fr1x32x32(fl->high, fl->highMix));
-    out = add_fr1x32(out, mult_fr1x32x32(fl->band, fl->bandMix));
-    out = add_fr1x32(out, mult_fr1x32x32(fl->notch, fl->notchMix));
+    fract32 out = mult_fr1x32x32(fl->low, fl->low_mix);
+    out = add_fr1x32(out, mult_fr1x32x32(fl->low, fl->low_mix));
+    out = add_fr1x32(out, mult_fr1x32x32(fl->high, fl->high_mix));
+    out = add_fr1x32(out, mult_fr1x32x32(fl->band, fl->band_mix));
+    out = add_fr1x32(out, mult_fr1x32x32(fl->notch, fl->notch_mix));
     return out;
 }
 

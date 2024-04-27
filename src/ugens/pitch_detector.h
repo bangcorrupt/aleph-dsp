@@ -26,6 +26,7 @@
 #ifndef TEMPLATE_H
 #define TEMPLATE_H
 
+#include "aleph-mempool.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -44,24 +45,36 @@ extern "C" {
     (PITCH_DETECTOR_RADIX_INTERNAL + PITCH_DETECTOR_RADIX_EXTERNAL)
 
 typedef struct {
-    fract32 currentPeriod;
-    fract32 lastIn;
+    Mempool mempool;
+    HPF dcblocker;
+    LPF adaptive_filter;
+    fract32 current_period;
+    fract32 last_in;
     fract32 period;
     fract32 phase;
     int32_t nsamples;
-    int32_t nFrames;
-    t_HPF dcBlocker;
-    t_LPF adaptiveFilter;
-    fract32 pitchOffset;
+    int32_t nframes;
+    fract32 pitch_offset;
 } t_PitchDetector;
+
+typedef t_PitchDetector *PitchDetector;
 
 /*----- Extern variable declarations ---------------------------------*/
 
 /*----- Extern function prototypes -----------------------------------*/
 
-void PitchDetector_init(t_PitchDetector *p);
-fract32 PitchDetector_track(t_PitchDetector *p, fract32 preIn);
-fract32 PitchDetector_track_osc(t_PitchDetector *p);
+void PitchDetector_init(PitchDetector *const pitch_detect,
+                        t_Aleph *const aleph);
+
+void PitchDetector_init_to_pool(PitchDetector *const pitch_detect,
+                                Mempool *const mempool);
+
+void PitchDetector_free(PitchDetector *const pitch_detect);
+
+fract32 PitchDetector_track_next(PitchDetector *const pitch_detect,
+                                 fract32 pre_in);
+
+fract32 PitchDetector_osc_next(PitchDetector *const pitch_detect);
 
 #ifdef __cplusplus
 }
