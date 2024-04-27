@@ -44,7 +44,7 @@ typedef enum {
 
 typedef struct {
     Mempool mempool;
-    e_env_ADSR_state env_state;
+    e_EnvADSR_state env_state;
     fract32 env_out;
     fract32 overshoot;
     fract32 attack_time;
@@ -57,7 +57,7 @@ typedef t_EnvADSR *EnvADSR;
 
 typedef struct {
     Mempool mempool;
-    e_env_ADSR_state env_state;
+    e_EnvADSR_state env_state;
     fract16 env_out;
     fract16 overshoot;
     fract16 attack_time;
