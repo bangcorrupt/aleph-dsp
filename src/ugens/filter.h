@@ -63,7 +63,6 @@ typedef struct {
     Mempool mempool;
     LPF lp;
     HPF hp;
-    fract32 freq;
 } t_BPF;
 
 typedef t_BPF *BPF;
@@ -76,6 +75,8 @@ void HPF_init(HPF *const hpf, t_Aleph *const aleph);
 void HPF_init_to_pool(HPF *const hpf, Mempool *const mempool);
 void HPF_free(HPF *const hpf);
 
+fract32 HPF_set_freq(HPF *const hpf, fract32 freq);
+
 fract32 HPF_next(HPF *const hpf, fract32 in);
 fract32 HPF_next_precise(HPF *const hpf, fract32 in);
 fract32 HPF_next_dynamic(HPF *const hpf, fract32 in, fract32 freq);
@@ -85,6 +86,8 @@ void LPF_init(LPF *const lpf, t_Aleph *const aleph);
 void LPF_init_to_pool(LPF *const lpf, Mempool *const mempool);
 void LPF_free(LPF *const lpf);
 
+fract32 LPF_set_freq(LPF *const lpf, fract32 freq);
+
 fract32 LPF_next(LPF *const lpf, fract32 in);
 fract32 LPF_next_precise(LPF *const lpf, fract32 in);
 fract32 LPF_next_dynamic(LPF *const lpf, fract32 in, fract32 freq);
@@ -93,6 +96,8 @@ fract32 LPF_next_dynamic_precise(LPF *const lpf, fract32 in, fract32 freq);
 void BPF_init(BPF *const bpf, t_Aleph *const aleph);
 void BPF_init_to_pool(BPF *const bpf, Mempool *const mempool);
 void BPF_free(BPF *const bpf);
+
+fract32 BPF_set_freq(BPF *const bpf, fract32 hp_freq, fract32 lp_freq);
 
 fract32 BPF_next(BPF *const bpf, fract32 in);
 fract32 BPF_next_precise(BPF *const bpf, fract32 in);

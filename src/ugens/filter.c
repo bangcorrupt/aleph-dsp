@@ -67,6 +67,13 @@ void HPF_free(HPF *const hpf) {
     mpool_free((char *)hp, hp->mempool);
 }
 
+fract32 HPF_set_freq(HPF *const hpf, fract32 freq) {
+
+    t_HPF *hp = *hpf;
+
+    hp->freq = freq;
+}
+
 fract32 HPF_next(HPF *const hpf, fract32 in) {
 
     t_HPF *hp = *hpf;
@@ -157,6 +164,13 @@ void LPF_free(LPF *const lpf) {
     mpool_free((char *)lp, lp->mempool);
 }
 
+fract32 LPF_set_freq(LPF *const lpf, fract32 freq) {
+
+    t_LPF *lp = *lpf;
+
+    lp->freq = freq;
+}
+
 // the frequency unit is fraction of samplerate
 fract32 LPF_next(LPF *const lpf, fract32 in) {
 
@@ -216,8 +230,6 @@ void BPF_init_to_pool(BPF *const bpf, Mempool *const mempool) {
 
     bp->mempool = mp;
 
-    bp->freq = BPF_DEFAULT_FREQ;
-
     HPF_init_to_pool(&bp->hp, mempool);
     LPF_init_to_pool(&bp->lp, mempool);
 }
@@ -230,6 +242,14 @@ void BPF_free(BPF *const bpf) {
     LPF_free(&bp->lp);
 
     mpool_free((char *)bp, bp->mempool);
+}
+
+fract32 BPF_set_freq(BPF *const bpf, fract32 hp_freq, fract32 lp_freq) {
+
+    t_BPF *bp = *bpf;
+
+    HPF_set_freq(&bp->hp, hp_freq);
+    LPF_set_freq(&bp->lp, lp_freq);
 }
 
 fract32 BPF_next(BPF *const bpf, fract32 in) {
