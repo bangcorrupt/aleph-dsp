@@ -46,45 +46,50 @@
 
 /*----- Extern function implementations ------------------------------*/
 
-void Waveform_init(t_Waveform *wave, t_Aleph *aleph) {
+void Waveform_init(t_Waveform **wave, t_Aleph *aleph) {
     //
-    Waveform_init_to_pool(wave, aleph->mempool);
+    Waveform_init_to_pool(wave, &aleph->mempool);
 }
 
-void Waveform_init_to_pool(t_Waveform *wave, t_Mempool *mempool) {
+void Waveform_init_to_pool(t_Waveform **wave, t_Mempool **mempool) {
 
-    t_Mempool *mp = mempool;
+    t_Mempool *mp = *mempool;
 
-    wave = (t_Waveform *)mpool_alloc(sizeof(t_Waveform), mp);
-    wave->mempool = mp;
+    t_Waveform *wv = *wave = (t_Waveform *)mpool_alloc(sizeof(t_Waveform), mp);
+
+    wv->mempool = mp;
     // wave->mempool->aleph = mempool->aleph;
 
-    wave->shape = WAVEFORM_SHAPE_SINE;
+    wv->shape = WAVEFORM_SHAPE_SINE;
 
-    Phasor_init(wave->phasor, mempool->aleph);
-    Phasor_set_freq(wave->phasor, WAVEFORM_DEFAULT_FREQ);
+    Phasor_init_to_pool(&wv->phasor, mempool);
+    Phasor_set_freq(&wv->phasor, WAVEFORM_DEFAULT_FREQ);
 }
 
-fract32 Waveform_next(t_Waveform *wave) {
+fract32 Waveform_next(t_Waveform **wave) {
+
+    t_Waveform *wv = *wave;
 
     fract32 next;
 
-    switch (wave->shape) {
+    Phasor_next(&wv->phasor);
+
+    switch (wv->shape) {
 
     case WAVEFORM_SHAPE_SINE:
-        next = sine_polyblep(wave->phasor->phase);
+        next = sine_polyblep(wv->phasor->phase);
         break;
 
     case WAVEFORM_SHAPE_TRIANGLE:
-        next = triangle_polyblep(wave->phasor->phase);
+        next = triangle_polyblep(wv->phasor->phase);
         break;
 
     case WAVEFORM_SHAPE_SAW:
-        next = saw_polyblep(wave->phasor->phase, wave->phasor->freq);
+        next = saw_polyblep(wv->phasor->phase, wv->phasor->freq);
         break;
 
     case WAVEFORM_SHAPE_SQUARE:
-        next = square_polyblep(wave->phasor->phase, wave->phasor->freq);
+        next = square_polyblep(wv->phasor->phase, wv->phasor->freq);
         break;
 
     default:
@@ -95,19 +100,25 @@ fract32 Waveform_next(t_Waveform *wave) {
     return shl_fr1x32(next, 16);
 }
 
-void Waveform_set_shape(t_Waveform *wave, uint8_t shape) {
+void Waveform_set_shape(t_Waveform **wave, uint8_t shape) {
     //
-    wave->shape = shape;
+    t_Waveform *wv = *wave;
+
+    wv->shape = shape;
 }
 
-void Waveform_set_freq(t_Waveform *wave, fract32 freq) {
+void Waveform_set_freq(t_Waveform **wave, fract32 freq) {
     //
-    Phasor_set_freq(wave->phasor, freq);
+    t_Waveform *wv = *wave;
+
+    Phasor_set_freq(&wv->phasor, freq);
 }
 
-void Waveform_set_phase(t_Waveform *wave, int32_t phase) {
+void Waveform_set_phase(t_Waveform **wave, int32_t phase) {
     //
-    Phasor_set_phase(wave->phasor, phase);
+    t_Waveform *wv = *wave;
+
+    Phasor_set_phase(&wv->phasor, phase);
 }
 
 /*----- Static function implementations ------------------------------*/

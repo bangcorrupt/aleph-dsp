@@ -1,12 +1,3 @@
-/*----------------------------------------------------------------------
-
-                     This file is part of Aleph DSP
-
-                https://github.com/bangcorrupt/aleph-dsp
-
-----------------------------------------------------------------------*/
-
-/* Modified by bangcorrupt 2024. */
 
 /** mpool source significantly modified by Mike Mulshine, Jeff Snyder, et al.,
  * Princeton University Music Department **/
@@ -46,90 +37,73 @@
 
 /* written with C99 style */
 
-/*----- Includes -----------------------------------------------------*/
+#if _WIN32 || _WIN64
 
-#include <stdlib.h>
+#include "..\Inc\leaf-mempool.h"
+#include "..\leaf.h"
+
+#else
 
 #include "aleph-mempool.h"
 #include "aleph.h"
 
-/*----- Macros and Definitions ---------------------------------------*/
+#endif
 
-/*----- Static variable definitions ----------------------------------*/
+#include <stdlib.h>
 
-/*----- Extern variable definitions ----------------------------------*/
+#if LEAF_DEBUG
+#include "../../TestPlugin/JuceLibraryCode/JuceHeader.h"
+#endif
 
-/*----- Static function prototypes -----------------------------------*/
-
+/**
+ * private function
+ */
 static inline size_t mpool_align(size_t size);
-static inline t_mpool_node *create_node(char *block_location,
-                                        t_mpool_node *next, t_mpool_node *prev,
+static inline mpool_node_t *create_node(char *block_location,
+                                        mpool_node_t *next, mpool_node_t *prev,
                                         size_t size, size_t header_size);
-static inline void delink_node(t_mpool_node *node);
-
-/*----- Extern function implementations ------------------------------*/
-
-void Mempool_init(t_Mempool *mp, char *memory, size_t size, t_Aleph *aleph) {
-    Mempool_init_to_pool(mp, memory, size, aleph->mempool);
-}
-
-/// TODO: Is this correct?
-//          Check memory is freed.
-void Mempool_free(t_Mempool *mp) { mpool_free((char *)mp, mp->mempool); }
-
-// void Mempool_free(t_Mempool *mp) { mpool_free((char *)mp, mp); }
-
-void Mempool_init_to_pool(t_Mempool *mp, char *memory, size_t size,
-                          t_Mempool *mem) {
-
-    mp = (t_Mempool *)mpool_alloc(sizeof(t_Mempool), mem);
-    mp->aleph = *(&mem->aleph);
-
-    mpool_create(memory, size, mp);
-}
+static inline void delink_node(mpool_node_t *node);
 
 /**
  * create memory pool
  */
-void mpool_create(char *memory, size_t size, t_Mempool *pool) {
-
-    pool->aleph->header_size = mpool_align(sizeof(t_mpool_node));
+void mpool_create(char *memory, size_t size, _tMempool *pool) {
+    pool->leaf->header_size = mpool_align(sizeof(mpool_node_t));
 
     pool->mpool = (char *)memory;
     pool->usize = 0;
-    if (size < pool->aleph->header_size) {
-        size = pool->aleph->header_size;
+    if (size < pool->leaf->header_size) {
+        size = pool->leaf->header_size;
     }
     pool->msize = size;
 
     pool->head = create_node(pool->mpool, NULL, NULL,
-                             pool->msize - pool->aleph->header_size,
-                             pool->aleph->header_size);
+                             pool->msize - pool->leaf->header_size,
+                             pool->leaf->header_size);
 }
 
-void aleph_pool_init(t_Aleph *aleph, char *memory, size_t size) {
+void leaf_pool_init(LEAF *const leaf, char *memory, size_t size) {
+    mpool_create(memory, size, &leaf->_internal_mempool);
 
-    mpool_create(memory, size, &aleph->_internal_mempool);
-
-    aleph->mempool = &aleph->_internal_mempool;
+    leaf->mempool = &leaf->_internal_mempool;
 }
 
 /**
  * allocate memory from memory pool
  */
-char *mpool_alloc(size_t asize, t_Mempool *pool) {
-    pool->aleph->alloc_count++;
-#if Aleph_DEBUG
+char *mpool_alloc(size_t asize, _tMempool *pool) {
+    pool->leaf->allocCount++;
+#if LEAF_DEBUG
     DBG("alloc " + String(asize));
 #endif
-#if Aleph_USE_DYNAMIC_ALLOCATION
+#if LEAF_USE_DYNAMIC_ALLOCATION
     char *temp = (char *)malloc(asize);
     if (temp == NULL) {
         // allocation failed, exit from the program
         fprintf(stderr, "Out of memory.\n");
         exit(1);
     }
-    if (pool->aleph->clear_on_allocation > 0) {
+    if (pool->leaf->clearOnAllocation > 0) {
         memset(temp, 0, asize);
     }
     return temp;
@@ -137,10 +111,9 @@ char *mpool_alloc(size_t asize, t_Mempool *pool) {
     // If the head is NULL, the mempool is full
     if (pool->head == NULL) {
         if ((pool->msize - pool->usize) > asize) {
-            Aleph_internal_error_callback(pool->aleph,
-                                          ALEPH_MEMPOOL_FRAGMENTATION);
+            LEAF_internalErrorCallback(pool->leaf, LEAFMempoolFragmentation);
         } else {
-            Aleph_internal_error_callback(pool->aleph, ALEPH_MEMPOOL_OVERRUN);
+            LEAF_internalErrorCallback(pool->leaf, LEAFMempoolOverrun);
         }
         return NULL;
     }
@@ -148,7 +121,7 @@ char *mpool_alloc(size_t asize, t_Mempool *pool) {
     // Should we alloc the first block large enough or check all blocks and pick
     // the one closest in size?
     size_t size_to_alloc = mpool_align(asize);
-    t_mpool_node *node_to_alloc = pool->head;
+    mpool_node_t *node_to_alloc = pool->head;
 
     // Traverse the free list for a large enough block
     while (node_to_alloc->size < size_to_alloc) {
@@ -158,26 +131,25 @@ char *mpool_alloc(size_t asize, t_Mempool *pool) {
         // are no blocks large enough, return NULL
         if (node_to_alloc == NULL) {
             if ((pool->msize - pool->usize) > asize) {
-                Aleph_internal_error_callback(pool->aleph,
-                                              ALEPH_MEMPOOL_FRAGMENTATION);
+                LEAF_internalErrorCallback(pool->leaf,
+                                           LEAFMempoolFragmentation);
             } else {
-                Aleph_internal_error_callback(pool->aleph,
-                                              ALEPH_MEMPOOL_OVERRUN);
+                LEAF_internalErrorCallback(pool->leaf, LEAFMempoolOverrun);
             }
             return NULL;
         }
     }
 
     // Create a new node after the node to be allocated if there is enough space
-    t_mpool_node *new_node;
+    mpool_node_t *new_node;
     size_t leftover = node_to_alloc->size - size_to_alloc;
     node_to_alloc->size = size_to_alloc;
-    if (leftover > pool->aleph->header_size) {
+    if (leftover > pool->leaf->header_size) {
         long offset = (char *)node_to_alloc - (char *)pool->mpool;
-        offset += pool->aleph->header_size + node_to_alloc->size;
+        offset += pool->leaf->header_size + node_to_alloc->size;
         new_node = create_node(
             &pool->mpool[offset], node_to_alloc->next, node_to_alloc->prev,
-            leftover - pool->aleph->header_size, pool->aleph->header_size);
+            leftover - pool->leaf->header_size, pool->leaf->header_size);
     } else {
         // Add any leftover space to the allocated node to avoid fragmentation
         node_to_alloc->size += leftover;
@@ -194,17 +166,15 @@ char *mpool_alloc(size_t asize, t_Mempool *pool) {
     // Remove the allocated node from the free list
     delink_node(node_to_alloc);
 
-    pool->usize += pool->aleph->header_size + node_to_alloc->size;
+    pool->usize += pool->leaf->header_size + node_to_alloc->size;
 
-    int i;
-    if (pool->aleph->clear_on_alloc > 0) {
+    if (pool->leaf->clearOnAllocation > 0) {
         char *new_pool = (char *)node_to_alloc->pool;
+        int i;
         for (i = 0; i < node_to_alloc->size; i++)
             new_pool[i] = 0;
     }
 
-    while (true)
-        ;
     // Return the pool of the allocated node;
     return node_to_alloc->pool;
 #endif
@@ -213,12 +183,12 @@ char *mpool_alloc(size_t asize, t_Mempool *pool) {
 /**
  * allocate memory from memory pool and also clear that memory to be blank
  */
-char *mpool_calloc(size_t asize, t_Mempool *pool) {
-    pool->aleph->alloc_count++;
-#if Aleph_DEBUG
+char *mpool_calloc(size_t asize, _tMempool *pool) {
+    pool->leaf->allocCount++;
+#if LEAF_DEBUG
     DBG("calloc " + String(asize));
 #endif
-#if Aleph_USE_DYNAMIC_ALLOCATION
+#if LEAF_USE_DYNAMIC_ALLOCATION
     char *ret = (char *)malloc(asize);
     if (ret == NULL) {
         // allocation failed, exit from the program
@@ -231,10 +201,9 @@ char *mpool_calloc(size_t asize, t_Mempool *pool) {
     // If the head is NULL, the mempool is full
     if (pool->head == NULL) {
         if ((pool->msize - pool->usize) > asize) {
-            Aleph_internal_error_callback(pool->aleph,
-                                          ALEPH_MEMPOOL_FRAGMENTATION);
+            LEAF_internalErrorCallback(pool->leaf, LEAFMempoolFragmentation);
         } else {
-            Aleph_internal_error_callback(pool->aleph, ALEPH_MEMPOOL_OVERRUN);
+            LEAF_internalErrorCallback(pool->leaf, LEAFMempoolOverrun);
         }
         return NULL;
     }
@@ -242,7 +211,7 @@ char *mpool_calloc(size_t asize, t_Mempool *pool) {
     // Should we alloc the first block large enough or check all blocks and pick
     // the one closest in size?
     size_t size_to_alloc = mpool_align(asize);
-    t_mpool_node *node_to_alloc = pool->head;
+    mpool_node_t *node_to_alloc = pool->head;
 
     // Traverse the free list for a large enough block
     while (node_to_alloc->size < size_to_alloc) {
@@ -252,26 +221,25 @@ char *mpool_calloc(size_t asize, t_Mempool *pool) {
         // are no blocks large enough, return NULL
         if (node_to_alloc == NULL) {
             if ((pool->msize - pool->usize) > asize) {
-                Aleph_internal_error_callback(pool->aleph,
-                                              ALEPH_MEMPOOL_FRAGMENTATION);
+                LEAF_internalErrorCallback(pool->leaf,
+                                           LEAFMempoolFragmentation);
             } else {
-                Aleph_internal_error_callback(pool->aleph,
-                                              ALEPH_MEMPOOL_OVERRUN);
+                LEAF_internalErrorCallback(pool->leaf, LEAFMempoolOverrun);
             }
             return NULL;
         }
     }
 
     // Create a new node after the node to be allocated if there is enough space
-    t_mpool_node *new_node;
+    mpool_node_t *new_node;
     size_t leftover = node_to_alloc->size - size_to_alloc;
     node_to_alloc->size = size_to_alloc;
-    if (leftover > pool->aleph->header_size) {
+    if (leftover > pool->leaf->header_size) {
         long offset = (char *)node_to_alloc - (char *)pool->mpool;
-        offset += pool->aleph->header_size + node_to_alloc->size;
+        offset += pool->leaf->header_size + node_to_alloc->size;
         new_node = create_node(
             &pool->mpool[offset], node_to_alloc->next, node_to_alloc->prev,
-            leftover - pool->aleph->header_size, pool->aleph->header_size);
+            leftover - pool->leaf->header_size, pool->leaf->header_size);
     } else {
         // Add any leftover space to the allocated node to avoid fragmentation
         node_to_alloc->size += leftover;
@@ -288,7 +256,7 @@ char *mpool_calloc(size_t asize, t_Mempool *pool) {
     // Remove the allocated node from the free list
     delink_node(node_to_alloc);
 
-    pool->usize += pool->aleph->header_size + node_to_alloc->size;
+    pool->usize += pool->leaf->header_size + node_to_alloc->size;
     // Format the new pool
     int i;
     for (i = 0; i < node_to_alloc->size; i++)
@@ -298,47 +266,46 @@ char *mpool_calloc(size_t asize, t_Mempool *pool) {
 #endif
 }
 
-char *aleph_alloc(t_Aleph *const aleph, size_t size) {
+char *leaf_alloc(LEAF *const leaf, size_t size) {
     // printf("alloc %i\n", size);
-    return mpool_alloc(size, &aleph->_internal_mempool);
+    return mpool_alloc(size, &leaf->_internal_mempool);
 }
 
-char *aleph_calloc(t_Aleph *const aleph, size_t size) {
+char *leaf_calloc(LEAF *const leaf, size_t size) {
     // printf("alloc %i\n", size);
-    return mpool_calloc(size, &aleph->_internal_mempool);
+    return mpool_calloc(size, &leaf->_internal_mempool);
 }
 
-void mpool_free(char *ptr, t_Mempool *pool) {
-    pool->aleph->free_count++;
-#if Aleph_DEBUG
+void mpool_free(char *ptr, _tMempool *pool) {
+    pool->leaf->freeCount++;
+#if LEAF_DEBUG
     DBG("free");
 #endif
-#if Aleph_USE_DYNAMIC_ALLOCATION
+#if LEAF_USE_DYNAMIC_ALLOCATION
     free(ptr);
 #else
     // if (ptr < pool->mpool || ptr >= pool->mpool + pool->msize)
     //  Get the node at the freed space
-    t_mpool_node *freed_node = (t_mpool_node *)(ptr - pool->aleph->header_size);
+    mpool_node_t *freed_node = (mpool_node_t *)(ptr - pool->leaf->header_size);
 
-    pool->usize -= pool->aleph->header_size + freed_node->size;
+    pool->usize -= pool->leaf->header_size + freed_node->size;
 
     // Check each node in the list against the newly freed one to see if it's
     // adjacent in memory
-    t_mpool_node *other_node = pool->head;
-    t_mpool_node *next_node;
+    mpool_node_t *other_node = pool->head;
+    mpool_node_t *next_node;
     while (other_node != NULL) {
         if ((long)other_node < (long)pool->mpool ||
             (long)other_node >= (((long)pool->mpool) + pool->msize)) {
-            Aleph_internal_error_callback(pool->aleph, ALEPH_INVALID_FREE);
+            LEAF_internalErrorCallback(pool->leaf, LEAFInvalidFree);
             return;
         }
         next_node = other_node->next;
         // Check if a node is directly after the freed node
-        if (((long)freed_node) +
-                (pool->aleph->header_size + freed_node->size) ==
+        if (((long)freed_node) + (pool->leaf->header_size + freed_node->size) ==
             (long)other_node) {
             // Increase freed node's size
-            freed_node->size += pool->aleph->header_size + other_node->size;
+            freed_node->size += pool->leaf->header_size + other_node->size;
             // If we are merging with the head, move the head forward
             if (other_node == pool->head)
                 pool->head = pool->head->next;
@@ -348,10 +315,10 @@ void mpool_free(char *ptr, t_Mempool *pool) {
 
         // Check if a node is directly before the freed node
         else if (((long)other_node) +
-                     (pool->aleph->header_size + other_node->size) ==
+                     (pool->leaf->header_size + other_node->size) ==
                  (long)freed_node) {
             // Increase the merging node's size
-            other_node->size += pool->aleph->header_size + freed_node->size;
+            other_node->size += pool->leaf->header_size + freed_node->size;
 
             if (other_node != pool->head) {
                 // Delink the merging node
@@ -383,29 +350,27 @@ void mpool_free(char *ptr, t_Mempool *pool) {
 #endif
 }
 
-void aleph_free(t_Aleph *const aleph, char *ptr) {
-    mpool_free(ptr, &aleph->_internal_mempool);
+void leaf_free(LEAF *const leaf, char *ptr) {
+    mpool_free(ptr, &leaf->_internal_mempool);
 }
 
-size_t mpool_get_size(t_Mempool *pool) { return pool->msize; }
+size_t mpool_get_size(_tMempool *pool) { return pool->msize; }
 
-size_t mpool_get_used(t_Mempool *pool) { return pool->usize; }
+size_t mpool_get_used(_tMempool *pool) { return pool->usize; }
 
-size_t aleph_pool_get_size(t_Aleph *const aleph) {
-    return mpool_get_size(&aleph->_internal_mempool);
+size_t leaf_pool_get_size(LEAF *const leaf) {
+    return mpool_get_size(&leaf->_internal_mempool);
 }
 
-size_t aleph_pool_get_used(t_Aleph *const aleph) {
-    return mpool_get_used(&aleph->_internal_mempool);
+size_t leaf_pool_get_used(LEAF *const leaf) {
+    return mpool_get_used(&leaf->_internal_mempool);
 }
 
-char *aleph_pool_get_pool(t_Aleph *const aleph) {
-    char *buff = aleph->_internal_mempool.mpool;
+char *leaf_pool_get_pool(LEAF *const leaf) {
+    char *buff = leaf->_internal_mempool.mpool;
 
     return buff;
 }
-
-/*----- Static function implementations ------------------------------*/
 
 /**
  * align byte boundary
@@ -414,10 +379,10 @@ static inline size_t mpool_align(size_t size) {
     return (size + (MPOOL_ALIGN_SIZE - 1)) & ~(MPOOL_ALIGN_SIZE - 1);
 }
 
-static inline t_mpool_node *create_node(char *block_location,
-                                        t_mpool_node *next, t_mpool_node *prev,
+static inline mpool_node_t *create_node(char *block_location,
+                                        mpool_node_t *next, mpool_node_t *prev,
                                         size_t size, size_t header_size) {
-    t_mpool_node *node = (t_mpool_node *)block_location;
+    mpool_node_t *node = (mpool_node_t *)block_location;
     node->pool = block_location + header_size;
     node->next = next;
     node->prev = prev;
@@ -425,7 +390,7 @@ static inline t_mpool_node *create_node(char *block_location,
     return node;
 }
 
-static inline void delink_node(t_mpool_node *node) {
+static inline void delink_node(mpool_node_t *node) {
     // If there is a node after the node to remove
     if (node->next != NULL) {
         // Close the link
@@ -441,4 +406,22 @@ static inline void delink_node(t_mpool_node *node) {
     node->prev = NULL;
 }
 
-/*----- End of file --------------------------------------------------*/
+void tMempool_init(tMempool *const mp, char *memory, size_t size,
+                   LEAF *const leaf) {
+    tMempool_initToPool(mp, memory, size, &leaf->mempool);
+}
+
+void tMempool_free(tMempool *const mp) {
+    _tMempool *m = *mp;
+
+    mpool_free((char *)m, m->mempool);
+}
+
+void tMempool_initToPool(tMempool *const mp, char *memory, size_t size,
+                         tMempool *const mem) {
+    _tMempool *mm = *mem;
+    _tMempool *m = *mp = (_tMempool *)mpool_alloc(sizeof(_tMempool), mm);
+    m->leaf = mm->leaf;
+
+    mpool_create(memory, size, m);
+}

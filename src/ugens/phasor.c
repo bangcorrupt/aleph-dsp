@@ -38,31 +38,42 @@
 
 /*----- Extern function implementations ------------------------------*/
 
-void Phasor_init(t_Phasor *phasor, t_Aleph *aleph) {
+void Phasor_init(t_Phasor **phasor, t_Aleph *aleph) {
 
-    Phasor_init_to_pool(phasor, aleph->mempool);
+    Phasor_init_to_pool(phasor, &aleph->mempool);
 }
 
-void Phasor_init_to_pool(t_Phasor *phasor, t_Mempool *mempool) {
+void Phasor_init_to_pool(t_Phasor **phasor, t_Mempool **mempool) {
 
-    t_Mempool *mp = mempool;
+    t_Mempool *mp = *mempool;
 
-    phasor = (t_Phasor *)mpool_alloc(sizeof(t_Phasor), mp);
+    t_Phasor *ph = *phasor = (t_Phasor *)mpool_alloc(sizeof(t_Phasor), mp);
     // phasor->mempool = mempool;
 
-    phasor->phase = 0;
-    phasor->freq = 1;
+    ph->phase = 0;
+    ph->freq = 1;
 }
 
-int32_t Phasor_next(t_Phasor *phasor) {
-    phasor->phase += phasor->freq;
-    return phasor->phase;
+int32_t Phasor_next(t_Phasor **phasor) {
+
+    t_Phasor *ph = *phasor;
+
+    ph->phase += ph->freq;
+
+    return ph->phase;
 }
 
-void Phasor_set_freq(t_Phasor *phasor, fract32 freq) { phasor->freq = freq; }
+void Phasor_set_freq(t_Phasor **phasor, fract32 freq) {
 
-void Phasor_set_phase(t_Phasor *phasor, int32_t phase) {
-    phasor->phase = phase;
+    t_Phasor *ph = *phasor;
+
+    ph->freq = freq;
+}
+
+void Phasor_set_phase(t_Phasor **phasor, int32_t phase) {
+
+    t_Phasor *ph = *phasor;
+    ph->phase = phase;
 }
 
 int32_t Phasor_next_dynamic(t_Phasor *phasor, fract32 freq) {

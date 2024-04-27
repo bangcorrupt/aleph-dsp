@@ -1,141 +1,194 @@
-/*----------------------------------------------------------------------
+/** BEGIN_JUCE_MODULE_DECLARATION
 
-                     This file is part of Aleph DSP
+ ID:            leaf
+ vendor:
+ version:        0.0.1
+ name:
+ description:
+ website:
+ license:
 
-                https://github.com/bangcorrupt/aleph-dsp
+ dependencies:
 
-         Aleph DSP is based on monome/Aleph and spiricom/LEAF.
-
-                              MIT License
-
-            Aleph dedicated to the public domain by monome.
-
-                LEAF Copyright Jeff Snyder et. al. 2020
-
-                       Copyright bangcorrupt 2024
-
-----------------------------------------------------------------------*/
-
-/* Original work by Michael R. Mulshine, modified by bangcorrupt 2024. */
-
+ END_JUCE_MODULE_DECLARATION
+ */
 /*
- * @file    aleph.h
- *
- * @brief   Public API for Aleph DSP.
- *
+ ==============================================================================
+
+ leaf.h
+ Created: 20 Jan 2017 12:07:26pm
+ Author:  Michael R Mulshine
+
+ ==============================================================================
  */
 
-#ifndef ALEPH_H
-#define ALEPH_H
+#ifndef LEAF_H_INCLUDED
+#define LEAF_H_INCLUDED
+
+#define LEAF_DEBUG 0
+
+// #if LEAF_DEBUG
+// #include "../TestPlugin/JuceLibraryCode/JuceHeader.h"
+// #endif
+
+#if _WIN32 || _WIN64
+
+#include ".\Inc\leaf-analysis.h"
+#include ".\Inc\leaf-delay.h"
+#include ".\Inc\leaf-distortion.h"
+#include ".\Inc\leaf-dynamics.h"
+#include ".\Inc\leaf-effects.h"
+#include ".\Inc\leaf-electrical.h"
+#include ".\Inc\leaf-envelopes.h"
+#include ".\Inc\leaf-filters.h"
+#include ".\Inc\leaf-global.h"
+#include ".\Inc\leaf-instruments.h"
+#include ".\Inc\leaf-math.h"
+#include ".\Inc\leaf-mempool.h"
+#include ".\Inc\leaf-midi.h"
+#include ".\Inc\leaf-oscillators.h"
+#include ".\Inc\leaf-physical.h"
+#include ".\Inc\leaf-reverb.h"
+#include ".\Inc\leaf-sampling.h"
+#include ".\Inc\leaf-tables.h"
+#include ".\Inc\leaf-vocal.h"
+
+#else
+
+#include "aleph-global.h"
+/* #include "./Inc/leaf-math.h" */
+/* #include "./Inc/leaf-mempool.h" */
+/* #include "./Inc/leaf-tables.h" */
+/* #include "./Inc/leaf-distortion.h" */
+/* #include "./Inc/leaf-dynamics.h" */
+/* #include "./Inc/leaf-oscillators.h" */
+/* #include "./Inc/leaf-filters.h" */
+/* #include "./Inc/leaf-delay.h" */
+/* #include "./Inc/leaf-reverb.h" */
+/* #include "./Inc/leaf-effects.h" */
+/* #include "./Inc/leaf-envelopes.h" */
+/* #include "./Inc/leaf-analysis.h" */
+/* #include "./Inc/leaf-instruments.h" */
+/* #include "./Inc/leaf-midi.h" */
+/* #include "./Inc/leaf-sampling.h" */
+/* #include "./Inc/leaf-physical.h" */
+/* #include "./Inc/leaf-electrical.h" */
+/* #include "./Inc/leaf-vocal.h" */
+
+#endif
+
+/*! @mainpage LEAF
+ *
+ * @section intro_sec Introduction
+ *
+ * LEAF (Lightweight Embedded Audio Framework) is a no-dependency C audio
+ * library intended for embedded systems.
+ *
+ * This documentation is a work in progress and will eventually include usage
+ * instructions, examples, and descriptions of LEAF objects and functions.
+ */
+/*!
+ * @internal
+ * @section install_sec Installation
+ *
+ * @subsection step1 Step 1: Opening the box
+ *
+ * etc...
+ */
+
+/*!
+ @defgroup leaf LEAF
+ @brief The structure of an instance of LEAF.
+ @defgroup oscillators Oscillators
+ @brief Oscillators and generators.
+ @defgroup filters Filters
+ @brief Filters.
+ @defgroup delay Delay
+ @brief Delays.
+ @defgroup reverb Reverb
+ @brief Reverbs.
+ @defgroup distortion Distortion
+ @brief Degradation and oversampling.
+ @defgroup effects Effects
+ @brief Vocoders, pitch shifters, and more.
+ @defgroup envelopes Envelopes
+ @brief Envelopes and smoothers.
+ @defgroup dynamics Dynamics
+ @brief Compression and levelling.
+ @defgroup analysis Analysis
+ @brief Signal analysis.
+ @defgroup instruments Instruments
+ @brief Instruments.
+ @defgroup midi MIDI
+ @brief MIDI handling.
+ @defgroup sampling Sampling
+ @brief Samplers.
+ @defgroup physical Physical Models
+ @brief String models and more.
+ @defgroup electrical Electrical Models
+ @brief Circuit models.
+ @defgroup mempool Mempool
+ @brief Memory allocation.
+ @defgroup math Math
+ @brief Math functions.
+ @defgroup tables Tables
+ @brief Wavetables, filter tables, minBLEP tables, and more.
+ */
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/*----- Includes -----------------------------------------------------*/
-
-#include <stdbool.h>
-#include <stdint.h>
-
-#include "aleph-mempool.h"
-
-#include "fix.h"
-#include "fract_math.h"
-#include "types.h"
-
-/*----- Macros and Definitions ---------------------------------------*/
-
-#define TWO_PI 6
-
-struct t_Aleph {
-    ///@{
-    uint32_t samplerate; //!< The current audio sample rate. Set with
-                         //!< Aleph_set_samplerate().
-    uint32_t block_size; //!< The audio block size.
-
-    /// TODO: Calculate fract32 values.
-    //
-    /* fract32 inv_samplerate;       //!< The inverse of the current sample
-     * rate. */
-    /* fract32 twopi_inv_samplerate; //!<  Two-pi times the inverse of the */
-    //!<  current sample rate.
-
-    fract32 (*random)(void); //!< A pointer to the random() function provided on
-                             //!< initialization.
-    bool clear_on_alloc;     //!< A flag that determines whether memory
-                             //!< allocated from the Aleph memory pool will be
-                             //!< cleared.
-    t_Mempool *mempool;      //!< The default Aleph mempool object.
-    t_Mempool _internal_mempool;
-    size_t header_size; //!< The size in bytes of memory region headers within
-                        //!< mempools.
-    void (*error_callback)(
-        t_Aleph *const,
-        e_Aleph_error_type); //!< A pointer to the callback function for
-                             //!< Aleph errors. Can be set by the user.
-    int error_state[ALEPH_ERROR_NIL]; //!< An array of flags that indicate which
-                                      //!< errors have occurred.
-    uint32_t alloc_count;             //!< A count of Aleph memory allocations.
-    uint32_t free_count;              //!< A count of Aleph memory frees.
-                                      ///@}
-};
-
-/*----- Extern variable declarations ---------------------------------*/
-
-/*----- Extern function prototypes -----------------------------------*/
-
-//! Initialize the Aleph instance.
 /*!
- @param samplerate The default sample rate for object initialized to this Aleph
+ @ingroup leaf
+ @{
+ */
+
+//! Initialize the LEAF instance.
+/*!
+ @param sampleRate The default sample rate for object initialized to this LEAF
  instance.
  @param memory A pointer to the memory that will make up the default mempool of
- a Aleph instance.
- @param memory_size The size of the memory that will make up the default mempool
- of a Aleph instance.
- @param random A pointer to a random number function. Should return a fract32 >=
+ a LEAF instance.
+ @param memorySize The size of the memory that will make up the default mempool
+ of a LEAF instance.
+ @param random A pointer to a random number function. Should return a Lfloat >=
  0 and < 1.
  */
-void Aleph_init(t_Aleph *const aleph, uint32_t samplerate, char *memory,
-                size_t memory_size, fract32 (*random)(void));
+void LEAF_init(LEAF *const leaf, Lfloat sampleRate, char *memory,
+               size_t memorySize, Lfloat (*random)(void));
 
-//! Set the sample rate of Aleph.
+//! Set the sample rate of LEAF.
 /*!
- @param samplerate The new audio sample rate.
+ @param sampleRate The new audio sample rate.
  */
-void Aleph_set_samplerate(t_Aleph *const aleph, uint32_t samplerate);
+void LEAF_setSampleRate(LEAF *const leaf, Lfloat sampleRate);
 
-//! Get the sample rate of Aleph.
+//! Get the sample rate of LEAF.
 /*!
- @return The current sample rate as a fract32.
+ @return The current sample rate as a Lfloat.
  */
-fract32 Aleph_get_samplerate(t_Aleph *const aleph);
+Lfloat LEAF_getSampleRate(LEAF *const leaf);
 
-//! The default callback function for Aleph errors.
+//! The default callback function for LEAF errors.
 /*!
- @param error_type The type of the error that has occurred.
+ @param errorType The type of the error that has occurred.
  */
-void Aleph_default_error_callback(t_Aleph *const aleph,
-                                  e_Aleph_error_type error_type);
+void LEAF_defaultErrorCallback(LEAF *const leaf, LEAFErrorType errorType);
 
-void Aleph_internal_error_callback(t_Aleph *const aleph,
-                                   e_Aleph_error_type whichone);
+void LEAF_internalErrorCallback(LEAF *const leaf, LEAFErrorType whichone);
 
-//! Set the callback function for Aleph errors.
+//! Set the callback function for LEAF errors.
 /*!
  @param callback A pointer to the callback function.
  */
-void Aleph_set_error_callback(t_Aleph *const aleph,
-                              void (*callback)(t_Aleph *const,
-                                               e_Aleph_error_type));
-
-// Return pointer to Aleph mempool.
-t_Mempool *Aleph_get_mempool(t_Aleph *const aleph);
+void LEAF_setErrorCallback(LEAF *const leaf,
+                           void (*callback)(LEAF *const, LEAFErrorType));
 
 /*! @} */
 
 #ifdef __cplusplus
 }
 #endif
-#endif // ALEPH_H
 
-/*----- End of file --------------------------------------------------*/
+#endif // LEAF_H_INCLUDED

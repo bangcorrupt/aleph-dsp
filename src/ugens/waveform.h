@@ -57,12 +57,12 @@ typedef enum {
 
 /*----- Extern variable declarations ---------------------------------*/
 
-void Waveform_init(t_Waveform *wave, t_Aleph *aleph);
-void Waveform_init_to_pool(t_Waveform *wave, t_Mempool *mp);
-fract32 Waveform_next(t_Waveform *wave);
-void Waveform_set_shape(t_Waveform *wave, uint8_t shape);
-void Waveform_set_freq(t_Waveform *wave, fract32 freq);
-void Waveform_set_phase(t_Waveform *wave, int32_t phase);
+void Waveform_init(t_Waveform **wave, t_Aleph *aleph);
+void Waveform_init_to_pool(t_Waveform **wave, t_Mempool **mp);
+fract32 Waveform_next(t_Waveform **wave);
+void Waveform_set_shape(t_Waveform **wave, uint8_t shape);
+void Waveform_set_freq(t_Waveform **wave, fract32 freq);
+void Waveform_set_phase(t_Waveform **wave, int32_t phase);
 
 /*----- Extern function prototypes -----------------------------------*/
 
