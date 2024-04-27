@@ -65,7 +65,7 @@ extern "C" {
 
 //==============================================================================
 
-#define MPOOL_ALIGN_SIZE (8)
+#define MPOOL_ALIGN_SIZE (16)
 
 /// TODO: Find a better place for this.
 //
@@ -94,8 +94,11 @@ typedef struct t_mpool_node {
 } t_mpool_node;
 
 typedef struct t_Mempool t_Mempool;
+typedef t_Mempool *Mempool;
 
 struct t_Mempool {
+    /// TODO: See aleph-mempool.c:Mempool_free()
+    //
     t_Mempool *mempool;
     t_Aleph *aleph;
     char *mpool;        // start of the mpool
@@ -112,14 +115,14 @@ struct t_Mempool {
  @param size The size of the chunk of memory to be used as a mempool.
  @param aleph A pointer to the aleph instance.
  */
-void Mempool_init(t_Mempool *const pool, char *memory, size_t size,
+void Mempool_init(Mempool *const pool, char *memory, size_t size,
                   t_Aleph *const aleph);
 
 //! Free a t_Mempool from its mempool.
 /*!
  @param pool A pointer to the t_Mempool to free.
  */
-void Mempool_free(t_Mempool *const pool);
+void Mempool_free(Mempool *const pool);
 
 //! Initialize a t_Mempool for a given memory location and size to a specified
 //! mempool.
@@ -130,8 +133,8 @@ void Mempool_free(t_Mempool *const pool);
  @param pool_to A pointer to the t_Mempool to which this t_Mempool should be
  initialized.
  */
-void Mempool_init_to_pool(t_Mempool *const mp, char *memory, size_t size,
-                          t_Mempool *const mem);
+void Mempool_init_to_pool(Mempool *const mp, char *memory, size_t size,
+                          Mempool *const mem);
 
 /*!￼￼￼
  @} */

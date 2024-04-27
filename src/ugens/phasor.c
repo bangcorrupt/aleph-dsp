@@ -38,30 +38,87 @@
 
 /*----- Extern function implementations ------------------------------*/
 
-void Phasor_init(t_Phasor *phasor) { phasor->phase = 0; }
+void Phasor_init(Phasor *const phasor, t_Aleph *aleph) {
 
-int32_t Phasor_next(t_Phasor *phasor) {
-    phasor->phase += phasor->freq;
-    return phasor->phase;
+    Phasor_init_to_pool(phasor, &aleph->mempool);
 }
 
-int32_t Phasor_next_dynamic(t_Phasor *phasor, fract32 freq) {
-    phasor->phase += freq;
-    return phasor->phase;
+void Phasor_init_to_pool(Phasor *const phasor, Mempool *const mempool) {
+
+    t_Mempool *mp = *mempool;
+
+    t_Phasor *ph = *phasor = (t_Phasor *)mpool_alloc(sizeof(t_Phasor), mp);
+
+    ph->mempool = mp;
+
+    ph->phase = 0;
+    ph->freq = 1;
 }
 
-int32_t Phasor_read(t_Phasor *phasor, int32_t freq) { return phasor->phase; }
+void Phasor_free(Phasor *const phasor) {
 
-int32_t Phasor_pos_next_dynamic(t_Phasor *phasor, fract32 freq) {
-    phasor->phase += freq;
-    return ((uint32_t)phasor->phase) / 2;
+    t_Phasor *ph = *phasor;
+
+    mpool_free((char *)ph, ph->mempool);
 }
 
-int32_t Phasor_pos_read(t_Phasor *phasor) {
-    return ((uint32_t)phasor->phase) / 2;
+int32_t Phasor_next(Phasor *const phasor) {
+
+    t_Phasor *ph = *phasor;
+
+    ph->phase += ph->freq;
+
+    return ph->phase;
+}
+
+void Phasor_set_freq(Phasor *const phasor, fract32 freq) {
+
+    t_Phasor *ph = *phasor;
+
+    ph->freq = freq;
+}
+
+void Phasor_set_phase(Phasor *const phasor, int32_t phase) {
+
+    t_Phasor *ph = *phasor;
+
+    ph->phase = phase;
+}
+
+int32_t Phasor_next_dynamic(Phasor *const phasor, fract32 freq) {
+
+    t_Phasor *ph = *phasor;
+
+    ph->phase += freq;
+
+    return ph->phase;
+}
+
+int32_t Phasor_read(Phasor *const phasor, int32_t freq) {
+
+    t_Phasor *ph = *phasor;
+
+    return ph->phase;
+}
+
+int32_t Phasor_pos_next_dynamic(Phasor *const phasor, fract32 freq) {
+
+    t_Phasor *ph = *phasor;
+
+    ph->phase += freq;
+
+    return ((uint32_t)ph->phase) / 2;
+}
+
+int32_t Phasor_pos_read(Phasor *const phasor) {
+
+    t_Phasor *ph = *phasor;
+
+    return ((uint32_t)ph->phase) / 2;
 }
 
 void QuadraturePhasor_init(t_QuadraturePhasor *phasor) {
+
     phasor->sin_phase = 0;
     phasor->cos_phase = FR32_MAX / 2;
 }
@@ -73,18 +130,22 @@ void QuadraturePhasor_pos_next_dynamic(t_QuadraturePhasor *phasor,
 }
 
 int32_t QuadraturePhasor_sin_read(t_QuadraturePhasor *phasor) {
+
     return phasor->sin_phase;
 }
 
 int32_t QuadraturePhasor_cos_read(t_QuadraturePhasor *phasor) {
+
     return phasor->cos_phase;
 }
 
 int32_t QuadraturePhasor_pos_sin_read(t_QuadraturePhasor *phasor) {
+
     return (int32_t)(((uint32_t)phasor->sin_phase) / (uint32_t)2);
 }
 
 int32_t QuadraturePhasor_pos_cos_read(t_QuadraturePhasor *phasor) {
+
     return (int32_t)(((uint32_t)phasor->cos_phase) / (uint32_t)2);
 }
 
