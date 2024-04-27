@@ -46,27 +46,26 @@
 
 /*----- Extern function implementations ------------------------------*/
 
-void Waveform_init(t_Waveform **wave, t_Aleph *aleph) {
+void Waveform_init(Waveform *const wave, t_Aleph *aleph) {
     //
     Waveform_init_to_pool(wave, &aleph->mempool);
 }
 
-void Waveform_init_to_pool(t_Waveform **wave, t_Mempool **mempool) {
+void Waveform_init_to_pool(Waveform *const wave, t_Mempool **mempool) {
 
     t_Mempool *mp = *mempool;
 
     t_Waveform *wv = *wave = (t_Waveform *)mpool_alloc(sizeof(t_Waveform), mp);
 
     wv->mempool = mp;
-    // wave->mempool->aleph = mempool->aleph;
 
     wv->shape = WAVEFORM_SHAPE_SINE;
 
-    Phasor_init_to_pool(&wv->phasor, mempool);
+    Phasor_init(&wv->phasor, mp->leaf);
     Phasor_set_freq(&wv->phasor, WAVEFORM_DEFAULT_FREQ);
 }
 
-fract32 Waveform_next(t_Waveform **wave) {
+fract32 Waveform_next(Waveform *const wave) {
 
     t_Waveform *wv = *wave;
 
@@ -100,21 +99,21 @@ fract32 Waveform_next(t_Waveform **wave) {
     return shl_fr1x32(next, 16);
 }
 
-void Waveform_set_shape(t_Waveform **wave, uint8_t shape) {
+void Waveform_set_shape(Waveform *const wave, uint8_t shape) {
     //
     t_Waveform *wv = *wave;
 
     wv->shape = shape;
 }
 
-void Waveform_set_freq(t_Waveform **wave, fract32 freq) {
+void Waveform_set_freq(Waveform *const wave, fract32 freq) {
     //
     t_Waveform *wv = *wave;
 
     Phasor_set_freq(&wv->phasor, freq);
 }
 
-void Waveform_set_phase(t_Waveform **wave, int32_t phase) {
+void Waveform_set_phase(Waveform *const wave, int32_t phase) {
     //
     t_Waveform *wv = *wave;
 
