@@ -43,7 +43,7 @@ void Phasor_init(Phasor *const phasor, t_Aleph *aleph) {
     Phasor_init_to_pool(phasor, &aleph->mempool);
 }
 
-void Phasor_init_to_pool(Phasor *const phasor, t_Mempool **mempool) {
+void Phasor_init_to_pool(Phasor *const phasor, Mempool *const mempool) {
 
     t_Mempool *mp = *mempool;
 

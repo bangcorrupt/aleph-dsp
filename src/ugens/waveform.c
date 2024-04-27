@@ -51,7 +51,7 @@ void Waveform_init(Waveform *const wave, t_Aleph *aleph) {
     Waveform_init_to_pool(wave, &aleph->mempool);
 }
 
-void Waveform_init_to_pool(Waveform *const wave, t_Mempool **mempool) {
+void Waveform_init_to_pool(Waveform *const wave, Mempool *const mempool) {
 
     t_Mempool *mp = *mempool;
 
