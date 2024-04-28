@@ -70,18 +70,16 @@ void EnvADSR_free(EnvADSR *const envelope) {
     mpool_free((char *)env, env->mempool);
 }
 
-void EnvADSR_press(EnvADSR *const envelope) {
+void EnvADSR_set_gate(EnvADSR *const envelope, bool gate) {
 
     t_EnvADSR *env = *envelope;
 
-    env->env_state = ADSR_ATTACK;
-}
+    if (gate) {
+        env->env_state = ADSR_ATTACK;
 
-void EnvADSR_release(EnvADSR *const envelope) {
-
-    t_EnvADSR *env = *envelope;
-
-    env->env_state = ADSR_RELEASE;
+    } else {
+        env->env_state = ADSR_RELEASE;
+    }
 }
 
 fract32 EnvADSR_next(EnvADSR *envelope) {
@@ -162,18 +160,16 @@ void EnvADSR_16_init_to_pool(EnvADSR_16 *const envelope,
     env->release_time = SLEW_1S_16;
 }
 
-void Env_ADSR_16_press(EnvADSR_16 *const envelope) {
+void EnvADSR_16_set_gate(EnvADSR_16 *const envelope, bool gate) {
 
     t_EnvADSR_16 *env = *envelope;
 
-    env->env_state = ADSR_ATTACK;
-}
+    if (gate) {
+        env->env_state = ADSR_ATTACK;
 
-void Env_ADSR_16_release(EnvADSR_16 *envelope) {
-
-    t_EnvADSR_16 *env = *envelope;
-
-    env->env_state = ADSR_RELEASE;
+    } else {
+        env->env_state = ADSR_RELEASE;
+    }
 }
 
 fract16 EnvADSR_16_next(EnvADSR_16 *envelope) {

@@ -89,11 +89,11 @@ fract32 Oscillator_next(Oscillator *const oscillator) {
         next = osc_triangle(osc->phasor->phase);
         break;
 
-        // case OSCILLATOR_SHAPE_SAW:
-        //     /// TODO:  Make saw bipolar.
-        //
-        //     next = osc->phasor->phase;
-        //     break;
+    case OSCILLATOR_SHAPE_SAW:
+
+        /// TODO: Is this bipolar?
+        next = osc->phasor->phase;
+        break;
 
     case OSCILLATOR_SHAPE_SQUARE:
         next = osc_square(osc->phasor->phase);
@@ -125,11 +125,11 @@ fract16 Oscillator_16_next(Oscillator *const oscillator) {
         next = osc_triangle16(osc->phasor->phase);
         break;
 
-        // case OSCILLATOR_SHAPE_SAW:
-        //     /// TODO:  Make saw bipolar.
-        //
-        //     next = osc->phasor->phase;
-        //     break;
+    case OSCILLATOR_SHAPE_SAW:
+
+        /// TODO: Is this bipolar?
+        next = trunc_fr1x32(osc->phasor->phase);
+        break;
 
     case OSCILLATOR_SHAPE_SQUARE:
         next = osc_square16(osc->phasor->phase);
@@ -234,14 +234,10 @@ fract16 osc_square16(fract32 phase) {
         return FR16_MIN;
 }
 
-/// TODO: osc_saw
-fract32 osc_saw(fract32 phase) {
-    //
-}
+/// TODO: Are these bipolar?
+fract32 osc_saw(fract32 phase) { return phase; }
 
-fract32 osc_saw16(fract32 phase) {
-    //
-}
+fract16 osc_saw16(fract32 phase) { return trunc_fr1x32(phase); }
 
 /*----- Static function implementations ------------------------------*/
 

@@ -42,6 +42,12 @@ extern "C" {
 
 /*----- Macros and Definitions ---------------------------------------*/
 
+typedef enum {
+    FILTERSVF_TYPE_HPF,
+    FILTERSVF_TYPE_BPF,
+    FILTERSVF_TYPE_LPF,
+} e_FilterSVF_type;
+
 typedef struct {
 
     t_Mempool *mempool;

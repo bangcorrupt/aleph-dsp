@@ -28,16 +28,15 @@
 #ifndef ALEPH_INTERPOLATE_H
 #define ALEPH_INTERPOLATE_H
 
+#include "fract_typedef.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /*----- Includes -----------------------------------------------------*/
 
-#include "fix.h"
-#include "types.h"
-
-#include "ricks_tricks.h"
+/* #include "ugens/filter_1p.h" */
+#include "ugens/ricks_tricks.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 
@@ -94,6 +93,31 @@ typedef struct {
 
 /*----- Extern variable declarations ---------------------------------*/
 
+/*----- Extern function prototypes -----------------------------------*/
+
+void RadixLinSlew_init(t_RadixLinSlew *slew, fract32 rate, uint16_t radix);
+void RadixLinSlew_next(t_RadixLinSlew *slew, fract32 *current, fract32 target);
+
+void LinSlew_init(t_LinSlew *slew, fract32 rate);
+void LinSlew_next(t_LinSlew *slew, fract32 *current, fract32 target);
+
+void AsymLinSlew_init(t_AsymLinSlew *slew, fract32 slew_up, fract32 slew_down);
+void AsymLinSlew_next(t_AsymLinSlew *slewm, fract32 *current, fract32 target);
+
+void RadixLogSlew_init(t_RadixLogSlew *slew, fract32 rate, uint16_t radix);
+void RadixLogSlew_next(t_RadixLogSlew *slew, fract32 *current, fract32 target);
+
+/// TODO: Refactor these as above.
+//
+void fine_log_slew(fract32 *current, fract32 target, fract32 speed);
+
+void coarse_log_slew(fract32 *current, fract32 target, fract32 speed);
+
+void normalised_log_slew(fract32 *current, fract32 target, fract32 speed);
+void normalised_log_slew_16(fract16 *current, fract16 target, fract16 speed);
+
+float interp_bspline_float(float x, float _y, float y, float y_, float y__);
+
 /*----- Static function implementations ------------------------------*/
 
 /// TODO: Is there any actual performance advantage defining this here?
@@ -133,31 +157,6 @@ static inline fract32 interp_bspline_fract32(fract32 x, fract32 _y, fract32 y,
                                           (mult_fr1x32x32(c3, x) + c2), x)))),
         4);
 }
-
-/*----- Extern function prototypes -----------------------------------*/
-
-void RadixLinSlew_init(t_RadixLinSlew *slew, fract32 rate, uint16_t radix);
-void RadixLinSlew_next(t_RadixLinSlew *slew, fract32 *current, fract32 target);
-
-void LinSlew_init(t_LinSlew *slew, fract32 rate);
-void LinSlew_next(t_LinSlew *slew, fract32 *current, fract32 target);
-
-void AsymLinSlew_init(t_AsymLinSlew *slew, fract32 slew_up, fract32 slew_down);
-void AsymLinSlew_next(t_AsymLinSlew *slewm, fract32 *current, fract32 target);
-
-void RadixLogSlew_init(t_RadixLogSlew *slew, fract32 rate, uint16_t radix);
-void RadixLogSlew_next(t_RadixLogSlew *slew, fract32 *current, fract32 target);
-
-/// TODO: Refactor these as above.
-//
-void fine_log_slew(fract32 *current, fract32 target, fract32 speed);
-
-void coarse_log_slew(fract32 *current, fract32 target, fract32 speed);
-
-void normalised_log_slew(fract32 *current, fract32 target, fract32 speed);
-void normalised_log_slew_16(fract16 *current, fract16 target, fract16 speed);
-
-float interp_bspline_float(float x, float _y, float y, float y_, float y__);
 
 #ifdef __cplusplus
 }
