@@ -39,6 +39,8 @@ extern "C" {
 /*----- Macros and Definitions ---------------------------------------*/
 
 #define FILTER_ONE_POLE_DEFAULT_COEFF (SLEW_1MS)
+#define FILTER_ONE_POLE_DEFAULT_TARGET (0)
+#define FILTER_ONE_POLE_DEFAULT_OUTPUT (0)
 
 typedef struct {
     Mempool mempool;
@@ -53,17 +55,16 @@ typedef t_LPFOnePole *LPFOnePole;
 
 /*----- Extern function prototypes -----------------------------------*/
 
-void LPFOnePole_init(LPFOnePole *const lpf, fract32 input,
-                     t_Aleph *const aleph);
+void LPFOnePole_init(LPFOnePole *const lpf, t_Aleph *const aleph);
 
-void LPFOnePole_init_to_pool(LPFOnePole *const lpf, fract32 input,
-                             Mempool *const mempool);
+void LPFOnePole_init_to_pool(LPFOnePole *const lpf, Mempool *const mempool);
 
 fract32 LPFOnePole_free(LPFOnePole *const lpf);
 
 fract32 LPFOnePole_next(LPFOnePole *const lpf);
 fract32 LPFOnePole_norm_next(LPFOnePole *const lpf);
-void LPFOnePole_set_input(LPFOnePole *const lpf, fract32 input);
+void LPFOnePole_set_target(LPFOnePole *const lpf, fract32 target);
+void LPFOnePole_set_output(LPFOnePole *const lpf, fract32 output);
 void LPFOnePole_set_coeff(LPFOnePole *const lpf, fract32 coeff);
 bool LPFOnePole_sync(LPFOnePole *const lpf);
 

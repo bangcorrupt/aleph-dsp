@@ -60,8 +60,6 @@ void MonoSynth_init_to_pool(MonoSynth *const synth, Mempool *const mempool) {
 
     syn->freq = MONOSYNTH_DEFAULT_FREQ;
     syn->freq_offset = MONOSYNTH_DEFAULT_FREQ_OFFSET;
-    syn->cutoff = MONOSYNTH_DEFAULT_CUTOFF;
-    syn->res = MONOSYNTH_DEFAULT_RES;
     syn->filter_type = MONOSYNTH_DEFAULT_FILTER_TYPE;
 
     syn->amp_env_depth = MONOSYNTH_DEFAULT_AMP_ENV_DEPTH;
@@ -86,10 +84,17 @@ void MonoSynth_init_to_pool(MonoSynth *const synth, Mempool *const mempool) {
     Oscillator_init_to_pool(&syn->filter_lfo, mempool);
     Oscillator_init_to_pool(&syn->pitch_lfo, mempool);
 
-    LPFOnePole_init_to_pool(&syn->freq_slew, syn->freq, mempool);
-    LPFOnePole_init_to_pool(&syn->freq_offset_slew, syn->freq_offset, mempool);
-    LPFOnePole_init_to_pool(&syn->cutoff_slew, syn->cutoff, mempool);
-    LPFOnePole_init_to_pool(&syn->res_slew, syn->res, mempool);
+    LPFOnePole_init_to_pool(&syn->freq_slew, mempool);
+    LPFOnePole_set_output(&syn->freq_slew, syn->freq);
+
+    LPFOnePole_init_to_pool(&syn->freq_offset_slew, mempool);
+    LPFOnePole_set_output(&syn->freq_offset_slew, syn->freq_offset);
+
+    LPFOnePole_init_to_pool(&syn->cutoff_slew, mempool);
+    LPFOnePole_set_output(&syn->cutoff_slew, MONOSYNTH_DEFAULT_CUTOFF);
+
+    LPFOnePole_init_to_pool(&syn->res_slew, mempool);
+    LPFOnePole_set_output(&syn->res_slew, MONOSYNTH_DEFAULT_RES);
 }
 
 void MonoSynth_free(MonoSynth *const synth) {
@@ -257,28 +262,28 @@ void MonoSynth_set_freq(MonoSynth *const synth, fract32 freq) {
 
     t_MonoSynth *syn = *synth;
 
-    LPFOnePole_set_input(&syn->freq_slew, freq);
+    LPFOnePole_set_target(&syn->freq_slew, freq);
 }
 
 void MonoSynth_set_freq_offset(MonoSynth *const synth, fract32 freq_offset) {
 
     t_MonoSynth *syn = *synth;
 
-    LPFOnePole_set_input(&syn->freq_offset_slew, freq_offset);
+    LPFOnePole_set_target(&syn->freq_offset_slew, freq_offset);
 }
 
 void MonoSynth_set_cutoff(MonoSynth *const synth, fract32 cutoff) {
 
     t_MonoSynth *syn = *synth;
 
-    LPFOnePole_set_input(&syn->cutoff_slew, cutoff);
+    LPFOnePole_set_target(&syn->cutoff_slew, cutoff);
 }
 
 void MonoSynth_set_res(MonoSynth *const synth, fract32 res) {
 
     t_MonoSynth *syn = *synth;
 
-    LPFOnePole_set_input(&syn->res_slew, res);
+    LPFOnePole_set_target(&syn->res_slew, res);
 }
 
 void MonoSynth_set_amp_env_attack(MonoSynth *const synth, fract32 attack) {

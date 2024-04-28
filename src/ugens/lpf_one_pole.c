@@ -43,14 +43,12 @@ static inline uint8_t fr32_compare(fract32 a, fract32 b);
 
 /*----- Extern function implementations ------------------------------*/
 
-void LPFOnePole_init(LPFOnePole *const lpf, fract32 input,
-                     t_Aleph *const aleph) {
+void LPFOnePole_init(LPFOnePole *const lpf, t_Aleph *const aleph) {
 
-    LPFOnePole_init_to_pool(lpf, input, &aleph->mempool);
+    LPFOnePole_init_to_pool(lpf, &aleph->mempool);
 }
 
-void LPFOnePole_init_to_pool(LPFOnePole *const lpf, fract32 input,
-                             Mempool *const mempool) {
+void LPFOnePole_init_to_pool(LPFOnePole *const lpf, Mempool *const mempool) {
 
     t_Mempool *mp = *mempool;
 
@@ -60,8 +58,8 @@ void LPFOnePole_init_to_pool(LPFOnePole *const lpf, fract32 input,
     lp->mempool = mp;
 
     lp->coeff = FILTER_ONE_POLE_DEFAULT_COEFF;
-    lp->target = input;
-    lp->output = input;
+    lp->target = FILTER_ONE_POLE_DEFAULT_TARGET;
+    lp->output = FILTER_ONE_POLE_DEFAULT_OUTPUT;
 }
 
 fract32 LPFOnePole_free(LPFOnePole *const lpf) {
@@ -82,11 +80,18 @@ fract32 LPFOnePole_next(LPFOnePole *const lpf) {
     return lp->output;
 }
 
-void LPFOnePole_set_input(LPFOnePole *const lpf, fract32 input) {
+void LPFOnePole_set_target(LPFOnePole *const lpf, fract32 target) {
 
     t_LPFOnePole *lp = *lpf;
 
-    lp->target = input;
+    lp->target = target;
+}
+
+void LPFOnePole_set_output(LPFOnePole *const lpf, fract32 output) {
+
+    t_LPFOnePole *lp = *lpf;
+
+    lp->target = output;
 }
 
 void LPFOnePole_set_coeff(LPFOnePole *const lpf, fract32 coeff) {
