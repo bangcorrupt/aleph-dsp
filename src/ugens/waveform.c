@@ -25,10 +25,6 @@
 
 /*----- Includes -----------------------------------------------------*/
 
-#include <stdint.h>
-
-#include "fract_math.h"
-
 #include "aleph-mempool.h"
 #include "aleph.h"
 
@@ -64,6 +60,7 @@ void Waveform_init_to_pool(Waveform *const wave, Mempool *const mempool) {
     // Phasor_init(&wv->phasor, mp->leaf);
     Phasor_init_to_pool(&wv->phasor, mempool);
     Phasor_set_freq(&wv->phasor, WAVEFORM_DEFAULT_FREQ);
+    Phasor_set_phase(&wv->phasor, WAVEFORM_DEFAULT_PHASE);
 }
 
 void Waveform_free(Waveform *const wave) {
@@ -109,22 +106,22 @@ fract32 Waveform_next(Waveform *const wave) {
     return shl_fr1x32(next, 16);
 }
 
-void Waveform_set_shape(Waveform *const wave, uint8_t shape) {
-    //
+void Waveform_set_shape(Waveform *const wave, e_Waveform_shape shape) {
+
     t_Waveform *wv = *wave;
 
     wv->shape = shape;
 }
 
 void Waveform_set_freq(Waveform *const wave, fract32 freq) {
-    //
+
     t_Waveform *wv = *wave;
 
     Phasor_set_freq(&wv->phasor, freq);
 }
 
 void Waveform_set_phase(Waveform *const wave, int32_t phase) {
-    //
+
     t_Waveform *wv = *wave;
 
     Phasor_set_phase(&wv->phasor, phase);
