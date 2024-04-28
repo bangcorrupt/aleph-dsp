@@ -223,31 +223,28 @@ fract32 WaveformDual_next(WaveformDual *const wave) {
     return add_fr1x32(shl_fr1x32(next_a, 15), shl_fr1x32(next_b, 15));
 }
 
-void WaveformDual_set_shape(WaveformDual *const wave, e_Waveform_shape shape_a,
-                            e_Waveform_shape shape_b) {
+void WaveformDual_set_shape(WaveformDual *const wave, e_Waveform_shape shape) {
 
     t_WaveformDual *wv = *wave;
 
-    wv->shape_a = shape_a;
-    wv->shape_b = shape_b;
+    wv->shape_a = shape;
+    wv->shape_b = shape;
 }
 
-void WaveformDual_set_freq(WaveformDual *const wave, fract32 freq_a,
-                           fract32 freq_b) {
+void WaveformDual_set_freq(WaveformDual *const wave, fract32 freq) {
 
     t_WaveformDual *wv = *wave;
 
-    Phasor_set_freq(&wv->phasor_a, freq_a);
-    Phasor_set_freq(&wv->phasor_b, freq_b);
+    Phasor_set_freq(&wv->phasor_a, freq);
+    Phasor_set_freq(&wv->phasor_b, freq);
 }
 
-void WaveformDual_set_phase(WaveformDual *const wave, int32_t phase_a,
-                            int32_t phase_b) {
+void WaveformDual_set_phase(WaveformDual *const wave, int32_t phase) {
 
     t_WaveformDual *wv = *wave;
 
-    Phasor_set_phase(&wv->phasor_a, phase_a);
-    Phasor_set_phase(&wv->phasor_b, phase_b);
+    Phasor_set_phase(&wv->phasor_a, phase);
+    Phasor_set_phase(&wv->phasor_b, phase);
 }
 
 void WaveformDual_set_shape_a(WaveformDual *const wave,

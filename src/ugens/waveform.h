@@ -94,12 +94,9 @@ void WaveformDual_init_to_pool(WaveformDual *const wave,
 void WaveformDual_free(WaveformDual *const wave);
 
 fract32 WaveformDual_next(WaveformDual *const wave);
-void WaveformDual_set_shape(WaveformDual *const wave, e_Waveform_shape shape_a,
-                            e_Waveform_shape shape_b);
-void WaveformDual_set_freq(WaveformDual *const wave, fract32 freq_a,
-                           fract32 freq_b);
-void WaveformDual_set_phase(WaveformDual *const wave, int32_t phase_b,
-                            int32_t phase_a);
+void WaveformDual_set_shape(WaveformDual *const wave, e_Waveform_shape shape);
+void WaveformDual_set_freq(WaveformDual *const wave, fract32 freq);
+void WaveformDual_set_phase(WaveformDual *const wave, int32_t phase);
 
 void WaveformDual_set_shape_a(WaveformDual *const wave, e_Waveform_shape shape);
 void WaveformDual_set_shape_b(WaveformDual *const wave, e_Waveform_shape shape);

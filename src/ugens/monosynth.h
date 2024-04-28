@@ -58,6 +58,8 @@ extern "C" {
 #define MONOSYNTH_DEFAULT_FILTER_LFO_DEPTH (0)
 #define MONOSYNTH_DEFAULT_PITCH_LFO_DEPTH (0)
 
+#define MONOSYNTH_DEFAULT_PHASE_RESET (true)
+
 typedef struct {
 
     Mempool mempool;
@@ -92,6 +94,8 @@ typedef struct {
     LPFOnePole cutoff_slew;
     LPFOnePole res_slew;
 
+    bool phase_reset;
+
 } t_MonoSynth;
 
 typedef t_MonoSynth *MonoSynth;
@@ -106,12 +110,11 @@ void MonoSynth_free(MonoSynth *const synth);
 
 fract32 MonoSynth_next(MonoSynth *const synth);
 
-void MonoSynth_set_shape(MonoSynth *const synth, e_Waveform_shape shape_a,
-                         e_Waveform_shape shape_b);
-
+void MonoSynth_set_shape(MonoSynth *const synth, e_Waveform_shape shape_a);
 void MonoSynth_set_freq(MonoSynth *const synth, fract32 freq);
 void MonoSynth_set_freq_offset(MonoSynth *const synth, fract32 freq_offset);
 
+void MonoSynth_set_filter_type(MonoSynth *const synth, e_FilterSVF_type type);
 void MonoSynth_set_cutoff(MonoSynth *const synth, fract32 cutoff);
 void MonoSynth_set_res(MonoSynth *const synth, fract32 res);
 
@@ -119,16 +122,19 @@ void MonoSynth_set_amp_env_attack(MonoSynth *const synth, fract32 attack);
 void MonoSynth_set_amp_env_decay(MonoSynth *const synth, fract32 decay);
 void MonoSynth_set_amp_env_sustain(MonoSynth *const synth, fract32 sustain);
 void MonoSynth_set_amp_env_release(MonoSynth *const synth, fract32 release);
+void MonoSynth_set_amp_env_depth(MonoSynth *const synth, fract32 depth);
 
 void MonoSynth_set_filter_env_attack(MonoSynth *const synth, fract32 attack);
 void MonoSynth_set_filter_env_decay(MonoSynth *const synth, fract32 decay);
 void MonoSynth_set_filter_env_sustain(MonoSynth *const synth, fract32 sustain);
 void MonoSynth_set_filter_env_release(MonoSynth *const synth, fract32 release);
+void MonoSynth_set_filter_env_depth(MonoSynth *const synth, fract32 depth);
 
 void MonoSynth_set_pitch_env_attack(MonoSynth *const synth, fract32 attack);
 void MonoSynth_set_pitch_env_decay(MonoSynth *const synth, fract32 decay);
 void MonoSynth_set_pitch_env_sustain(MonoSynth *const synth, fract32 sustain);
 void MonoSynth_set_pitch_env_release(MonoSynth *const synth, fract32 release);
+void MonoSynth_set_pitch_env_depth(MonoSynth *const synth, fract32 depth);
 
 void MonoSynth_set_amp_lfo_freq(MonoSynth *const synth, fract32 freq);
 void MonoSynth_set_amp_lfo_depth(MonoSynth *const synth, fract32 depth);
@@ -138,6 +144,9 @@ void MonoSynth_set_filter_lfo_depth(MonoSynth *const synth, fract32 depth);
 
 void MonoSynth_set_pitch_lfo_freq(MonoSynth *const synth, fract32 freq);
 void MonoSynth_set_pitch_lfo_depth(MonoSynth *const synth, fract32 depth);
+
+void MonoSynth_set_gate(MonoSynth *const synth, bool gate);
+void MonoSynth_set_phase_reset(MonoSynth *const synth, bool reset);
 
 #ifdef __cplusplus
 }

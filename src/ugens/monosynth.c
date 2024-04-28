@@ -70,6 +70,8 @@ void MonoSynth_init_to_pool(MonoSynth *const synth, Mempool *const mempool) {
     syn->filter_lfo_depth = MONOSYNTH_DEFAULT_FILTER_LFO_DEPTH;
     syn->pitch_lfo_depth = MONOSYNTH_DEFAULT_PITCH_LFO_DEPTH;
 
+    syn->phase_reset = MONOSYNTH_DEFAULT_PHASE_RESET;
+
     WaveformDual_init_to_pool(&syn->waveform, mempool);
 
     FilterSVF_init_to_pool(&syn->filter, mempool);
@@ -192,8 +194,8 @@ fract32 MonoSynth_next(MonoSynth *const synth) {
     freq = add_fr1x32(freq, mult_fr1x32x32(freq, pitch_lfo));
 
     // Set oscillator frequency.
-    WaveformDual_set_freq(&syn->waveform, freq,
-                          fix16_mul_fract(freq, freq_offset));
+    WaveformDual_set_freq_a(&syn->waveform, freq);
+    WaveformDual_set_freq_b(&syn->waveform, fix16_mul_fract(freq, freq_offset));
 
     // Generate waveforms.
     waveform = WaveformDual_next(&syn->waveform);
@@ -250,12 +252,11 @@ fract32 MonoSynth_next(MonoSynth *const synth) {
     return waveform;
 }
 
-void MonoSynth_set_shape(MonoSynth *const synth, e_Waveform_shape shape_a,
-                         e_Waveform_shape shape_b) {
+void MonoSynth_set_shape(MonoSynth *const synth, e_Waveform_shape shape) {
 
     t_MonoSynth *syn = *synth;
 
-    WaveformDual_set_shape(&syn->waveform, shape_a, shape_b);
+    WaveformDual_set_shape(&syn->waveform, shape);
 }
 
 void MonoSynth_set_freq(MonoSynth *const synth, fract32 freq) {
@@ -270,6 +271,13 @@ void MonoSynth_set_freq_offset(MonoSynth *const synth, fract32 freq_offset) {
     t_MonoSynth *syn = *synth;
 
     LPFOnePole_set_target(&syn->freq_offset_slew, freq_offset);
+}
+
+void MonoSynth_set_filter_type(MonoSynth *const synth, e_FilterSVF_type type) {
+
+    t_MonoSynth *syn = *synth;
+
+    syn->filter_type = type;
 }
 
 void MonoSynth_set_cutoff(MonoSynth *const synth, fract32 cutoff) {
@@ -314,6 +322,13 @@ void MonoSynth_set_amp_env_release(MonoSynth *const synth, fract32 release) {
     EnvADSR_set_release(&syn->amp_env, release);
 }
 
+void MonoSynth_set_amp_env_depth(MonoSynth *const synth, fract32 depth) {
+
+    t_MonoSynth *syn = *synth;
+
+    syn->amp_env_depth = depth;
+}
+
 void MonoSynth_set_filter_env_attack(MonoSynth *const synth, fract32 attack) {
 
     t_MonoSynth *syn = *synth;
@@ -342,6 +357,13 @@ void MonoSynth_set_filter_env_release(MonoSynth *const synth, fract32 release) {
     EnvADSR_set_release(&syn->filter_env, release);
 }
 
+void MonoSynth_set_filter_env_depth(MonoSynth *const synth, fract32 depth) {
+
+    t_MonoSynth *syn = *synth;
+
+    syn->filter_env_depth = depth;
+}
+
 void MonoSynth_set_pitch_env_attack(MonoSynth *const synth, fract32 attack) {
 
     t_MonoSynth *syn = *synth;
@@ -368,6 +390,13 @@ void MonoSynth_set_pitch_env_release(MonoSynth *const synth, fract32 release) {
     t_MonoSynth *syn = *synth;
 
     EnvADSR_set_release(&syn->pitch_env, release);
+}
+
+void MonoSynth_set_pitch_env_depth(MonoSynth *const synth, fract32 depth) {
+
+    t_MonoSynth *syn = *synth;
+
+    syn->pitch_env_depth = depth;
 }
 
 void MonoSynth_set_amp_lfo_freq(MonoSynth *const synth, fract32 freq) {
@@ -410,6 +439,26 @@ void MonoSynth_set_pitch_lfo_depth(MonoSynth *const synth, fract32 depth) {
     t_MonoSynth *syn = *synth;
 
     syn->pitch_lfo_depth = depth;
+}
+
+void MonoSynth_set_phase_reset(MonoSynth *const synth, bool reset) {
+
+    t_MonoSynth *syn = *synth;
+
+    syn->phase_reset = reset;
+}
+
+void MonoSynth_set_gate(MonoSynth *const synth, bool gate) {
+
+    t_MonoSynth *syn = *synth;
+
+    if (syn->phase_reset && gate) {
+        WaveformDual_set_phase(&syn->waveform, 0);
+    }
+
+    EnvADSR_set_gate(&syn->amp_env, gate);
+    EnvADSR_set_gate(&syn->filter_env, gate);
+    EnvADSR_set_gate(&syn->pitch_env, gate);
 }
 
 /*----- Static function implementations ------------------------------*/
