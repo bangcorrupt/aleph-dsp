@@ -137,7 +137,7 @@ void MonoSynth_set_filter_lfo_freq(MonoSynth *const synth, fract32 freq);
 void MonoSynth_set_filter_lfo_depth(MonoSynth *const synth, fract32 depth);
 
 void MonoSynth_set_pitch_lfo_freq(MonoSynth *const synth, fract32 freq);
-oid MonoSynth_set_pitch_lfo_depth(MonoSynth *const synth, fract32 depth);
+void MonoSynth_set_pitch_lfo_depth(MonoSynth *const synth, fract32 depth);
 
 #ifdef __cplusplus
 }

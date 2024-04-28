@@ -35,7 +35,7 @@ extern "C" {
 
 /*----- Includes -----------------------------------------------------*/
 
-#include "ugens/filter_1p.h"
+/* #include "ugens/filter_1p.h" */
 #include "ugens/ricks_tricks.h"
 
 /*----- Macros and Definitions ---------------------------------------*/

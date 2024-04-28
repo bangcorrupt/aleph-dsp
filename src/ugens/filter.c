@@ -67,7 +67,7 @@ void HPF_free(HPF *const hpf) {
     mpool_free((char *)hp, hp->mempool);
 }
 
-fract32 HPF_set_freq(HPF *const hpf, fract32 freq) {
+void HPF_set_freq(HPF *const hpf, fract32 freq) {
 
     t_HPF *hp = *hpf;
 
@@ -164,7 +164,7 @@ void LPF_free(LPF *const lpf) {
     mpool_free((char *)lp, lp->mempool);
 }
 
-fract32 LPF_set_freq(LPF *const lpf, fract32 freq) {
+void LPF_set_freq(LPF *const lpf, fract32 freq) {
 
     t_LPF *lp = *lpf;
 
@@ -244,7 +244,7 @@ void BPF_free(BPF *const bpf) {
     mpool_free((char *)bp, bp->mempool);
 }
 
-fract32 BPF_set_freq(BPF *const bpf, fract32 hp_freq, fract32 lp_freq) {
+void BPF_set_freq(BPF *const bpf, fract32 hp_freq, fract32 lp_freq) {
 
     t_BPF *bp = *bpf;
 
