@@ -49,7 +49,7 @@ extern "C" {
 typedef enum {
     OSCILLATOR_SHAPE_SINE,
     OSCILLATOR_SHAPE_TRIANGLE,
-    /* OSCILLATOR_SHAPE_SAW, */
+    OSCILLATOR_SHAPE_SAW,
     OSCILLATOR_SHAPE_SQUARE,
 } e_Oscillator_shape;
 
@@ -68,6 +68,8 @@ typedef t_Oscillator *Oscillator;
 void Oscillator_init(Oscillator *const oscillator, t_Aleph *const aleph);
 void Oscillator_init_to_pool(Oscillator *const oscillator,
                              Mempool *const mempool);
+
+void Oscillator_free(Oscillator *const oscillator);
 
 void Oscillator_set_freq(Oscillator *const oscillator, fract32 freq);
 void Oscillator_set_phase(Oscillator *const oscillator, fract32 phase);

@@ -40,12 +40,14 @@ extern "C" {
 #include "aleph-mempool.h"
 
 #include "fix.h"
+#include "fix16_fract.h"
 #include "fract_math.h"
 #include "types.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 
-#define TWO_PI 6
+#define TWO_PI (6)
+#define ALEPH_MAX_UNISON_VOICES (16)
 
 struct t_Aleph {
     ///@{
