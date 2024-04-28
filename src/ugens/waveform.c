@@ -25,10 +25,6 @@
 
 /*----- Includes -----------------------------------------------------*/
 
-#include <stdint.h>
-
-#include "fract_math.h"
-
 #include "aleph-mempool.h"
 #include "aleph.h"
 

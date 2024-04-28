@@ -80,6 +80,11 @@ void EnvADSR_press(EnvADSR *const envelope);
 void EnvADSR_release(EnvADSR *const envelope);
 fract32 EnvADSR_next(EnvADSR *const envelope);
 
+void EnvADSR_set_attack(EnvADSR *const envelope, fract32 attack);
+void EnvADSR_set_decay(EnvADSR *const envelope, fract32 decay);
+void EnvADSR_set_sustain(EnvADSR *const envelope, fract32 sustain);
+void EnvADSR_set_release(EnvADSR *const envelope, fract32 release);
+
 void EnvADSR_16_init(EnvADSR_16 *const envelope, t_Aleph *const aleph);
 void EnvADSR_16_init_to_pool(EnvADSR_16 *const envelope,
                              Mempool *const mempool);
@@ -89,6 +94,11 @@ void EnvADSR_16_free(EnvADSR *const envelope);
 void EnvADSR_16_press(EnvADSR_16 *const envelope);
 void EnvADSR_16_release(EnvADSR_16 *const envelope);
 fract16 EnvADSR_16_next(EnvADSR_16 *const envelope);
+
+void EnvADSR_16_set_attack(EnvADSR_16 *const envelope, fract16 attack);
+void EnvADSR_16_set_decay(EnvADSR_16 *const envelope, fract16 decay);
+void EnvADSR_16_set_sustain(EnvADSR_16 *const envelope, fract16 sustain);
+void EnvADSR_16_set_release(EnvADSR_16 *const envelope, fract16 release);
 
 #ifdef __cplusplus
 }

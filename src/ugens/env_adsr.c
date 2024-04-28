@@ -110,6 +110,34 @@ fract32 EnvADSR_next(EnvADSR *envelope) {
     return env->env_out;
 }
 
+void EnvADSR_set_attack(EnvADSR *const envelope, fract32 attack) {
+
+    t_EnvADSR *env = *envelope;
+
+    env->attack_time = attack;
+}
+
+void EnvADSR_set_decay(EnvADSR *const envelope, fract32 decay) {
+
+    t_EnvADSR *env = *envelope;
+
+    env->decay_time = decay;
+}
+
+void EnvADSR_set_sustain(EnvADSR *const envelope, fract32 sustain) {
+
+    t_EnvADSR *env = *envelope;
+
+    env->sustain_level = sustain;
+}
+
+void EnvADSR_set_release(EnvADSR *const envelope, fract32 release) {
+
+    t_EnvADSR *env = *envelope;
+
+    env->release_time = release;
+}
+
 void EnvADSR_16_init(EnvADSR_16 *const envelope, t_Aleph *const aleph) {
 
     EnvADSR_16_init_to_pool(envelope, &aleph->mempool);
@@ -172,6 +200,34 @@ fract16 EnvADSR_16_next(EnvADSR_16 *envelope) {
     }
 
     return env->env_out;
+}
+
+void EnvADSR_16_set_attack(EnvADSR_16 *const envelope, fract16 attack) {
+
+    t_EnvADSR_16 *env = *envelope;
+
+    env->attack_time = attack;
+}
+
+void EnvADSR_16_set_decay(EnvADSR_16 *const envelope, fract16 decay) {
+
+    t_EnvADSR_16 *env = *envelope;
+
+    env->decay_time = decay;
+}
+
+void EnvADSR_16_set_sustain(EnvADSR_16 *const envelope, fract16 sustain) {
+
+    t_EnvADSR_16 *env = *envelope;
+
+    env->sustain_level = sustain;
+}
+
+void EnvADSR_16_set_release(EnvADSR_16 *const envelope, fract16 release) {
+
+    t_EnvADSR_16 *env = *envelope;
+
+    env->release_time = release;
 }
 
 /*----- Static function implementations ------------------------------*/
