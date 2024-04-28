@@ -56,8 +56,8 @@ void HPF_init_to_pool(HPF *const hpf, Mempool *const mempool) {
     hp->mempool = mp;
 
     hp->freq = HPF_DEFAULT_FREQ;
-    hp->lastIn = 0;
-    hp->lastOut = 0;
+    hp->last_in = 0;
+    hp->last_out = 0;
 }
 
 void HPF_free(HPF *const hpf) {
@@ -81,13 +81,13 @@ fract32 HPF_next(HPF *const hpf, fract32 in) {
     // Should be 1 / (2 pi dt fc + 1)
     fract32 alpha = hp->freq * 4;
 
-    hp->lastOut =
-        add_fr1x32(mult_fr1x32x32(sub_fr1x32(FR32_MAX, alpha), hp->lastOut),
-                   mult_fr1x32x32(alpha, sub_fr1x32(in, hp->lastIn)));
+    hp->last_out =
+        add_fr1x32(mult_fr1x32x32(sub_fr1x32(FR32_MAX, alpha), hp->last_out),
+                   mult_fr1x32x32(alpha, sub_fr1x32(in, hp->last_in)));
 
-    hp->lastIn = in;
+    hp->last_in = in;
 
-    return hp->lastOut * (FR32_MAX / hp->freq / 4);
+    return hp->last_out * (FR32_MAX / hp->freq / 4);
 }
 
 fract32 HPF_next_precise(HPF *const hpf, fract32 in) {
@@ -98,11 +98,11 @@ fract32 HPF_next_precise(HPF *const hpf, fract32 in) {
     fract32 alpha = _hpf_freq_calc(hp->freq);
 
     fract32 out =
-        add_fr1x32(mult_fr1x32x32(alpha, hp->lastOut),
-                   mult_fr1x32x32(alpha, (sub_fr1x32(in, hp->lastIn))));
+        add_fr1x32(mult_fr1x32x32(alpha, hp->last_out),
+                   mult_fr1x32x32(alpha, (sub_fr1x32(in, hp->last_in))));
 
-    hp->lastOut = out;
-    hp->lastIn = in;
+    hp->last_out = out;
+    hp->last_in = in;
 
     return out;
 }
@@ -114,13 +114,13 @@ fract32 HPF_next_dynamic(HPF *const hpf, fract32 in, fract32 freq) {
     // Should be 1 / (2 pi dt fc + 1)
     fract32 alpha = freq * 4;
 
-    hp->lastOut =
-        add_fr1x32(mult_fr1x32x32(sub_fr1x32(FR32_MAX, alpha), hp->lastOut),
-                   mult_fr1x32x32(alpha, sub_fr1x32(in, hp->lastIn)));
+    hp->last_out =
+        add_fr1x32(mult_fr1x32x32(sub_fr1x32(FR32_MAX, alpha), hp->last_out),
+                   mult_fr1x32x32(alpha, sub_fr1x32(in, hp->last_in)));
 
-    hp->lastIn = in;
+    hp->last_in = in;
 
-    return hp->lastOut * (FR32_MAX / freq / 4);
+    return hp->last_out * (FR32_MAX / freq / 4);
 }
 
 fract32 HPF_next_dynamic_precise(HPF *const hpf, fract32 in, fract32 freq) {
@@ -131,11 +131,11 @@ fract32 HPF_next_dynamic_precise(HPF *const hpf, fract32 in, fract32 freq) {
     fract32 alpha = _hpf_freq_calc(freq);
 
     fract32 out =
-        add_fr1x32(mult_fr1x32x32(alpha, hp->lastOut),
-                   mult_fr1x32x32(alpha, (sub_fr1x32(in, hp->lastIn))));
+        add_fr1x32(mult_fr1x32x32(alpha, hp->last_out),
+                   mult_fr1x32x32(alpha, (sub_fr1x32(in, hp->last_in))));
 
-    hp->lastOut = out;
-    hp->lastIn = in;
+    hp->last_out = out;
+    hp->last_in = in;
 
     return out;
 }
@@ -154,7 +154,7 @@ void LPF_init_to_pool(LPF *const lpf, Mempool *const mempool) {
     lp->mempool = mp;
 
     lp->freq = LPF_DEFAULT_FREQ;
-    lp->lastOut = 0;
+    lp->last_out = 0;
 }
 
 void LPF_free(LPF *const lpf) {
@@ -176,7 +176,7 @@ fract32 LPF_next(LPF *const lpf, fract32 in) {
 
     t_LPF *lp = *lpf;
 
-    return SIMPLE_SLEW(lp->lastOut, in, TWOPI * lp->freq);
+    return SIMPLE_SLEW(lp->last_out, in, TWOPI * lp->freq);
 }
 
 fract32 LPF_next_precise(LPF *const lpf, fract32 in) {
@@ -187,9 +187,9 @@ fract32 LPF_next_precise(LPF *const lpf, fract32 in) {
 
     fract32 out =
         add_fr1x32(mult_fr1x32x32(alpha, in),
-                   mult_fr1x32x32(sub_fr1x32(FR32_MAX, alpha), lp->lastOut));
+                   mult_fr1x32x32(sub_fr1x32(FR32_MAX, alpha), lp->last_out));
 
-    lp->lastOut = out;
+    lp->last_out = out;
 
     return out;
 }
@@ -199,7 +199,7 @@ fract32 LPF_next_dynamic(LPF *const lpf, fract32 in, fract32 freq) {
 
     t_LPF *lp = *lpf;
 
-    return SIMPLE_SLEW(lp->lastOut, in, TWOPI * freq);
+    return SIMPLE_SLEW(lp->last_out, in, TWOPI * freq);
 }
 
 fract32 LPF_next_dynamic_precise(LPF *const lpf, fract32 in, fract32 freq) {
@@ -210,9 +210,9 @@ fract32 LPF_next_dynamic_precise(LPF *const lpf, fract32 in, fract32 freq) {
 
     fract32 out =
         add_fr1x32(mult_fr1x32x32(alpha, in),
-                   mult_fr1x32x32(sub_fr1x32(FR32_MAX, alpha), lp->lastOut));
+                   mult_fr1x32x32(sub_fr1x32(FR32_MAX, alpha), lp->last_out));
 
-    lp->lastOut = out;
+    lp->last_out = out;
 
     return out;
 }
@@ -287,12 +287,12 @@ fract32 HPF_dc_block(HPF *const hpf, fract32 in) {
     t_HPF *hp = *hpf;
 
     fract32 in_scaled = shr_fr1x32(in, 3);
-    fract32 aux = sub_fr1x32(in_scaled, hp->lastIn);
+    fract32 aux = sub_fr1x32(in_scaled, hp->last_in);
 
-    hp->lastOut = add_fr1x32(aux, mult_fr1x32x32(0x7F600000, hp->lastOut));
-    hp->lastIn = in_scaled;
+    hp->last_out = add_fr1x32(aux, mult_fr1x32x32(0x7F600000, hp->last_out));
+    hp->last_in = in_scaled;
 
-    return shl_fr1x32(hp->lastOut, 3);
+    return shl_fr1x32(hp->last_out, 3);
 }
 
 fract32 HPF_dc_block2(HPF *const hpf, fract32 in) {
@@ -301,12 +301,13 @@ fract32 HPF_dc_block2(HPF *const hpf, fract32 in) {
 
     fract32 in_scaled = shr_fr1x32(in, 3);
 
-    hp->lastOut = mult_fr1x32x32(
-        sub_fr1x32(add_fr1x32(in_scaled, hp->lastOut), hp->lastIn), 0x7F600000);
+    hp->last_out = mult_fr1x32x32(
+        sub_fr1x32(add_fr1x32(in_scaled, hp->last_out), hp->last_in),
+        0x7F600000);
 
-    hp->lastIn = in_scaled;
+    hp->last_in = in_scaled;
 
-    return shl_fr1x32(hp->lastOut, 3);
+    return shl_fr1x32(hp->last_out, 3);
 }
 
 /*----- Static function implementations ------------------------------*/

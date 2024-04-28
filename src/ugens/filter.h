@@ -44,8 +44,8 @@ extern "C" {
 
 typedef struct {
     Mempool mempool;
-    fract32 lastIn;
-    fract32 lastOut;
+    fract32 last_in;
+    fract32 last_out;
     fract32 freq;
 } t_HPF;
 
@@ -53,7 +53,7 @@ typedef t_HPF *HPF;
 
 typedef struct {
     Mempool mempool;
-    fract32 lastOut;
+    fract32 last_out;
     fract32 freq;
 } t_LPF;
 
