@@ -37,12 +37,13 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "aleph-mempool.h"
+#include "aleph_mempool.h"
 
 #include "fix.h"
 #include "fix16_fract.h"
 #include "fract_math.h"
 #include "types.h"
+
 
 /*----- Macros and Definitions ---------------------------------------*/
 
