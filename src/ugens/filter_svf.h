@@ -43,9 +43,10 @@ extern "C" {
 /*----- Macros and Definitions ---------------------------------------*/
 
 typedef enum {
+    FILTERSVF_TYPE_LPF,
     FILTERSVF_TYPE_HPF,
     FILTERSVF_TYPE_BPF,
-    FILTERSVF_TYPE_LPF,
+    FILTERSVF_TYPE_NOTCH,
 } e_FilterSVF_type;
 
 typedef struct {
@@ -56,8 +57,8 @@ typedef struct {
     fract32 rq;   // reciprocal of q (resonance / bandwidth)
                   // range is [0, 2]
     fract32 low;  // lowpass
-    fract32 band; // bandpass
     fract32 high;
+    fract32 band; // bandpass
     fract32 notch;
 
     // output mix

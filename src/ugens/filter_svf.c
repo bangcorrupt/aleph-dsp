@@ -256,12 +256,12 @@ fract32 FilterSVF_softclip_asym_notch_next(FilterSVF *const filter,
 }
 
 const p_svf_func FilterSVF_func[3][4] = {
-    {FilterSVF_hpf_next, FilterSVF_bpf_next, FilterSVF_lpf_next,
+    {FilterSVF_lpf_next, FilterSVF_hpf_next, FilterSVF_bpf_next,
      FilterSVF_notch_next},
-    {FilterSVF_softclip_hpf_next, FilterSVF_softclip_bpf_next,
-     FilterSVF_softclip_lpf_next, FilterSVF_softclip_notch_next},
-    {FilterSVF_softclip_asym_hpf_next, FilterSVF_softclip_asym_bpf_next,
-     FilterSVF_softclip_asym_lpf_next, FilterSVF_softclip_asym_notch_next}};
+    {FilterSVF_softclip_lpf_next, FilterSVF_softclip_hpf_next,
+     FilterSVF_softclip_bpf_next, FilterSVF_softclip_notch_next},
+    {FilterSVF_softclip_asym_lpf_next, FilterSVF_softclip_asym_hpf_next,
+     FilterSVF_softclip_asym_bpf_next, FilterSVF_softclip_asym_notch_next}};
 
 /*----- Static function implementations ------------------------------*/
 
@@ -284,12 +284,14 @@ static void _softclip_calc_frame(FilterSVF *const filter, fract32 in) {
     t_FilterSVF *fl = *filter;
 
     char clip_radix = 0;
+
     fl->low = shr_fr1x32(
         soft_clip(
             FR32_MAX / 2,
             shl_fr1x32(add_fr1x32(fl->low, mult_fr1x32x32(fl->freq, fl->band)),
                        clip_radix)),
         clip_radix);
+
     fl->high = shr_fr1x32(
         soft_clip(
             FR32_MAX / 2,
@@ -300,6 +302,7 @@ static void _softclip_calc_frame(FilterSVF *const filter, fract32 in) {
                     fl->low),
                 clip_radix)),
         clip_radix);
+
     fl->band = shr_fr1x32(
         soft_clip(
             FR32_MAX / 2,
@@ -320,6 +323,7 @@ static void _softclip_asym_calc_frame(FilterSVF *const filter, fract32 in) {
             shl_fr1x32(add_fr1x32(fl->low, mult_fr1x32x32(fl->freq, fl->band)),
                        clip_radix)),
         clip_radix);
+
     fl->high = shr_fr1x32(
         soft_clip(
             FR32_MAX / 8,
@@ -330,6 +334,7 @@ static void _softclip_asym_calc_frame(FilterSVF *const filter, fract32 in) {
                     fl->low),
                 clip_radix)),
         clip_radix);
+
     fl->band = shr_fr1x32(
         soft_clip_asym(
             FR32_MAX / 4, FR32_MAX / -8,
