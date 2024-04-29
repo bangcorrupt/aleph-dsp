@@ -19,35 +19,30 @@
 /* Original work by monome, modified by bangcorrupt 2024. */
 
 /*
- * @file    filter_svf.h
+ * @file    aleph_filter_svf.h
  *
- * @brief   A digital state-variable filter for 32-bit fixed point audio.
+ * @brief   Public API for digital state-variable filter.
  */
 
 #ifndef ALEPH_FILTER_SVF_H
 #define ALEPH_FILTER_SVF_H
 
-#include "aleph-mempool.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /*----- Includes -----------------------------------------------------*/
 
-#include <stdint.h>
-
 #include "aleph.h"
-#include "fix.h"
-#include "types.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 
 typedef enum {
-    FILTERSVF_TYPE_LPF,
-    FILTERSVF_TYPE_HPF,
-    FILTERSVF_TYPE_BPF,
-    FILTERSVF_TYPE_NOTCH,
-} e_FilterSVF_type;
+    ALEPH_FILTERSVF_TYPE_LPF,
+    ALEPH_FILTERSVF_TYPE_HPF,
+    ALEPH_FILTERSVF_TYPE_BPF,
+    ALEPH_FILTERSVF_TYPE_NOTCH,
+} e_Aleph_FilterSVF_type;
 
 typedef struct {
 
@@ -71,50 +66,60 @@ typedef struct {
     // Kinda weird, but use rshift for rq values >=1
     uint8_t rq_shift;
 
-} t_FilterSVF;
+} t_Aleph_FilterSVF;
 
-typedef t_FilterSVF *FilterSVF;
+typedef t_Aleph_FilterSVF *Aleph_FilterSVF;
 
-typedef fract32 (*p_svf_func)(FilterSVF *const filter, fract32 in);
+typedef fract32 (*p_Aleph_FilterSVF_func)(Aleph_FilterSVF *const filter,
+                                          fract32 in);
 
 /*----- Extern variable declarations ---------------------------------*/
 
-const extern p_svf_func FilterSVF_func[3][4];
+const extern p_Aleph_FilterSVF_func Aleph_FilterSVF_func[3][4];
 
 /*----- Extern function prototypes -----------------------------------*/
 
 // init
-void FilterSVF_init(FilterSVF *const filter, t_Aleph *const aleph);
-void FilterSVF_init_to_pool(FilterSVF *const filter, Mempool *const mempool);
-void FilterSVF_free(FilterSVF *const filter);
+void Aleph_FilterSVF_init(Aleph_FilterSVF *const filter, t_Aleph *const aleph);
+void Aleph_FilterSVF_init_to_pool(Aleph_FilterSVF *const filter,
+                                  Mempool *const mempool);
+void Aleph_FilterSVF_free(Aleph_FilterSVF *const filter);
 // set cutoff in hz
-//  void t_FilterSVF_set_hz    ( t_FilterSVF* f, fix16 hz );
+//  void t_Aleph_FilterSVF_set_hz    ( t_Aleph_FilterSVF* f, fix16 hz );
 // set cutoff coefficient
-void FilterSVF_set_coeff(FilterSVF *const filter, fract32 coeff);
+void Aleph_FilterSVF_set_coeff(Aleph_FilterSVF *const filter, fract32 coeff);
 
 // set RQ (reciprocal of q: resonance/bandwidth)
-void FilterSVF_set_rq(FilterSVF *const filter, fract32 rq);
+void Aleph_FilterSVF_set_rq(Aleph_FilterSVF *const filter, fract32 rq);
 // set output mixes
-void FilterSVF_set_low(FilterSVF *const filter, fract32 mix);
-void FilterSVF_set_high(FilterSVF *const filter, fract32 mix);
-void FilterSVF_set_band(FilterSVF *const filter, fract32 mix);
-void FilterSVF_set_notch(FilterSVF *const filter, fract32 mix);
-void FilterSVF_set_peak(FilterSVF *const filter, fract32 mix);
+void Aleph_FilterSVF_set_low(Aleph_FilterSVF *const filter, fract32 mix);
+void Aleph_FilterSVF_set_high(Aleph_FilterSVF *const filter, fract32 mix);
+void Aleph_FilterSVF_set_band(Aleph_FilterSVF *const filter, fract32 mix);
+void Aleph_FilterSVF_set_notch(Aleph_FilterSVF *const filter, fract32 mix);
+void Aleph_FilterSVF_set_peak(Aleph_FilterSVF *const filter, fract32 mix);
 // get next value (with input)
 
-fract32 FilterSVF_next(FilterSVF *const filter, fract32 in);
-fract32 FilterSVF_hpf_next(FilterSVF *const filter, fract32 in);
-fract32 FilterSVF_bpf_next(FilterSVF *const filter, fract32 in);
-fract32 FilterSVF_lpf_next(FilterSVF *const filter, fract32 in);
-fract32 FilterSVF_notch_next(FilterSVF *const filter, fract32 in);
-fract32 FilterSVF_softclip_hpf_next(FilterSVF *const filter, fract32 in);
-fract32 FilterSVF_softclip_bpf_next(FilterSVF *const filter, fract32 in);
-fract32 FilterSVF_softclip_lpf_next(FilterSVF *const filter, fract32 in);
-fract32 FilterSVF_softclip_notch_next(FilterSVF *const filter, fract32 in);
-fract32 FilterSVF_softclip_asym_lpf_next(FilterSVF *const filter, fract32 in);
-fract32 FilterSVF_softclip_asym_bpf_next(FilterSVF *const filter, fract32 in);
-fract32 FilterSVF_softclip_asym_hpf_next(FilterSVF *const filter, fract32 in);
-fract32 FilterSVF_softclip_asym_notch_next(FilterSVF *const filter, fract32 in);
+fract32 Aleph_FilterSVF_next(Aleph_FilterSVF *const filter, fract32 in);
+fract32 Aleph_FilterSVF_hpf_next(Aleph_FilterSVF *const filter, fract32 in);
+fract32 Aleph_FilterSVF_bpf_next(Aleph_FilterSVF *const filter, fract32 in);
+fract32 Aleph_FilterSVF_lpf_next(Aleph_FilterSVF *const filter, fract32 in);
+fract32 Aleph_FilterSVF_notch_next(Aleph_FilterSVF *const filter, fract32 in);
+fract32 Aleph_FilterSVF_softclip_hpf_next(Aleph_FilterSVF *const filter,
+                                          fract32 in);
+fract32 Aleph_FilterSVF_softclip_bpf_next(Aleph_FilterSVF *const filter,
+                                          fract32 in);
+fract32 Aleph_FilterSVF_softclip_lpf_next(Aleph_FilterSVF *const filter,
+                                          fract32 in);
+fract32 Aleph_FilterSVF_softclip_notch_next(Aleph_FilterSVF *const filter,
+                                            fract32 in);
+fract32 Aleph_FilterSVF_softclip_asym_lpf_next(Aleph_FilterSVF *const filter,
+                                               fract32 in);
+fract32 Aleph_FilterSVF_softclip_asym_bpf_next(Aleph_FilterSVF *const filter,
+                                               fract32 in);
+fract32 Aleph_FilterSVF_softclip_asym_hpf_next(Aleph_FilterSVF *const filter,
+                                               fract32 in);
+fract32 Aleph_FilterSVF_softclip_asym_notch_next(Aleph_FilterSVF *const filter,
+                                                 fract32 in);
 
 #ifdef __cplusplus
 }

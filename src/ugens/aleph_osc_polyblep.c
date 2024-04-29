@@ -19,7 +19,7 @@
 /* Original work by monome, modified by bangcorrupt 2024. */
 
 /*
- * @file    osc_polyblep.c
+ * @file    aleph_osc_polyblep.c
  *
  * @brief   Oscillator polyblep.
  *
@@ -27,14 +27,11 @@
 
 /*----- Includes -----------------------------------------------------*/
 
-#include "fix.h"
-#include "fix16_fract.h"
-#include "fract_math.h"
-#include "types.h"
+#include "aleph.h"
 
-#include "ricks_tricks.h"
+#include "aleph_utils.h"
 
-#include "osc_polyblep.h"
+#include "aleph_osc_polyblep.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 

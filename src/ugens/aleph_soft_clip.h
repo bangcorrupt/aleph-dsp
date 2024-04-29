@@ -19,7 +19,7 @@
 /* Original work by monome, modified by bangcorrupt 2024. */
 
 /*
- * @file    soft_clip.h
+ * @file    aleph_soft_clip.h
  *
  * @brief   Public API for soft clipping.
  *
@@ -34,7 +34,7 @@ extern "C" {
 
 /*----- Includes -----------------------------------------------------*/
 
-#include "types.h"
+#include "aleph.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 

@@ -19,7 +19,7 @@
 /* Original work by monome, modified by bangcorrupt 2024. */
 
 /*
- * @file    interpolate.h
+ * @file    aleph_interpolate.h
  *
  * @brief   Public API for interpolation.
  *
@@ -28,15 +28,15 @@
 #ifndef ALEPH_INTERPOLATE_H
 #define ALEPH_INTERPOLATE_H
 
-#include "fract_typedef.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /*----- Includes -----------------------------------------------------*/
 
-/* #include "ugens/filter_1p.h" */
-#include "ugens/ricks_tricks.h"
+#include "aleph.h"
+
+#include "aleph_utils.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 
@@ -74,38 +74,47 @@ typedef struct {
     uint16_t radix;
     fract32 remainder;
     fract32 rate;
-} t_RadixLinSlew;
+} t_Aleph_RadixLinSlew;
 
 typedef struct {
     fract32 up;
     fract32 down;
-} t_AsymLinSlew;
+} t_Aleph_AsymLinSlew;
 
 typedef struct {
     unsigned short radix;
     fract32 remainder;
     fract32 rate;
-} t_RadixLogSlew;
+} t_Aleph_RadixLogSlew;
 
 typedef struct {
     fract32 rate;
-} t_LinSlew;
+} t_Aleph_LinSlew;
 
 /*----- Extern variable declarations ---------------------------------*/
 
 /*----- Extern function prototypes -----------------------------------*/
 
-void RadixLinSlew_init(t_RadixLinSlew *slew, fract32 rate, uint16_t radix);
-void RadixLinSlew_next(t_RadixLinSlew *slew, fract32 *current, fract32 target);
+void Aleph_RadixLinSlew_init(t_Aleph_RadixLinSlew *slew, fract32 rate,
+                             uint16_t radix);
 
-void LinSlew_init(t_LinSlew *slew, fract32 rate);
-void LinSlew_next(t_LinSlew *slew, fract32 *current, fract32 target);
+void Aleph_RadixLinSlew_next(t_Aleph_RadixLinSlew *slew, fract32 *current,
+                             fract32 target);
 
-void AsymLinSlew_init(t_AsymLinSlew *slew, fract32 slew_up, fract32 slew_down);
-void AsymLinSlew_next(t_AsymLinSlew *slewm, fract32 *current, fract32 target);
+void LinSlew_init(t_Aleph_LinSlew *slew, fract32 rate);
+void LinSlew_next(t_Aleph_LinSlew *slew, fract32 *current, fract32 target);
 
-void RadixLogSlew_init(t_RadixLogSlew *slew, fract32 rate, uint16_t radix);
-void RadixLogSlew_next(t_RadixLogSlew *slew, fract32 *current, fract32 target);
+void Aleph_AsymLinSlew_init(t_Aleph_AsymLinSlew *slew, fract32 slew_up,
+                            fract32 slew_down);
+
+void Aleph_AsymLinSlew_next(t_Aleph_AsymLinSlew *slewm, fract32 *current,
+                            fract32 target);
+
+void Aleph_RadixLogSlew_init(t_Aleph_RadixLogSlew *slew, fract32 rate,
+                             uint16_t radix);
+
+void Aleph_RadixLogSlew_next(t_Aleph_RadixLogSlew *slew, fract32 *current,
+                             fract32 target);
 
 /// TODO: Refactor these as above.
 //

@@ -17,9 +17,9 @@
 ----------------------------------------------------------------------*/
 
 /*
- * @file    template.h
+ * @file    aleph_env_adsr.h
  *
- * @brief   Template for header files.
+ * @brief   Public API for ADSR envelope.
  *
  */
 
@@ -40,63 +40,69 @@ typedef enum {
     ADSR_ATTACK,
     ADSR_DECAY,
     ADSR_RELEASE,
-} e_EnvADSR_state;
+} e_Aleph_EnvADSR_state;
 
 typedef struct {
     Mempool mempool;
-    e_EnvADSR_state env_state;
+    e_Aleph_EnvADSR_state env_state;
     fract32 env_out;
     fract32 overshoot;
     fract32 attack_time;
     fract32 decay_time;
     fract32 sustain_level;
     fract32 release_time;
-} t_EnvADSR;
+} t_Aleph_EnvADSR;
 
-typedef t_EnvADSR *EnvADSR;
+typedef t_Aleph_EnvADSR *Aleph_EnvADSR;
 
 typedef struct {
     Mempool mempool;
-    e_EnvADSR_state env_state;
+    e_Aleph_EnvADSR_state env_state;
     fract16 env_out;
     fract16 overshoot;
     fract16 attack_time;
     fract16 decay_time;
     fract16 sustain_level;
     fract16 release_time;
-} t_EnvADSR_16;
+} t_Aleph_EnvADSR_16;
 
-typedef t_EnvADSR_16 *EnvADSR_16;
+typedef t_Aleph_EnvADSR_16 *Aleph_EnvADSR_16;
 
 /*----- Extern variable declarations ---------------------------------*/
 
 /*----- Extern function prototypes -----------------------------------*/
 
-void EnvADSR_init(EnvADSR *const envelope, t_Aleph *const aleph);
-void EnvADSR_init_to_pool(EnvADSR *const envelope, Mempool *const mempool);
-void EnvADSR_free(EnvADSR *const envelope);
+void Aleph_EnvADSR_init(Aleph_EnvADSR *const envelope, t_Aleph *const aleph);
+void Aleph_EnvADSR_init_to_pool(Aleph_EnvADSR *const envelope,
+                                Mempool *const mempool);
+void Aleph_EnvADSR_free(Aleph_EnvADSR *const envelope);
 
-fract32 EnvADSR_next(EnvADSR *const envelope);
+fract32 Aleph_EnvADSR_next(Aleph_EnvADSR *const envelope);
 
-void EnvADSR_set_gate(EnvADSR *const envelope, bool gate);
-void EnvADSR_set_attack(EnvADSR *const envelope, fract32 attack);
-void EnvADSR_set_decay(EnvADSR *const envelope, fract32 decay);
-void EnvADSR_set_sustain(EnvADSR *const envelope, fract32 sustain);
-void EnvADSR_set_release(EnvADSR *const envelope, fract32 release);
+void Aleph_EnvADSR_set_gate(Aleph_EnvADSR *const envelope, bool gate);
+void Aleph_EnvADSR_set_attack(Aleph_EnvADSR *const envelope, fract32 attack);
+void Aleph_EnvADSR_set_decay(Aleph_EnvADSR *const envelope, fract32 decay);
+void Aleph_EnvADSR_set_sustain(Aleph_EnvADSR *const envelope, fract32 sustain);
+void Aleph_EnvADSR_set_release(Aleph_EnvADSR *const envelope, fract32 release);
 
-void EnvADSR_16_init(EnvADSR_16 *const envelope, t_Aleph *const aleph);
-void EnvADSR_16_init_to_pool(EnvADSR_16 *const envelope,
-                             Mempool *const mempool);
+void Aleph_EnvADSR_16_init(Aleph_EnvADSR_16 *const envelope,
+                           t_Aleph *const aleph);
+void Aleph_EnvADSR_16_init_to_pool(Aleph_EnvADSR_16 *const envelope,
+                                   Mempool *const mempool);
 
-void EnvADSR_16_free(EnvADSR *const envelope);
+void Aleph_EnvADSR_16_free(Aleph_EnvADSR *const envelope);
 
-fract16 EnvADSR_16_next(EnvADSR_16 *const envelope);
+fract16 Aleph_EnvADSR_16_next(Aleph_EnvADSR_16 *const envelope);
 
-void EnvADSR_16_set_gate(EnvADSR_16 *const envelope, bool gate);
-void EnvADSR_16_set_attack(EnvADSR_16 *const envelope, fract16 attack);
-void EnvADSR_16_set_decay(EnvADSR_16 *const envelope, fract16 decay);
-void EnvADSR_16_set_sustain(EnvADSR_16 *const envelope, fract16 sustain);
-void EnvADSR_16_set_release(EnvADSR_16 *const envelope, fract16 release);
+void Aleph_EnvADSR_16_set_gate(Aleph_EnvADSR_16 *const envelope, bool gate);
+void Aleph_EnvADSR_16_set_attack(Aleph_EnvADSR_16 *const envelope,
+                                 fract16 attack);
+void Aleph_EnvADSR_16_set_decay(Aleph_EnvADSR_16 *const envelope,
+                                fract16 decay);
+void Aleph_EnvADSR_16_set_sustain(Aleph_EnvADSR_16 *const envelope,
+                                  fract16 sustain);
+void Aleph_EnvADSR_16_set_release(Aleph_EnvADSR_16 *const envelope,
+                                  fract16 release);
 
 #ifdef __cplusplus
 }

@@ -50,8 +50,9 @@
 
 #include <stdlib.h>
 
-#include "aleph-mempool.h"
 #include "aleph.h"
+
+#include "aleph_mempool.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 

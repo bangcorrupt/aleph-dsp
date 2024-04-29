@@ -16,7 +16,7 @@
 
 ----------------------------------------------------------------------*/
 /*
- * @file    EnvADSR.c
+ * @file    aleph_env_adsr.c
  *
  * @brief   ADSR Envelope.
  *
@@ -24,11 +24,10 @@
 
 /*----- Includes -----------------------------------------------------*/
 
-#include "aleph-mempool.h"
 #include "aleph.h"
 
-#include "ugens/env_adsr.h"
-#include "ugens/interpolate.h"
+#include "aleph_env_adsr.h"
+#include "aleph_interpolate.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 
@@ -40,17 +39,18 @@
 
 /*----- Extern function implementations ------------------------------*/
 
-void EnvADSR_init(EnvADSR *const envelope, t_Aleph *const aleph) {
+void Aleph_EnvADSR_init(Aleph_EnvADSR *const envelope, t_Aleph *const aleph) {
 
-    EnvADSR_init_to_pool(envelope, &aleph->mempool);
+    Aleph_EnvADSR_init_to_pool(envelope, &aleph->mempool);
 }
 
-void EnvADSR_init_to_pool(EnvADSR *const envelope, Mempool *const mempool) {
+void Aleph_EnvADSR_init_to_pool(Aleph_EnvADSR *const envelope,
+                                Mempool *const mempool) {
 
     t_Mempool *mp = *mempool;
 
-    t_EnvADSR *env = *envelope =
-        (t_EnvADSR *)mpool_alloc(sizeof(t_EnvADSR), mp);
+    t_Aleph_EnvADSR *env = *envelope =
+        (t_Aleph_EnvADSR *)mpool_alloc(sizeof(t_Aleph_EnvADSR), mp);
 
     env->mempool = mp;
 
@@ -63,16 +63,16 @@ void EnvADSR_init_to_pool(EnvADSR *const envelope, Mempool *const mempool) {
     env->release_time = SLEW_1S;
 }
 
-void EnvADSR_free(EnvADSR *const envelope) {
+void Aleph_EnvADSR_free(Aleph_EnvADSR *const envelope) {
 
-    t_EnvADSR *env = *envelope;
+    t_Aleph_EnvADSR *env = *envelope;
 
     mpool_free((char *)env, env->mempool);
 }
 
-void EnvADSR_set_gate(EnvADSR *const envelope, bool gate) {
+void Aleph_EnvADSR_set_gate(Aleph_EnvADSR *const envelope, bool gate) {
 
-    t_EnvADSR *env = *envelope;
+    t_Aleph_EnvADSR *env = *envelope;
 
     if (gate) {
         env->env_state = ADSR_ATTACK;
@@ -82,9 +82,9 @@ void EnvADSR_set_gate(EnvADSR *const envelope, bool gate) {
     }
 }
 
-fract32 EnvADSR_next(EnvADSR *envelope) {
+fract32 Aleph_EnvADSR_next(Aleph_EnvADSR *envelope) {
 
-    t_EnvADSR *env = *envelope;
+    t_Aleph_EnvADSR *env = *envelope;
 
     switch (env->env_state) {
 
@@ -108,46 +108,47 @@ fract32 EnvADSR_next(EnvADSR *envelope) {
     return env->env_out;
 }
 
-void EnvADSR_set_attack(EnvADSR *const envelope, fract32 attack) {
+void Aleph_EnvADSR_set_attack(Aleph_EnvADSR *const envelope, fract32 attack) {
 
-    t_EnvADSR *env = *envelope;
+    t_Aleph_EnvADSR *env = *envelope;
 
     env->attack_time = attack;
 }
 
-void EnvADSR_set_decay(EnvADSR *const envelope, fract32 decay) {
+void Aleph_EnvADSR_set_decay(Aleph_EnvADSR *const envelope, fract32 decay) {
 
-    t_EnvADSR *env = *envelope;
+    t_Aleph_EnvADSR *env = *envelope;
 
     env->decay_time = decay;
 }
 
-void EnvADSR_set_sustain(EnvADSR *const envelope, fract32 sustain) {
+void Aleph_EnvADSR_set_sustain(Aleph_EnvADSR *const envelope, fract32 sustain) {
 
-    t_EnvADSR *env = *envelope;
+    t_Aleph_EnvADSR *env = *envelope;
 
     env->sustain_level = sustain;
 }
 
-void EnvADSR_set_release(EnvADSR *const envelope, fract32 release) {
+void Aleph_EnvADSR_set_release(Aleph_EnvADSR *const envelope, fract32 release) {
 
-    t_EnvADSR *env = *envelope;
+    t_Aleph_EnvADSR *env = *envelope;
 
     env->release_time = release;
 }
 
-void EnvADSR_16_init(EnvADSR_16 *const envelope, t_Aleph *const aleph) {
+void Aleph_EnvADSR_16_init(Aleph_EnvADSR_16 *const envelope,
+                           t_Aleph *const aleph) {
 
-    EnvADSR_16_init_to_pool(envelope, &aleph->mempool);
+    Aleph_EnvADSR_16_init_to_pool(envelope, &aleph->mempool);
 }
 
-void EnvADSR_16_init_to_pool(EnvADSR_16 *const envelope,
-                             Mempool *const mempool) {
+void Aleph_EnvADSR_16_init_to_pool(Aleph_EnvADSR_16 *const envelope,
+                                   Mempool *const mempool) {
 
     t_Mempool *mp = *mempool;
 
-    t_EnvADSR_16 *env = *envelope =
-        (t_EnvADSR_16 *)mpool_alloc(sizeof(t_EnvADSR_16), mp);
+    t_Aleph_EnvADSR_16 *env = *envelope =
+        (t_Aleph_EnvADSR_16 *)mpool_alloc(sizeof(t_Aleph_EnvADSR_16), mp);
 
     env->mempool = mp;
 
@@ -160,9 +161,9 @@ void EnvADSR_16_init_to_pool(EnvADSR_16 *const envelope,
     env->release_time = SLEW_1S_16;
 }
 
-void EnvADSR_16_set_gate(EnvADSR_16 *const envelope, bool gate) {
+void Aleph_EnvADSR_16_set_gate(Aleph_EnvADSR_16 *const envelope, bool gate) {
 
-    t_EnvADSR_16 *env = *envelope;
+    t_Aleph_EnvADSR_16 *env = *envelope;
 
     if (gate) {
         env->env_state = ADSR_ATTACK;
@@ -172,9 +173,9 @@ void EnvADSR_16_set_gate(EnvADSR_16 *const envelope, bool gate) {
     }
 }
 
-fract16 EnvADSR_16_next(EnvADSR_16 *envelope) {
+fract16 Aleph_EnvADSR_16_next(Aleph_EnvADSR_16 *envelope) {
 
-    t_EnvADSR_16 *env = *envelope;
+    t_Aleph_EnvADSR_16 *env = *envelope;
 
     switch (env->env_state) {
 
@@ -198,30 +199,34 @@ fract16 EnvADSR_16_next(EnvADSR_16 *envelope) {
     return env->env_out;
 }
 
-void EnvADSR_16_set_attack(EnvADSR_16 *const envelope, fract16 attack) {
+void Aleph_EnvADSR_16_set_attack(Aleph_EnvADSR_16 *const envelope,
+                                 fract16 attack) {
 
-    t_EnvADSR_16 *env = *envelope;
+    t_Aleph_EnvADSR_16 *env = *envelope;
 
     env->attack_time = attack;
 }
 
-void EnvADSR_16_set_decay(EnvADSR_16 *const envelope, fract16 decay) {
+void Aleph_EnvADSR_16_set_decay(Aleph_EnvADSR_16 *const envelope,
+                                fract16 decay) {
 
-    t_EnvADSR_16 *env = *envelope;
+    t_Aleph_EnvADSR_16 *env = *envelope;
 
     env->decay_time = decay;
 }
 
-void EnvADSR_16_set_sustain(EnvADSR_16 *const envelope, fract16 sustain) {
+void Aleph_EnvADSR_16_set_sustain(Aleph_EnvADSR_16 *const envelope,
+                                  fract16 sustain) {
 
-    t_EnvADSR_16 *env = *envelope;
+    t_Aleph_EnvADSR_16 *env = *envelope;
 
     env->sustain_level = sustain;
 }
 
-void EnvADSR_16_set_release(EnvADSR_16 *const envelope, fract16 release) {
+void Aleph_EnvADSR_16_set_release(Aleph_EnvADSR_16 *const envelope,
+                                  fract16 release) {
 
-    t_EnvADSR_16 *env = *envelope;
+    t_Aleph_EnvADSR_16 *env = *envelope;
 
     env->release_time = release;
 }

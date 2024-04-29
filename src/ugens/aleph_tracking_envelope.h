@@ -19,7 +19,7 @@
 /* Original work by monome, modified by bangcorrupt 2024. */
 
 /*
- * @file    tracking_envelope.h
+ * @file    aleph_tracking_envelope.h
  *
  * @brief   Public API for tracking envelope.
  *
@@ -34,17 +34,17 @@ extern "C" {
 
 /*----- Includes -----------------------------------------------------*/
 
-#include "fix.h"
-#include "fract_math.h"
-#include "types.h"
+#include "aleph.h"
+
+#include "aleph_interpolate.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 
 typedef struct {
     fract32 val;
-    t_AsymLinSlew slew;
+    t_Aleph_AsymLinSlew slew;
 
-} t_TrackingEnvLin;
+} t_Aleph_TrackingEnvLin;
 
 typedef struct {
     fract32 val;
@@ -52,17 +52,17 @@ typedef struct {
     fract32 down;
     fract32 gate;
 
-} t_TrackingEnvLog;
+} t_Aleph_TrackingEnvLog;
 
 /*----- Extern variable declarations ---------------------------------*/
 
 /*----- Extern function prototypes -----------------------------------*/
 
-void TrackingEnvLin_init(t_TrackingEnvLin *env);
-fract32 TrackingEnvLin_next(t_TrackingEnvLin *env, fract32 in);
+void Aleph_TrackingEnvLin_init(t_Aleph_TrackingEnvLin *env);
+fract32 Aleph_TrackingEnvLin_next(t_Aleph_TrackingEnvLin *env, fract32 in);
 
-void TrackingEnvLog_init(t_TrackingEnvLog *env);
-fract32 TrackingEnvLog_next(t_TrackingEnvLog *env, fract32 in);
+void Aleph_TrackingEnvLog_init(t_Aleph_TrackingEnvLog *env);
+fract32 Aleph_TrackingEnvLog_next(t_Aleph_TrackingEnvLog *env, fract32 in);
 
 #ifdef __cplusplus
 }

@@ -19,7 +19,7 @@
 /* Original work by monome, modified by bangcorrupt 2024. */
 
 /*
- * @file    soft_clip.c
+ * @file    aleph_soft_clip.c
  *
  * @brief   Soft clipping.
  *
@@ -29,11 +29,9 @@
 
 /*----- Includes -----------------------------------------------------*/
 
-#include "fix.h"
-#include "fract_math.h"
-#include "types.h"
+#include "aleph.h"
 
-#include "soft_clip.h"
+#include "aleph_soft_clip.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 

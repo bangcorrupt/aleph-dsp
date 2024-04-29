@@ -19,7 +19,7 @@
 /* Original work by monome, modified by bangcorrupt 2024. */
 
 /*
- * @file    window.c
+ * @file    aleph_window.c
  *
  * @brief   Window functions.
  *
@@ -27,11 +27,9 @@
 
 /*----- Includes -----------------------------------------------------*/
 
-#include "fix.h"
-#include "fract_math.h"
-#include "types.h"
+#include "aleph.h"
 
-#include "ricks_tricks.h"
+#include "aleph_utils.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 

@@ -19,7 +19,7 @@
 /* Original work by monome, modified by bangcorrupt 2024. */
 
 /*
- * @file    oscillator.h
+ * @file    aleph_oscillator.h
  *
  * @brief   Public API for oscillators.
  *
@@ -34,50 +34,52 @@ extern "C" {
 
 /*----- Includes -----------------------------------------------------*/
 
-#include "aleph-mempool.h"
 #include "aleph.h"
 
-#include "ugens/phasor.h"
+#include "aleph_phasor.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 
-#define OSCILLATOR_DEFAULT_FREQ (1)
-#define OSCILLATOR_DEFAULT_PHASE (0)
+#define ALEPH_OSCILLATOR_DEFAULT_FREQ (1)
+#define ALEPH_OSCILLATOR_DEFAULT_PHASE (0)
 
 /// TODO:  Make saw bipolar.
 //
 typedef enum {
-    OSCILLATOR_SHAPE_SINE,
-    OSCILLATOR_SHAPE_TRIANGLE,
-    OSCILLATOR_SHAPE_SAW,
-    OSCILLATOR_SHAPE_SQUARE,
-} e_Oscillator_shape;
+    ALEPH_OSCILLATOR_SHAPE_SINE,
+    ALEPH_OSCILLATOR_SHAPE_TRIANGLE,
+    ALEPH_OSCILLATOR_SHAPE_SAW,
+    ALEPH_OSCILLATOR_SHAPE_SQUARE,
+} e_Aleph_Oscillator_shape;
 
 typedef struct {
     Mempool mempool;
-    Phasor phasor;
-    e_Oscillator_shape shape;
-} t_Oscillator;
+    Aleph_Phasor phasor;
+    e_Aleph_Oscillator_shape shape;
+} t_Aleph_Oscillator;
 
-typedef t_Oscillator *Oscillator;
+typedef t_Aleph_Oscillator *Aleph_Oscillator;
 
 /*----- Extern variable declarations ---------------------------------*/
 
 /*----- Extern function prototypes -----------------------------------*/
 
-void Oscillator_init(Oscillator *const oscillator, t_Aleph *const aleph);
-void Oscillator_init_to_pool(Oscillator *const oscillator,
-                             Mempool *const mempool);
+void Aleph_Oscillator_init(Aleph_Oscillator *const oscillator,
+                           t_Aleph *const aleph);
+void Aleph_Oscillator_init_to_pool(Aleph_Oscillator *const oscillator,
+                                   Mempool *const mempool);
 
-void Oscillator_free(Oscillator *const oscillator);
+void Aleph_Oscillator_free(Aleph_Oscillator *const oscillator);
 
-void Oscillator_set_freq(Oscillator *const oscillator, fract32 freq);
-void Oscillator_set_phase(Oscillator *const oscillator, fract32 phase);
-void Oscillator_set_shape(Oscillator *const oscillator,
-                          e_Oscillator_shape shape);
+void Aleph_Oscillator_set_freq(Aleph_Oscillator *const oscillator,
+                               fract32 freq);
+void Aleph_Oscillator_set_phase(Aleph_Oscillator *const oscillator,
+                                fract32 phase);
+void Aleph_Oscillator_set_shape(Aleph_Oscillator *const oscillator,
+                                e_Aleph_Oscillator_shape shape);
 
-fract32 Oscillator_next(Oscillator *const oscillator);
-fract16 Oscillator_16_next(Oscillator *const oscillator);
+fract32 Aleph_Oscillator_next(Aleph_Oscillator *const oscillator);
+fract16 Aleph_Oscillator_16_next(Aleph_Oscillator *const oscillator);
 
 fract32 osc_sin(fract32 phase);
 fract16 osc_sin16(fract32 phase);

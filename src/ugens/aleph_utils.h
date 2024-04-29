@@ -19,7 +19,7 @@
 /* Original work by monome, modified by bangcorrupt 2024. */
 
 /*
- * @file    ricks_tricks.h
+ * @file    aleph_utils.h
  *
  * @brief   Utilities.
  *
@@ -34,9 +34,7 @@ extern "C" {
 
 /*----- Includes -----------------------------------------------------*/
 
-#include "fix.h"
-#include "fract_math.h"
-#include "types.h"
+#include "aleph.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 

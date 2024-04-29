@@ -17,9 +17,9 @@
 ----------------------------------------------------------------------*/
 
 /*
- * @file    waveform.h
+ * @file    aleph_waveform.h
  *
- * @brief   Public ASPI for anti-aliased basic waveform oscillators.
+ * @brief   Public API for basic waveform oscillators using PolyBLEP.
  *
  */
 
@@ -34,7 +34,7 @@ extern "C" {
 
 #include "aleph.h"
 
-#include "ugens/phasor.h"
+#include "aleph_phasor.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 
@@ -46,64 +46,74 @@ typedef enum {
     WAVEFORM_SHAPE_TRIANGLE,
     WAVEFORM_SHAPE_SAW,
     WAVEFORM_SHAPE_SQUARE,
-} e_Waveform_shape;
+} e_Aleph_Waveform_shape;
 
 typedef struct {
     Mempool mempool;
-    Phasor phasor;
+    Aleph_Phasor phasor;
     uint8_t shape;
-} t_Waveform;
+} t_Aleph_Waveform;
 
-typedef t_Waveform *Waveform;
+typedef t_Aleph_Waveform *Aleph_Waveform;
 
 typedef struct {
     Mempool mempool;
-    Phasor phasor_a;
-    Phasor phasor_b;
+    Aleph_Phasor phasor_a;
+    Aleph_Phasor phasor_b;
     uint8_t shape_a;
     uint8_t shape_b;
-} t_WaveformDual;
+} t_Aleph_WaveformDual;
 
-typedef t_WaveformDual *WaveformDual;
+typedef t_Aleph_WaveformDual *Aleph_WaveformDual;
 
 typedef struct {
     Mempool mempool;
-    Phasor phasor[ALEPH_MAX_UNISON_VOICES];
+    Aleph_Phasor phasor[ALEPH_MAX_UNISON_VOICES];
     uint8_t nvoices;
     uint8_t shape;
     fract32 spread;
-} t_WaveformUnison;
+} t_Aleph_WaveformUnison;
 
-typedef t_WaveformUnison *WaveformUnison;
+typedef t_Aleph_WaveformUnison *Aleph_WaveformUnison;
 
 /*----- Extern variable declarations ---------------------------------*/
 
-void Waveform_init(Waveform *const wave, t_Aleph *aleph);
-void Waveform_init_to_pool(Waveform *const wave, Mempool *const mempool);
-void Waveform_free(Waveform *const wave);
+void Aleph_Waveform_init(Aleph_Waveform *const wave, t_Aleph *aleph);
+void Aleph_Waveform_init_to_pool(Aleph_Waveform *const wave,
+                                 Mempool *const mempool);
+void Aleph_Waveform_free(Aleph_Waveform *const wave);
 
-fract32 Waveform_next(Waveform *const wave);
-void Waveform_set_shape(Waveform *const wave, e_Waveform_shape shape);
-void Waveform_set_freq(Waveform *const wave, fract32 freq);
-void Waveform_set_phase(Waveform *const wave, int32_t phase);
+fract32 Aleph_Waveform_next(Aleph_Waveform *const wave);
+void Aleph_Waveform_set_shape(Aleph_Waveform *const wave,
+                              e_Aleph_Waveform_shape shape);
+void Aleph_Waveform_set_freq(Aleph_Waveform *const wave, fract32 freq);
+void Aleph_Waveform_set_phase(Aleph_Waveform *const wave, int32_t phase);
 
-void WaveformDual_init(WaveformDual *const wave, t_Aleph *aleph);
-void WaveformDual_init_to_pool(WaveformDual *const wave,
-                               Mempool *const mempool);
+void Aleph_WaveformDual_init(Aleph_WaveformDual *const wave, t_Aleph *aleph);
+void Aleph_WaveformDual_init_to_pool(Aleph_WaveformDual *const wave,
+                                     Mempool *const mempool);
 
-void WaveformDual_free(WaveformDual *const wave);
+void Aleph_WaveformDual_free(Aleph_WaveformDual *const wave);
 
-fract32 WaveformDual_next(WaveformDual *const wave);
-void WaveformDual_set_shape(WaveformDual *const wave, e_Waveform_shape shape);
-void WaveformDual_set_freq(WaveformDual *const wave, fract32 freq);
-void WaveformDual_set_phase(WaveformDual *const wave, int32_t phase);
+fract32 Aleph_WaveformDual_next(Aleph_WaveformDual *const wave);
+void Aleph_WaveformDual_set_shape(Aleph_WaveformDual *const wave,
+                                  e_Aleph_Waveform_shape shape);
+void Aleph_WaveformDual_set_freq(Aleph_WaveformDual *const wave, fract32 freq);
+void Aleph_WaveformDual_set_phase(Aleph_WaveformDual *const wave,
+                                  int32_t phase);
 
-void WaveformDual_set_shape_a(WaveformDual *const wave, e_Waveform_shape shape);
-void WaveformDual_set_shape_b(WaveformDual *const wave, e_Waveform_shape shape);
-void WaveformDual_set_freq_a(WaveformDual *const wave, fract32 freq);
-void WaveformDual_set_freq_b(WaveformDual *const wave, fract32 freq);
-void WaveformDual_set_phase_a(WaveformDual *const wave, int32_t phase);
-void WaveformDual_set_phase_b(WaveformDual *const wave, int32_t phase);
+void Aleph_WaveformDual_set_shape_a(Aleph_WaveformDual *const wave,
+                                    e_Aleph_Waveform_shape shape);
+void Aleph_WaveformDual_set_shape_b(Aleph_WaveformDual *const wave,
+                                    e_Aleph_Waveform_shape shape);
+void Aleph_WaveformDual_set_freq_a(Aleph_WaveformDual *const wave,
+                                   fract32 freq);
+void Aleph_WaveformDual_set_freq_b(Aleph_WaveformDual *const wave,
+                                   fract32 freq);
+void Aleph_WaveformDual_set_phase_a(Aleph_WaveformDual *const wave,
+                                    int32_t phase);
+void Aleph_WaveformDual_set_phase_b(Aleph_WaveformDual *const wave,
+                                    int32_t phase);
 
 /*----- Extern function prototypes -----------------------------------*/
 

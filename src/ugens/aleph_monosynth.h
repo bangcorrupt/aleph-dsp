@@ -26,7 +26,6 @@
 #ifndef ALEPH_MONOSYNTH_H
 #define ALEPH_MONOSYNTH_H
 
-#include "lpf_one_pole.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -35,64 +34,65 @@ extern "C" {
 
 #include "aleph.h"
 
-#include "ugens/env_adsr.h"
-#include "ugens/filter.h"
-#include "ugens/filter_svf.h"
-#include "ugens/oscillator.h"
-#include "ugens/waveform.h"
+#include "aleph_env_adsr.h"
+#include "aleph_filter.h"
+#include "aleph_filter_svf.h"
+#include "aleph_lpf_one_pole.h"
+#include "aleph_oscillator.h"
+#include "aleph_waveform.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 
-#define MONOSYNTH_DEFAULT_FREQ (220 << 16)
-#define MONOSYNTH_DEFAULT_FREQ_OFFSET (0)
+#define ALEPH_MONOSYNTH_DEFAULT_FREQ (220 << 16)
+#define ALEPH_MONOSYNTH_DEFAULT_FREQ_OFFSET (0)
 
-#define MONOSYNTH_DEFAULT_CUTOFF (20000 << 16)
-#define MONOSYNTH_DEFAULT_RES (FR32_MAX)
-#define MONOSYNTH_DEFAULT_FILTER_TYPE FILTERSVF_TYPE_LPF
+#define ALEPH_MONOSYNTH_DEFAULT_CUTOFF (20000 << 16)
+#define ALEPH_MONOSYNTH_DEFAULT_RES (FR32_MAX)
+#define ALEPH_MONOSYNTH_DEFAULT_FILTER_TYPE ALEPH_FILTERSVF_TYPE_LPF
 
-#define MONOSYNTH_DEFAULT_AMP_ENV_DEPTH (FR32_MAX)
-#define MONOSYNTH_DEFAULT_FILTER_ENV_DEPTH (0)
-#define MONOSYNTH_DEFAULT_PITCH_ENV_DEPTH (0)
+#define ALEPH_MONOSYNTH_DEFAULT_AMP_ENV_DEPTH (FR32_MAX)
+#define ALEPH_MONOSYNTH_DEFAULT_FILTER_ENV_DEPTH (0)
+#define ALEPH_MONOSYNTH_DEFAULT_PITCH_ENV_DEPTH (0)
 
-#define MONOSYNTH_DEFAULT_AMP_LFO_DEPTH (0)
-#define MONOSYNTH_DEFAULT_FILTER_LFO_DEPTH (0)
-#define MONOSYNTH_DEFAULT_PITCH_LFO_DEPTH (0)
+#define ALEPH_MONOSYNTH_DEFAULT_AMP_LFO_DEPTH (0)
+#define ALEPH_MONOSYNTH_DEFAULT_FILTER_LFO_DEPTH (0)
+#define ALEPH_MONOSYNTH_DEFAULT_PITCH_LFO_DEPTH (0)
 
-#define MONOSYNTH_DEFAULT_PHASE_RESET (true)
+#define ALEPH_MONOSYNTH_DEFAULT_PHASE_RESET (true)
 
 typedef struct {
 
     Mempool mempool;
 
-    WaveformDual waveform;
+    Aleph_WaveformDual waveform;
     fract32 freq;
     fract32 freq_offset;
 
-    FilterSVF filter;
-    e_FilterSVF_type filter_type;
+    Aleph_FilterSVF filter;
+    e_Aleph_FilterSVF_type filter_type;
 
-    HPF dc_block;
+    Aleph_HPF dc_block;
 
-    EnvADSR amp_env;
-    EnvADSR pitch_env;
-    EnvADSR filter_env;
+    Aleph_EnvADSR amp_env;
+    Aleph_EnvADSR pitch_env;
+    Aleph_EnvADSR filter_env;
 
     fract32 amp_env_depth;
     fract32 filter_env_depth;
     fract32 pitch_env_depth;
 
-    Oscillator amp_lfo;
-    Oscillator filter_lfo;
-    Oscillator pitch_lfo;
+    Aleph_Oscillator amp_lfo;
+    Aleph_Oscillator filter_lfo;
+    Aleph_Oscillator pitch_lfo;
 
     fract32 amp_lfo_depth;
     fract32 filter_lfo_depth;
     fract32 pitch_lfo_depth;
 
-    LPFOnePole freq_slew;
-    LPFOnePole freq_offset_slew;
-    LPFOnePole cutoff_slew;
-    LPFOnePole res_slew;
+    Aleph_LPFOnePole freq_slew;
+    Aleph_LPFOnePole freq_offset_slew;
+    Aleph_LPFOnePole cutoff_slew;
+    Aleph_LPFOnePole res_slew;
 
     bool phase_reset;
 
@@ -112,13 +112,13 @@ void Aleph_MonoSynth_free(Aleph_MonoSynth *const synth);
 fract32 Aleph_MonoSynth_next(Aleph_MonoSynth *const synth);
 
 void Aleph_MonoSynth_set_shape(Aleph_MonoSynth *const synth,
-                               e_Waveform_shape shape_a);
+                               e_Aleph_Waveform_shape shape_a);
 void Aleph_MonoSynth_set_freq(Aleph_MonoSynth *const synth, fract32 freq);
 void Aleph_MonoSynth_set_freq_offset(Aleph_MonoSynth *const synth,
                                      fract32 freq_offset);
 
 void Aleph_MonoSynth_set_filter_type(Aleph_MonoSynth *const synth,
-                                     e_FilterSVF_type type);
+                                     e_Aleph_FilterSVF_type type);
 void Aleph_MonoSynth_set_cutoff(Aleph_MonoSynth *const synth, fract32 cutoff);
 void Aleph_MonoSynth_set_res(Aleph_MonoSynth *const synth, fract32 res);
 

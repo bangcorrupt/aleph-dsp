@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------*/
 
 /*
- * @file    pitch_detector.h
+ * @file    aleph_pitch_detector.h
  *
  * @brief   Public API for pitch detection.
  *
@@ -26,30 +26,27 @@
 #ifndef ALEPH_PITCH_DETECTOR_H
 #define ALEPH_PITCH_DETECTOR_H
 
-#include "aleph-mempool.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /*----- Includes -----------------------------------------------------*/
 
-#include <stdint.h>
+#include "aleph.h"
 
-#include "aleph-mempool.h"
-
-#include "ugens/filter.h"
+#include "aleph_filter.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 
-#define PITCH_DETECTOR_RADIX_INTERNAL 4
-#define PITCH_DETECTOR_RADIX_EXTERNAL 8
-#define PITCH_DETECTOR_RADIX_TOTAL                                             \
-    (PITCH_DETECTOR_RADIX_INTERNAL + PITCH_DETECTOR_RADIX_EXTERNAL)
+#define ALEPH_PITCH_DETECTOR_RADIX_INTERNAL 4
+#define ALEPH_PITCH_DETECTOR_RADIX_EXTERNAL 8
+#define ALEPH_PITCH_DETECTOR_RADIX_TOTAL                                       \
+    (ALEPH_PITCH_DETECTOR_RADIX_INTERNAL + ALEPH_PITCH_DETECTOR_RADIX_EXTERNAL)
 
 typedef struct {
     Mempool mempool;
-    HPF dcblocker;
-    LPF adaptive_filter;
+    Aleph_HPF dcblocker;
+    Aleph_LPF adaptive_filter;
     fract32 current_period;
     fract32 last_in;
     fract32 period;
@@ -57,26 +54,26 @@ typedef struct {
     int32_t nsamples;
     int32_t nframes;
     fract32 pitch_offset;
-} t_PitchDetector;
+} t_Aleph_PitchDetector;
 
-typedef t_PitchDetector *PitchDetector;
+typedef t_Aleph_PitchDetector *Aleph_PitchDetector;
 
 /*----- Extern variable declarations ---------------------------------*/
 
 /*----- Extern function prototypes -----------------------------------*/
 
-void PitchDetector_init(PitchDetector *const pitch_detect,
-                        t_Aleph *const aleph);
+void Aleph_PitchDetector_init(Aleph_PitchDetector *const pitch_detect,
+                              t_Aleph *const aleph);
 
-void PitchDetector_init_to_pool(PitchDetector *const pitch_detect,
-                                Mempool *const mempool);
+void Aleph_PitchDetector_init_to_pool(Aleph_PitchDetector *const pitch_detect,
+                                      Mempool *const mempool);
 
-void PitchDetector_free(PitchDetector *const pitch_detect);
+void Aleph_PitchDetector_free(Aleph_PitchDetector *const pitch_detect);
 
-fract32 PitchDetector_track_next(PitchDetector *const pitch_detect,
-                                 fract32 pre_in);
+fract32 Aleph_PitchDetector_track_next(Aleph_PitchDetector *const pitch_detect,
+                                       fract32 pre_in);
 
-fract32 PitchDetector_osc_next(PitchDetector *const pitch_detect);
+fract32 Aleph_PitchDetector_osc_next(Aleph_PitchDetector *const pitch_detect);
 
 #ifdef __cplusplus
 }

@@ -17,9 +17,9 @@
 ----------------------------------------------------------------------*/
 
 /*
- * @file    filter.h
+ * @file    aleph_filter.h
  *
- * @brief   Public API for filters.
+ * @brief   Public API for ilters.
  *
  */
 
@@ -34,82 +34,84 @@ extern "C" {
 
 #include "aleph.h"
 
-#include "ugens/interpolate.h"
+#include "aleph_interpolate.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 
-#define HPF_DEFAULT_FREQ (0)
-#define LPF_DEFAULT_FREQ (20000 << 16)
-#define BPF_DEFAULT_FREQ (2500 << 16)
+#define ALEPH_HPF_DEFAULT_FREQ (0)
+#define ALEPH_LPF_DEFAULT_FREQ (20000 << 16)
+#define ALEPH_BPF_DEFAULT_FREQ (2500 << 16)
 
 typedef struct {
     Mempool mempool;
     fract32 last_in;
     fract32 last_out;
     fract32 freq;
-} t_HPF;
+} t_Aleph_HPF;
 
-typedef t_HPF *HPF;
+typedef t_Aleph_HPF *Aleph_HPF;
 
 typedef struct {
     Mempool mempool;
     fract32 last_out;
     fract32 freq;
-} t_LPF;
+} t_Aleph_LPF;
 
-typedef t_LPF *LPF;
+typedef t_Aleph_LPF *Aleph_LPF;
 
 typedef struct {
     Mempool mempool;
-    LPF lp;
-    HPF hp;
-} t_BPF;
+    Aleph_LPF lp;
+    Aleph_HPF hp;
+} t_Aleph_BPF;
 
-typedef t_BPF *BPF;
+typedef t_Aleph_BPF *Aleph_BPF;
 
 /*----- Extern variable declarations ---------------------------------*/
 
 /*----- Extern function prototypes -----------------------------------*/
 
-void HPF_init(HPF *const hpf, t_Aleph *const aleph);
-void HPF_init_to_pool(HPF *const hpf, Mempool *const mempool);
-void HPF_free(HPF *const hpf);
+void Aleph_HPF_init(Aleph_HPF *const hpf, t_Aleph *const aleph);
+void Aleph_HPF_init_to_pool(Aleph_HPF *const hpf, Mempool *const mempool);
+void Aleph_HPF_free(Aleph_HPF *const hpf);
 
-void HPF_set_freq(HPF *const hpf, fract32 freq);
+void Aleph_HPF_set_freq(Aleph_HPF *const hpf, fract32 freq);
 
-fract32 HPF_next(HPF *const hpf, fract32 in);
-fract32 HPF_next_precise(HPF *const hpf, fract32 in);
-fract32 HPF_next_dynamic(HPF *const hpf, fract32 in, fract32 freq);
-fract32 HPF_next_dynamic_precise(HPF *const hpf, fract32 in, fract32 freq);
+fract32 Aleph_HPF_next(Aleph_HPF *const hpf, fract32 in);
+fract32 Aleph_HPF_next_precise(Aleph_HPF *const hpf, fract32 in);
+fract32 Aleph_HPF_next_dynamic(Aleph_HPF *const hpf, fract32 in, fract32 freq);
+fract32 Aleph_HPF_next_dynamic_precise(Aleph_HPF *const hpf, fract32 in,
+                                       fract32 freq);
 
-void LPF_init(LPF *const lpf, t_Aleph *const aleph);
-void LPF_init_to_pool(LPF *const lpf, Mempool *const mempool);
-void LPF_free(LPF *const lpf);
+void Aleph_LPF_init(Aleph_LPF *const lpf, t_Aleph *const aleph);
+void Aleph_LPF_init_to_pool(Aleph_LPF *const lpf, Mempool *const mempool);
+void Aleph_LPF_free(Aleph_LPF *const lpf);
 
-void LPF_set_freq(LPF *const lpf, fract32 freq);
+void Aleph_LPF_set_freq(Aleph_LPF *const lpf, fract32 freq);
 
-fract32 LPF_next(LPF *const lpf, fract32 in);
-fract32 LPF_next_precise(LPF *const lpf, fract32 in);
-fract32 LPF_next_dynamic(LPF *const lpf, fract32 in, fract32 freq);
-fract32 LPF_next_dynamic_precise(LPF *const lpf, fract32 in, fract32 freq);
+fract32 Aleph_LPF_next(Aleph_LPF *const lpf, fract32 in);
+fract32 Aleph_LPF_next_precise(Aleph_LPF *const lpf, fract32 in);
+fract32 Aleph_LPF_next_dynamic(Aleph_LPF *const lpf, fract32 in, fract32 freq);
+fract32 Aleph_LPF_next_dynamic_precise(Aleph_LPF *const lpf, fract32 in,
+                                       fract32 freq);
 
-void BPF_init(BPF *const bpf, t_Aleph *const aleph);
-void BPF_init_to_pool(BPF *const bpf, Mempool *const mempool);
-void BPF_free(BPF *const bpf);
+void Aleph_BPF_init(Aleph_BPF *const bpf, t_Aleph *const aleph);
+void Aleph_BPF_init_to_pool(Aleph_BPF *const bpf, Mempool *const mempool);
+void Aleph_BPF_free(Aleph_BPF *const bpf);
 
-void BPF_set_freq(BPF *const bpf, fract32 hp_freq, fract32 lp_freq);
+void Aleph_BPF_set_freq(Aleph_BPF *const bpf, fract32 hp_freq, fract32 lp_freq);
 
-fract32 BPF_next(BPF *const bpf, fract32 in);
-fract32 BPF_next_precise(BPF *const bpf, fract32 in);
+fract32 Aleph_BPF_next(Aleph_BPF *const bpf, fract32 in);
+fract32 Aleph_BPF_next_precise(Aleph_BPF *const bpf, fract32 in);
 
-fract32 BPF_next_dynamic(BPF *const bpf, fract32 in, fract32 hp_freq,
-                         fract32 lp_freq);
+fract32 Aleph_BPF_next_dynamic(Aleph_BPF *const bpf, fract32 in,
+                               fract32 hp_freq, fract32 lp_freq);
 
-fract32 BPF_next_dynamic_precise(BPF *const bpf, fract32 in, fract32 hp_freq,
-                                 fract32 lp_freq);
+fract32 Aleph_BPF_next_dynamic_precise(Aleph_BPF *const bpf, fract32 in,
+                                       fract32 hp_freq, fract32 lp_freq);
 
-fract32 HPF_dc_block(HPF *const hpf, fract32 in);
-fract32 HPF_dc_block2(HPF *const hpf, fract32 in);
+fract32 Aleph_HPF_dc_block(Aleph_HPF *const hpf, fract32 in);
+fract32 Aleph_HPF_dc_block2(Aleph_HPF *const hpf, fract32 in);
 
 /*----- Static function implementations ------------------------------*/
 

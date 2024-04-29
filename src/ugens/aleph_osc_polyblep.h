@@ -19,7 +19,7 @@
 /* Original work by monome, modified by bangcorrupt 2024. */
 
 /*
- * @file    osc_polyblep.h
+ * @file    aleph_osc_polyblep.h
  *
  * @brief   Public API for oscillator polyblep.
  *
@@ -34,7 +34,7 @@ extern "C" {
 
 /*----- Includes -----------------------------------------------------*/
 
-#include "types.h"
+#include "aleph.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 

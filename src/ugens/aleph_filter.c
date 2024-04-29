@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------*/
 
 /*
- * @file    filter.c
+ * @file    aleph_filter.c
  *
  * @brief   Filters.
  *
@@ -25,12 +25,11 @@
 
 /*----- Includes -----------------------------------------------------*/
 
-#include "aleph-mempool.h"
 #include "aleph.h"
 
-#include "ugens/interpolate.h"
+#include "aleph_interpolate.h"
 
-#include "ugens/filter.h"
+#include "aleph_filter.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 
@@ -42,41 +41,42 @@
 
 /*----- Extern function implementations ------------------------------*/
 
-void HPF_init(HPF *const hpf, t_Aleph *const aleph) {
+void Aleph_HPF_init(Aleph_HPF *const hpf, t_Aleph *const aleph) {
 
-    HPF_init_to_pool(hpf, &aleph->mempool);
+    Aleph_HPF_init_to_pool(hpf, &aleph->mempool);
 }
 
-void HPF_init_to_pool(HPF *const hpf, Mempool *const mempool) {
+void Aleph_HPF_init_to_pool(Aleph_HPF *const hpf, Mempool *const mempool) {
 
     t_Mempool *mp = *mempool;
 
-    t_HPF *hp = *hpf = (t_HPF *)mpool_alloc(sizeof(t_HPF), mp);
+    t_Aleph_HPF *hp = *hpf =
+        (t_Aleph_HPF *)mpool_alloc(sizeof(t_Aleph_HPF), mp);
 
     hp->mempool = mp;
 
-    hp->freq = HPF_DEFAULT_FREQ;
+    hp->freq = ALEPH_HPF_DEFAULT_FREQ;
     hp->last_in = 0;
     hp->last_out = 0;
 }
 
-void HPF_free(HPF *const hpf) {
+void Aleph_HPF_free(Aleph_HPF *const hpf) {
 
-    t_HPF *hp = *hpf;
+    t_Aleph_HPF *hp = *hpf;
 
     mpool_free((char *)hp, hp->mempool);
 }
 
-void HPF_set_freq(HPF *const hpf, fract32 freq) {
+void Aleph_HPF_set_freq(Aleph_HPF *const hpf, fract32 freq) {
 
-    t_HPF *hp = *hpf;
+    t_Aleph_HPF *hp = *hpf;
 
     hp->freq = freq;
 }
 
-fract32 HPF_next(HPF *const hpf, fract32 in) {
+fract32 Aleph_HPF_next(Aleph_HPF *const hpf, fract32 in) {
 
-    t_HPF *hp = *hpf;
+    t_Aleph_HPF *hp = *hpf;
 
     // Should be 1 / (2 pi dt fc + 1)
     fract32 alpha = hp->freq * 4;
@@ -90,9 +90,9 @@ fract32 HPF_next(HPF *const hpf, fract32 in) {
     return hp->last_out * (FR32_MAX / hp->freq / 4);
 }
 
-fract32 HPF_next_precise(HPF *const hpf, fract32 in) {
+fract32 Aleph_HPF_next_precise(Aleph_HPF *const hpf, fract32 in) {
 
-    t_HPF *hp = *hpf;
+    t_Aleph_HPF *hp = *hpf;
 
     // Should be 1 / (2 pi dt fc + 1)
     fract32 alpha = _hpf_freq_calc(hp->freq);
@@ -107,9 +107,9 @@ fract32 HPF_next_precise(HPF *const hpf, fract32 in) {
     return out;
 }
 
-fract32 HPF_next_dynamic(HPF *const hpf, fract32 in, fract32 freq) {
+fract32 Aleph_HPF_next_dynamic(Aleph_HPF *const hpf, fract32 in, fract32 freq) {
 
-    t_HPF *hp = *hpf;
+    t_Aleph_HPF *hp = *hpf;
 
     // Should be 1 / (2 pi dt fc + 1)
     fract32 alpha = freq * 4;
@@ -123,9 +123,10 @@ fract32 HPF_next_dynamic(HPF *const hpf, fract32 in, fract32 freq) {
     return hp->last_out * (FR32_MAX / freq / 4);
 }
 
-fract32 HPF_next_dynamic_precise(HPF *const hpf, fract32 in, fract32 freq) {
+fract32 Aleph_HPF_next_dynamic_precise(Aleph_HPF *const hpf, fract32 in,
+                                       fract32 freq) {
 
-    t_HPF *hp = *hpf;
+    t_Aleph_HPF *hp = *hpf;
 
     // Should be 1 / (2 pi dt fc + 1)
     fract32 alpha = _hpf_freq_calc(freq);
@@ -140,48 +141,49 @@ fract32 HPF_next_dynamic_precise(HPF *const hpf, fract32 in, fract32 freq) {
     return out;
 }
 
-void LPF_init(LPF *const lpf, t_Aleph *const aleph) {
+void Aleph_LPF_init(Aleph_LPF *const lpf, t_Aleph *const aleph) {
 
-    LPF_init_to_pool(lpf, &aleph->mempool);
+    Aleph_LPF_init_to_pool(lpf, &aleph->mempool);
 }
 
-void LPF_init_to_pool(LPF *const lpf, Mempool *const mempool) {
+void Aleph_LPF_init_to_pool(Aleph_LPF *const lpf, Mempool *const mempool) {
 
     t_Mempool *mp = *mempool;
 
-    t_LPF *lp = *lpf = (t_LPF *)mpool_alloc(sizeof(t_LPF), mp);
+    t_Aleph_LPF *lp = *lpf =
+        (t_Aleph_LPF *)mpool_alloc(sizeof(t_Aleph_LPF), mp);
 
     lp->mempool = mp;
 
-    lp->freq = LPF_DEFAULT_FREQ;
+    lp->freq = ALEPH_LPF_DEFAULT_FREQ;
     lp->last_out = 0;
 }
 
-void LPF_free(LPF *const lpf) {
+void Aleph_LPF_free(Aleph_LPF *const lpf) {
 
-    t_LPF *lp = *lpf;
+    t_Aleph_LPF *lp = *lpf;
 
     mpool_free((char *)lp, lp->mempool);
 }
 
-void LPF_set_freq(LPF *const lpf, fract32 freq) {
+void Aleph_LPF_set_freq(Aleph_LPF *const lpf, fract32 freq) {
 
-    t_LPF *lp = *lpf;
+    t_Aleph_LPF *lp = *lpf;
 
     lp->freq = freq;
 }
 
 // the frequency unit is fraction of samplerate
-fract32 LPF_next(LPF *const lpf, fract32 in) {
+fract32 Aleph_LPF_next(Aleph_LPF *const lpf, fract32 in) {
 
-    t_LPF *lp = *lpf;
+    t_Aleph_LPF *lp = *lpf;
 
     return SIMPLE_SLEW(lp->last_out, in, TWOPI * lp->freq);
 }
 
-fract32 LPF_next_precise(LPF *const lpf, fract32 in) {
+fract32 Aleph_LPF_next_precise(Aleph_LPF *const lpf, fract32 in) {
 
-    t_LPF *lp = *lpf;
+    t_Aleph_LPF *lp = *lpf;
 
     fract32 alpha = _lpf_freq_calc(lp->freq);
 
@@ -195,16 +197,17 @@ fract32 LPF_next_precise(LPF *const lpf, fract32 in) {
 }
 
 // the frequency unit is fraction of samplerate
-fract32 LPF_next_dynamic(LPF *const lpf, fract32 in, fract32 freq) {
+fract32 Aleph_LPF_next_dynamic(Aleph_LPF *const lpf, fract32 in, fract32 freq) {
 
-    t_LPF *lp = *lpf;
+    t_Aleph_LPF *lp = *lpf;
 
     return SIMPLE_SLEW(lp->last_out, in, TWOPI * freq);
 }
 
-fract32 LPF_next_dynamic_precise(LPF *const lpf, fract32 in, fract32 freq) {
+fract32 Aleph_LPF_next_dynamic_precise(Aleph_LPF *const lpf, fract32 in,
+                                       fract32 freq) {
 
-    t_LPF *lp = *lpf;
+    t_Aleph_LPF *lp = *lpf;
 
     fract32 alpha = _lpf_freq_calc(freq);
 
@@ -217,74 +220,78 @@ fract32 LPF_next_dynamic_precise(LPF *const lpf, fract32 in, fract32 freq) {
     return out;
 }
 
-void BPF_init(BPF *const bpf, t_Aleph *const aleph) {
+void Aleph_BPF_init(Aleph_BPF *const bpf, t_Aleph *const aleph) {
 
-    BPF_init_to_pool(bpf, &aleph->mempool);
+    Aleph_BPF_init_to_pool(bpf, &aleph->mempool);
 }
 
-void BPF_init_to_pool(BPF *const bpf, Mempool *const mempool) {
+void Aleph_BPF_init_to_pool(Aleph_BPF *const bpf, Mempool *const mempool) {
 
     t_Mempool *mp = *mempool;
 
-    t_BPF *bp = *bpf = (t_BPF *)mpool_alloc(sizeof(t_BPF), mp);
+    t_Aleph_BPF *bp = *bpf =
+        (t_Aleph_BPF *)mpool_alloc(sizeof(t_Aleph_BPF), mp);
 
     bp->mempool = mp;
 
-    HPF_init_to_pool(&bp->hp, mempool);
-    LPF_init_to_pool(&bp->lp, mempool);
+    Aleph_HPF_init_to_pool(&bp->hp, mempool);
+    Aleph_LPF_init_to_pool(&bp->lp, mempool);
 }
 
-void BPF_free(BPF *const bpf) {
+void Aleph_BPF_free(Aleph_BPF *const bpf) {
 
-    t_BPF *bp = *bpf;
+    t_Aleph_BPF *bp = *bpf;
 
-    HPF_free(&bp->hp);
-    LPF_free(&bp->lp);
+    Aleph_HPF_free(&bp->hp);
+    Aleph_LPF_free(&bp->lp);
 
     mpool_free((char *)bp, bp->mempool);
 }
 
-void BPF_set_freq(BPF *const bpf, fract32 hp_freq, fract32 lp_freq) {
+void Aleph_BPF_set_freq(Aleph_BPF *const bpf, fract32 hp_freq,
+                        fract32 lp_freq) {
 
-    t_BPF *bp = *bpf;
+    t_Aleph_BPF *bp = *bpf;
 
-    HPF_set_freq(&bp->hp, hp_freq);
-    LPF_set_freq(&bp->lp, lp_freq);
+    Aleph_HPF_set_freq(&bp->hp, hp_freq);
+    Aleph_LPF_set_freq(&bp->lp, lp_freq);
 }
 
-fract32 BPF_next(BPF *const bpf, fract32 in) {
+fract32 Aleph_BPF_next(Aleph_BPF *const bpf, fract32 in) {
 
-    t_BPF *bp = *bpf;
+    t_Aleph_BPF *bp = *bpf;
 
-    return LPF_next(&(bp->lp), HPF_next(&(bp->hp), in));
+    return Aleph_LPF_next(&(bp->lp), Aleph_HPF_next(&(bp->hp), in));
 }
 
-fract32 BPF_next_precise(BPF *const bpf, fract32 in) {
+fract32 Aleph_BPF_next_precise(Aleph_BPF *const bpf, fract32 in) {
 
-    t_BPF *bp = *bpf;
+    t_Aleph_BPF *bp = *bpf;
 
-    return LPF_next_precise(&(bp->lp), HPF_next_precise(&(bp->hp), in));
+    return Aleph_LPF_next_precise(&(bp->lp),
+                                  Aleph_HPF_next_precise(&(bp->hp), in));
 }
 
-fract32 BPF_next_dynamic(BPF *const bpf, fract32 in, fract32 hp_freq,
-                         fract32 lp_freq) {
-    t_BPF *bp = *bpf;
+fract32 Aleph_BPF_next_dynamic(Aleph_BPF *const bpf, fract32 in,
+                               fract32 hp_freq, fract32 lp_freq) {
+    t_Aleph_BPF *bp = *bpf;
 
-    return LPF_next_dynamic(&(bp->lp), HPF_next_dynamic(&(bp->hp), in, hp_freq),
-                            lp_freq);
+    return Aleph_LPF_next_dynamic(
+        &(bp->lp), Aleph_HPF_next_dynamic(&(bp->hp), in, hp_freq), lp_freq);
 }
 
-fract32 BPF_next_dynamic_precise(BPF *const bpf, fract32 in, fract32 hp_freq,
-                                 fract32 lp_freq) {
-    t_BPF *bp = *bpf;
+fract32 Aleph_BPF_next_dynamic_precise(Aleph_BPF *const bpf, fract32 in,
+                                       fract32 hp_freq, fract32 lp_freq) {
+    t_Aleph_BPF *bp = *bpf;
 
-    return LPF_next_dynamic_precise(
-        &(bp->lp), HPF_next_dynamic_precise(&(bp->hp), in, hp_freq), lp_freq);
+    return Aleph_LPF_next_dynamic_precise(
+        &(bp->lp), Aleph_HPF_next_dynamic_precise(&(bp->hp), in, hp_freq),
+        lp_freq);
 }
 
-fract32 HPF_dc_block(HPF *const hpf, fract32 in) {
+fract32 Aleph_HPF_dc_block(Aleph_HPF *const hpf, fract32 in) {
 
-    t_HPF *hp = *hpf;
+    t_Aleph_HPF *hp = *hpf;
 
     fract32 in_scaled = shr_fr1x32(in, 3);
     fract32 aux = sub_fr1x32(in_scaled, hp->last_in);
@@ -295,9 +302,9 @@ fract32 HPF_dc_block(HPF *const hpf, fract32 in) {
     return shl_fr1x32(hp->last_out, 3);
 }
 
-fract32 HPF_dc_block2(HPF *const hpf, fract32 in) {
+fract32 Aleph_HPF_dc_block2(Aleph_HPF *const hpf, fract32 in) {
 
-    t_HPF *hp = *hpf;
+    t_Aleph_HPF *hp = *hpf;
 
     fract32 in_scaled = shr_fr1x32(in, 3);
 

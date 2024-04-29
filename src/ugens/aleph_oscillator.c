@@ -19,7 +19,7 @@
 /* Original work by monome, modified by bangcorrupt 2024. */
 
 /*
- * @file    oscillators.c
+ * @file    aleph_oscillator.c
  *
  * @brief   Oscillators.
  *
@@ -29,8 +29,9 @@
 
 #include "aleph.h"
 
-#include "ugens/oscillator.h"
-#include "ugens/phasor.h"
+#include "aleph_phasor.h"
+
+#include "aleph_oscillator.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 
@@ -42,60 +43,61 @@
 
 /*----- Extern function implementations ------------------------------*/
 
-void Oscillator_init(Oscillator *const oscillator, t_Aleph *const aleph) {
+void Aleph_Oscillator_init(Aleph_Oscillator *const oscillator,
+                           t_Aleph *const aleph) {
 
-    Oscillator_init_to_pool(oscillator, &aleph->mempool);
+    Aleph_Oscillator_init_to_pool(oscillator, &aleph->mempool);
 }
 
-void Oscillator_init_to_pool(Oscillator *const oscillator,
-                             Mempool *const mempool) {
+void Aleph_Oscillator_init_to_pool(Aleph_Oscillator *const oscillator,
+                                   Mempool *const mempool) {
 
     t_Mempool *mp = *mempool;
 
-    t_Oscillator *osc = *oscillator =
-        (t_Oscillator *)mpool_alloc(sizeof(t_Oscillator), mp);
+    t_Aleph_Oscillator *osc = *oscillator =
+        (t_Aleph_Oscillator *)mpool_alloc(sizeof(t_Aleph_Oscillator), mp);
 
     osc->mempool = mp;
 
-    Phasor_init_to_pool(&osc->phasor, mempool);
-    Phasor_set_freq(&osc->phasor, OSCILLATOR_DEFAULT_FREQ);
-    Phasor_set_phase(&osc->phasor, OSCILLATOR_DEFAULT_PHASE);
+    Aleph_Phasor_init_to_pool(&osc->phasor, mempool);
+    Aleph_Phasor_set_freq(&osc->phasor, ALEPH_OSCILLATOR_DEFAULT_FREQ);
+    Aleph_Phasor_set_phase(&osc->phasor, ALEPH_OSCILLATOR_DEFAULT_PHASE);
 }
 
-void Oscillator_free(Oscillator *const oscillator) {
+void Aleph_Oscillator_free(Aleph_Oscillator *const oscillator) {
 
-    t_Oscillator *osc = *oscillator;
+    t_Aleph_Oscillator *osc = *oscillator;
 
-    Phasor_free(&osc->phasor);
+    Aleph_Phasor_free(&osc->phasor);
 
     mpool_free((char *)osc, osc->mempool);
 }
 
-fract32 Oscillator_next(Oscillator *const oscillator) {
+fract32 Aleph_Oscillator_next(Aleph_Oscillator *const oscillator) {
 
-    t_Oscillator *osc = *oscillator;
+    t_Aleph_Oscillator *osc = *oscillator;
 
     fract32 next;
 
-    Phasor_next(&osc->phasor);
+    Aleph_Phasor_next(&osc->phasor);
 
     switch (osc->shape) {
 
-    case OSCILLATOR_SHAPE_SINE:
+    case ALEPH_OSCILLATOR_SHAPE_SINE:
         next = osc_sin(osc->phasor->phase);
         break;
 
-    case OSCILLATOR_SHAPE_TRIANGLE:
+    case ALEPH_OSCILLATOR_SHAPE_TRIANGLE:
         next = osc_triangle(osc->phasor->phase);
         break;
 
-    case OSCILLATOR_SHAPE_SAW:
+    case ALEPH_OSCILLATOR_SHAPE_SAW:
 
         /// TODO: Is this bipolar?
         next = osc->phasor->phase;
         break;
 
-    case OSCILLATOR_SHAPE_SQUARE:
+    case ALEPH_OSCILLATOR_SHAPE_SQUARE:
         next = osc_square(osc->phasor->phase);
         break;
 
@@ -107,31 +109,31 @@ fract32 Oscillator_next(Oscillator *const oscillator) {
     return next;
 }
 
-fract16 Oscillator_16_next(Oscillator *const oscillator) {
+fract16 Aleph_Oscillator_16_next(Aleph_Oscillator *const oscillator) {
 
-    t_Oscillator *osc = *oscillator;
+    t_Aleph_Oscillator *osc = *oscillator;
 
     fract32 next;
 
-    Phasor_next(&osc->phasor);
+    Aleph_Phasor_next(&osc->phasor);
 
     switch (osc->shape) {
 
-    case OSCILLATOR_SHAPE_SINE:
+    case ALEPH_OSCILLATOR_SHAPE_SINE:
         next = osc_sin16(osc->phasor->phase);
         break;
 
-    case OSCILLATOR_SHAPE_TRIANGLE:
+    case ALEPH_OSCILLATOR_SHAPE_TRIANGLE:
         next = osc_triangle16(osc->phasor->phase);
         break;
 
-    case OSCILLATOR_SHAPE_SAW:
+    case ALEPH_OSCILLATOR_SHAPE_SAW:
 
         /// TODO: Is this bipolar?
         next = trunc_fr1x32(osc->phasor->phase);
         break;
 
-    case OSCILLATOR_SHAPE_SQUARE:
+    case ALEPH_OSCILLATOR_SHAPE_SQUARE:
         next = osc_square16(osc->phasor->phase);
         break;
 
@@ -143,26 +145,28 @@ fract16 Oscillator_16_next(Oscillator *const oscillator) {
     return next;
 }
 
-void Oscillator_set_shape(Oscillator *const oscillator,
-                          e_Oscillator_shape shape) {
+void Aleph_Oscillator_set_shape(Aleph_Oscillator *const oscillator,
+                                e_Aleph_Oscillator_shape shape) {
 
-    t_Oscillator *osc = *oscillator;
+    t_Aleph_Oscillator *osc = *oscillator;
 
     osc->shape = shape;
 }
 
-void Oscillator_set_freq(Oscillator *const oscillator, fract32 freq) {
+void Aleph_Oscillator_set_freq(Aleph_Oscillator *const oscillator,
+                               fract32 freq) {
 
-    t_Oscillator *osc = *oscillator;
+    t_Aleph_Oscillator *osc = *oscillator;
 
-    Phasor_set_freq(&osc->phasor, freq);
+    Aleph_Phasor_set_freq(&osc->phasor, freq);
 }
 
-void Oscillator_set_phase(Oscillator *const oscillator, int32_t phase) {
+void Aleph_Oscillator_set_phase(Aleph_Oscillator *const oscillator,
+                                int32_t phase) {
 
-    t_Oscillator *osc = *oscillator;
+    t_Aleph_Oscillator *osc = *oscillator;
 
-    Phasor_set_phase(&osc->phasor, phase);
+    Aleph_Phasor_set_phase(&osc->phasor, phase);
 }
 
 fract32 osc_sin(fract32 phase) {

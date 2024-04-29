@@ -19,7 +19,7 @@
 /* Original work by monome, modified by bangcorrupt 2024. */
 
 /*
- * @file    window.c
+ * @file    aleph_window.c
  *
  * @brief   Window functions.
  *
@@ -36,9 +36,7 @@ extern "C" {
 
 /*----- Includes -----------------------------------------------------*/
 
-#include <stdint.h>
-
-#include "types.h"
+#include "aleph.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 

@@ -19,7 +19,7 @@
 /* Original work by monome, modified by bangcorrupt 2024. */
 
 /*
- * @file    mix-pan.h
+ * @file    aleph_mix_pan.h
  *
  * @brief   Public API for mixing and panning functions.
  */
@@ -33,12 +33,7 @@ extern "C" {
 
 /*----- Includes -----------------------------------------------------*/
 
-#include "aleph-mempool.h"
 #include "aleph.h"
-
-#include "fix.h"
-#include "fract_math.h"
-#include "types.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 
@@ -92,7 +87,6 @@ static inline fract32 pan_lin_mix(fract32 inX, fract32 inY, fract32 pan) {
 
     fract32 ymul = pan;
     fract32 xmul = sub_fr1x32(FR32_MAX, ymul);
-
     return add_fr1x32(mult_fr1x32x32(inX, xmul), mult_fr1x32x32(inY, ymul));
 }
 

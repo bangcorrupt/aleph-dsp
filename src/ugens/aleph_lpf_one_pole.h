@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------*/
 
 /*
- * @file    lpf_one_pole.h
+ * @file    aleph_lpf_one_pole.h
  *
  * @brief   Publice API for one pole low pass filter.
  *
@@ -34,39 +34,40 @@ extern "C" {
 
 #include "aleph.h"
 
-#include "interpolate.h"
+#include "aleph_interpolate.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 
-#define FILTER_ONE_POLE_DEFAULT_COEFF (SLEW_1MS)
-#define FILTER_ONE_POLE_DEFAULT_TARGET (0)
-#define FILTER_ONE_POLE_DEFAULT_OUTPUT (0)
+#define ALEPH_FILTER_ONE_POLE_DEFAULT_COEFF (SLEW_1MS)
+#define ALEPH_FILTER_ONE_POLE_DEFAULT_TARGET (0)
+#define ALEPH_FILTER_ONE_POLE_DEFAULT_OUTPUT (0)
 
 typedef struct {
     Mempool mempool;
     fract32 coeff;  // integration coefficient
     fract32 target; // target value
     fract32 output; // filtered value
-} t_LPFOnePole;
+} t_Aleph_LPFOnePole;
 
-typedef t_LPFOnePole *LPFOnePole;
+typedef t_Aleph_LPFOnePole *Aleph_LPFOnePole;
 
 /*----- Extern variable declarations ---------------------------------*/
 
 /*----- Extern function prototypes -----------------------------------*/
 
-void LPFOnePole_init(LPFOnePole *const lpf, t_Aleph *const aleph);
+void Aleph_LPFOnePole_init(Aleph_LPFOnePole *const lpf, t_Aleph *const aleph);
 
-void LPFOnePole_init_to_pool(LPFOnePole *const lpf, Mempool *const mempool);
+void Aleph_LPFOnePole_init_to_pool(Aleph_LPFOnePole *const lpf,
+                                   Mempool *const mempool);
 
-fract32 LPFOnePole_free(LPFOnePole *const lpf);
+fract32 Aleph_LPFOnePole_free(Aleph_LPFOnePole *const lpf);
 
-fract32 LPFOnePole_next(LPFOnePole *const lpf);
-fract32 LPFOnePole_norm_next(LPFOnePole *const lpf);
-void LPFOnePole_set_target(LPFOnePole *const lpf, fract32 target);
-void LPFOnePole_set_output(LPFOnePole *const lpf, fract32 output);
-void LPFOnePole_set_coeff(LPFOnePole *const lpf, fract32 coeff);
-bool LPFOnePole_sync(LPFOnePole *const lpf);
+fract32 Aleph_LPFOnePole_next(Aleph_LPFOnePole *const lpf);
+fract32 Aleph_LPFOnePole_norm_next(Aleph_LPFOnePole *const lpf);
+void Aleph_LPFOnePole_set_target(Aleph_LPFOnePole *const lpf, fract32 target);
+void Aleph_LPFOnePole_set_output(Aleph_LPFOnePole *const lpf, fract32 output);
+void Aleph_LPFOnePole_set_coeff(Aleph_LPFOnePole *const lpf, fract32 coeff);
+bool Aleph_LPFOnePole_sync(Aleph_LPFOnePole *const lpf);
 
 #ifdef __cplusplus
 }
