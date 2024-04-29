@@ -44,17 +44,18 @@
 /*----- Static function prototypes -----------------------------------*/
 
 /*----- Extern function implementations ------------------------------*/
-void MonoSynth_init(MonoSynth *const synth, t_Aleph *aleph) {
+void Aleph_MonoSynth_init(Aleph_MonoSynth *const synth, t_Aleph *aleph) {
 
-    MonoSynth_init_to_pool(synth, &aleph->mempool);
+    Aleph_MonoSynth_init_to_pool(synth, &aleph->mempool);
 }
 
-void MonoSynth_init_to_pool(MonoSynth *const synth, Mempool *const mempool) {
+void Aleph_MonoSynth_init_to_pool(Aleph_MonoSynth *const synth,
+                                  Mempool *const mempool) {
 
     t_Mempool *mp = *mempool;
 
-    t_MonoSynth *syn = *synth =
-        (t_MonoSynth *)mpool_alloc(sizeof(t_MonoSynth), mp);
+    t_Aleph_MonoSynth *syn = *synth =
+        (t_Aleph_MonoSynth *)mpool_alloc(sizeof(t_Aleph_MonoSynth), mp);
 
     syn->mempool = mp;
 
@@ -99,9 +100,9 @@ void MonoSynth_init_to_pool(MonoSynth *const synth, Mempool *const mempool) {
     LPFOnePole_set_output(&syn->res_slew, MONOSYNTH_DEFAULT_RES);
 }
 
-void MonoSynth_free(MonoSynth *const synth) {
+void Aleph_MonoSynth_free(Aleph_MonoSynth *const synth) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     WaveformDual_free(&syn->waveform);
 
@@ -125,9 +126,9 @@ void MonoSynth_free(MonoSynth *const synth) {
     mpool_free((char *)syn, syn->mempool);
 }
 
-fract32 MonoSynth_next(MonoSynth *const synth) {
+fract32 Aleph_MonoSynth_next(Aleph_MonoSynth *const synth) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     fract32 waveform;
 
@@ -252,205 +253,229 @@ fract32 MonoSynth_next(MonoSynth *const synth) {
     return waveform;
 }
 
-void MonoSynth_set_shape(MonoSynth *const synth, e_Waveform_shape shape) {
+void Aleph_MonoSynth_set_shape(Aleph_MonoSynth *const synth,
+                               e_Waveform_shape shape) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     WaveformDual_set_shape(&syn->waveform, shape);
 }
 
-void MonoSynth_set_freq(MonoSynth *const synth, fract32 freq) {
+void Aleph_MonoSynth_set_freq(Aleph_MonoSynth *const synth, fract32 freq) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     LPFOnePole_set_target(&syn->freq_slew, freq);
 }
 
-void MonoSynth_set_freq_offset(MonoSynth *const synth, fract32 freq_offset) {
+void Aleph_MonoSynth_set_freq_offset(Aleph_MonoSynth *const synth,
+                                     fract32 freq_offset) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     LPFOnePole_set_target(&syn->freq_offset_slew, freq_offset);
 }
 
-void MonoSynth_set_filter_type(MonoSynth *const synth, e_FilterSVF_type type) {
+void Aleph_MonoSynth_set_filter_type(Aleph_MonoSynth *const synth,
+                                     e_FilterSVF_type type) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     syn->filter_type = type;
 }
 
-void MonoSynth_set_cutoff(MonoSynth *const synth, fract32 cutoff) {
+void Aleph_MonoSynth_set_cutoff(Aleph_MonoSynth *const synth, fract32 cutoff) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     LPFOnePole_set_target(&syn->cutoff_slew, cutoff);
 }
 
-void MonoSynth_set_res(MonoSynth *const synth, fract32 res) {
+void Aleph_MonoSynth_set_res(Aleph_MonoSynth *const synth, fract32 res) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     LPFOnePole_set_target(&syn->res_slew, res);
 }
 
-void MonoSynth_set_amp_env_attack(MonoSynth *const synth, fract32 attack) {
+void Aleph_MonoSynth_set_amp_env_attack(Aleph_MonoSynth *const synth,
+                                        fract32 attack) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     EnvADSR_set_attack(&syn->amp_env, attack);
 }
 
-void MonoSynth_set_amp_env_decay(MonoSynth *const synth, fract32 decay) {
+void Aleph_MonoSynth_set_amp_env_decay(Aleph_MonoSynth *const synth,
+                                       fract32 decay) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     EnvADSR_set_decay(&syn->amp_env, decay);
 }
 
-void MonoSynth_set_amp_env_sustain(MonoSynth *const synth, fract32 sustain) {
+void Aleph_MonoSynth_set_amp_env_sustain(Aleph_MonoSynth *const synth,
+                                         fract32 sustain) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     EnvADSR_set_sustain(&syn->amp_env, sustain);
 }
 
-void MonoSynth_set_amp_env_release(MonoSynth *const synth, fract32 release) {
+void Aleph_MonoSynth_set_amp_env_release(Aleph_MonoSynth *const synth,
+                                         fract32 release) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     EnvADSR_set_release(&syn->amp_env, release);
 }
 
-void MonoSynth_set_amp_env_depth(MonoSynth *const synth, fract32 depth) {
+void Aleph_MonoSynth_set_amp_env_depth(Aleph_MonoSynth *const synth,
+                                       fract32 depth) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     syn->amp_env_depth = depth;
 }
 
-void MonoSynth_set_filter_env_attack(MonoSynth *const synth, fract32 attack) {
+void Aleph_MonoSynth_set_filter_env_attack(Aleph_MonoSynth *const synth,
+                                           fract32 attack) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     EnvADSR_set_attack(&syn->filter_env, attack);
 }
 
-void MonoSynth_set_filter_env_decay(MonoSynth *const synth, fract32 decay) {
+void Aleph_MonoSynth_set_filter_env_decay(Aleph_MonoSynth *const synth,
+                                          fract32 decay) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     EnvADSR_set_decay(&syn->filter_env, decay);
 }
 
-void MonoSynth_set_filter_env_sustain(MonoSynth *const synth, fract32 sustain) {
+void Aleph_MonoSynth_set_filter_env_sustain(Aleph_MonoSynth *const synth,
+                                            fract32 sustain) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     EnvADSR_set_sustain(&syn->filter_env, sustain);
 }
 
-void MonoSynth_set_filter_env_release(MonoSynth *const synth, fract32 release) {
+void Aleph_MonoSynth_set_filter_env_release(Aleph_MonoSynth *const synth,
+                                            fract32 release) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     EnvADSR_set_release(&syn->filter_env, release);
 }
 
-void MonoSynth_set_filter_env_depth(MonoSynth *const synth, fract32 depth) {
+void Aleph_MonoSynth_set_filter_env_depth(Aleph_MonoSynth *const synth,
+                                          fract32 depth) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     syn->filter_env_depth = depth;
 }
 
-void MonoSynth_set_pitch_env_attack(MonoSynth *const synth, fract32 attack) {
+void Aleph_MonoSynth_set_pitch_env_attack(Aleph_MonoSynth *const synth,
+                                          fract32 attack) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     EnvADSR_set_attack(&syn->pitch_env, attack);
 }
 
-void MonoSynth_set_pitch_env_decay(MonoSynth *const synth, fract32 decay) {
+void Aleph_MonoSynth_set_pitch_env_decay(Aleph_MonoSynth *const synth,
+                                         fract32 decay) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     EnvADSR_set_decay(&syn->pitch_env, decay);
 }
 
-void MonoSynth_set_pitch_env_sustain(MonoSynth *const synth, fract32 sustain) {
+void Aleph_MonoSynth_set_pitch_env_sustain(Aleph_MonoSynth *const synth,
+                                           fract32 sustain) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     EnvADSR_set_sustain(&syn->pitch_env, sustain);
 }
 
-void MonoSynth_set_pitch_env_release(MonoSynth *const synth, fract32 release) {
+void Aleph_MonoSynth_set_pitch_env_release(Aleph_MonoSynth *const synth,
+                                           fract32 release) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     EnvADSR_set_release(&syn->pitch_env, release);
 }
 
-void MonoSynth_set_pitch_env_depth(MonoSynth *const synth, fract32 depth) {
+void Aleph_MonoSynth_set_pitch_env_depth(Aleph_MonoSynth *const synth,
+                                         fract32 depth) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     syn->pitch_env_depth = depth;
 }
 
-void MonoSynth_set_amp_lfo_freq(MonoSynth *const synth, fract32 freq) {
+void Aleph_MonoSynth_set_amp_lfo_freq(Aleph_MonoSynth *const synth,
+                                      fract32 freq) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     Oscillator_set_freq(&syn->amp_lfo, freq);
 }
 
-void MonoSynth_set_amp_lfo_depth(MonoSynth *const synth, fract32 depth) {
+void Aleph_MonoSynth_set_amp_lfo_depth(Aleph_MonoSynth *const synth,
+                                       fract32 depth) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     syn->amp_lfo_depth = depth;
 }
 
-void MonoSynth_set_filter_lfo_freq(MonoSynth *const synth, fract32 freq) {
+void Aleph_MonoSynth_set_filter_lfo_freq(Aleph_MonoSynth *const synth,
+                                         fract32 freq) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     Oscillator_set_freq(&syn->filter_lfo, freq);
 }
 
-void MonoSynth_set_filter_lfo_depth(MonoSynth *const synth, fract32 depth) {
+void Aleph_MonoSynth_set_filter_lfo_depth(Aleph_MonoSynth *const synth,
+                                          fract32 depth) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     syn->filter_lfo_depth = depth;
 }
 
-void MonoSynth_set_pitch_lfo_freq(MonoSynth *const synth, fract32 freq) {
+void Aleph_MonoSynth_set_pitch_lfo_freq(Aleph_MonoSynth *const synth,
+                                        fract32 freq) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     Oscillator_set_freq(&syn->pitch_lfo, freq);
 }
 
-void MonoSynth_set_pitch_lfo_depth(MonoSynth *const synth, fract32 depth) {
+void Aleph_MonoSynth_set_pitch_lfo_depth(Aleph_MonoSynth *const synth,
+                                         fract32 depth) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     syn->pitch_lfo_depth = depth;
 }
 
-void MonoSynth_set_phase_reset(MonoSynth *const synth, bool reset) {
+void Aleph_MonoSynth_set_phase_reset(Aleph_MonoSynth *const synth, bool reset) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     syn->phase_reset = reset;
 }
 
-void MonoSynth_set_gate(MonoSynth *const synth, bool gate) {
+void Aleph_MonoSynth_set_gate(Aleph_MonoSynth *const synth, bool gate) {
 
-    t_MonoSynth *syn = *synth;
+    t_Aleph_MonoSynth *syn = *synth;
 
     if (syn->phase_reset && gate) {
         WaveformDual_set_phase(&syn->waveform, 0);

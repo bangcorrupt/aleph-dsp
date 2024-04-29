@@ -96,57 +96,82 @@ typedef struct {
 
     bool phase_reset;
 
-} t_MonoSynth;
+} t_Aleph_MonoSynth;
 
-typedef t_MonoSynth *MonoSynth;
+typedef t_Aleph_MonoSynth *Aleph_MonoSynth;
 
 /*----- Extern variable declarations ---------------------------------*/
 
 /*----- Extern function prototypes -----------------------------------*/
 
-void MonoSynth_init(MonoSynth *const synth, t_Aleph *aleph);
-void MonoSynth_init_to_pool(MonoSynth *const synth, Mempool *const mempool);
-void MonoSynth_free(MonoSynth *const synth);
+void Aleph_MonoSynth_init(Aleph_MonoSynth *const synth, t_Aleph *aleph);
+void Aleph_MonoSynth_init_to_pool(Aleph_MonoSynth *const synth,
+                                  Mempool *const mempool);
+void Aleph_MonoSynth_free(Aleph_MonoSynth *const synth);
 
-fract32 MonoSynth_next(MonoSynth *const synth);
+fract32 Aleph_MonoSynth_next(Aleph_MonoSynth *const synth);
 
-void MonoSynth_set_shape(MonoSynth *const synth, e_Waveform_shape shape_a);
-void MonoSynth_set_freq(MonoSynth *const synth, fract32 freq);
-void MonoSynth_set_freq_offset(MonoSynth *const synth, fract32 freq_offset);
+void Aleph_MonoSynth_set_shape(Aleph_MonoSynth *const synth,
+                               e_Waveform_shape shape_a);
+void Aleph_MonoSynth_set_freq(Aleph_MonoSynth *const synth, fract32 freq);
+void Aleph_MonoSynth_set_freq_offset(Aleph_MonoSynth *const synth,
+                                     fract32 freq_offset);
 
-void MonoSynth_set_filter_type(MonoSynth *const synth, e_FilterSVF_type type);
-void MonoSynth_set_cutoff(MonoSynth *const synth, fract32 cutoff);
-void MonoSynth_set_res(MonoSynth *const synth, fract32 res);
+void Aleph_MonoSynth_set_filter_type(Aleph_MonoSynth *const synth,
+                                     e_FilterSVF_type type);
+void Aleph_MonoSynth_set_cutoff(Aleph_MonoSynth *const synth, fract32 cutoff);
+void Aleph_MonoSynth_set_res(Aleph_MonoSynth *const synth, fract32 res);
 
-void MonoSynth_set_amp_env_attack(MonoSynth *const synth, fract32 attack);
-void MonoSynth_set_amp_env_decay(MonoSynth *const synth, fract32 decay);
-void MonoSynth_set_amp_env_sustain(MonoSynth *const synth, fract32 sustain);
-void MonoSynth_set_amp_env_release(MonoSynth *const synth, fract32 release);
-void MonoSynth_set_amp_env_depth(MonoSynth *const synth, fract32 depth);
+void Aleph_MonoSynth_set_amp_env_attack(Aleph_MonoSynth *const synth,
+                                        fract32 attack);
+void Aleph_MonoSynth_set_amp_env_decay(Aleph_MonoSynth *const synth,
+                                       fract32 decay);
+void Aleph_MonoSynth_set_amp_env_sustain(Aleph_MonoSynth *const synth,
+                                         fract32 sustain);
+void Aleph_MonoSynth_set_amp_env_release(Aleph_MonoSynth *const synth,
+                                         fract32 release);
+void Aleph_MonoSynth_set_amp_env_depth(Aleph_MonoSynth *const synth,
+                                       fract32 depth);
 
-void MonoSynth_set_filter_env_attack(MonoSynth *const synth, fract32 attack);
-void MonoSynth_set_filter_env_decay(MonoSynth *const synth, fract32 decay);
-void MonoSynth_set_filter_env_sustain(MonoSynth *const synth, fract32 sustain);
-void MonoSynth_set_filter_env_release(MonoSynth *const synth, fract32 release);
-void MonoSynth_set_filter_env_depth(MonoSynth *const synth, fract32 depth);
+void Aleph_MonoSynth_set_filter_env_attack(Aleph_MonoSynth *const synth,
+                                           fract32 attack);
+void Aleph_MonoSynth_set_filter_env_decay(Aleph_MonoSynth *const synth,
+                                          fract32 decay);
+void Aleph_MonoSynth_set_filter_env_sustain(Aleph_MonoSynth *const synth,
+                                            fract32 sustain);
+void Aleph_MonoSynth_set_filter_env_release(Aleph_MonoSynth *const synth,
+                                            fract32 release);
+void Aleph_MonoSynth_set_filter_env_depth(Aleph_MonoSynth *const synth,
+                                          fract32 depth);
 
-void MonoSynth_set_pitch_env_attack(MonoSynth *const synth, fract32 attack);
-void MonoSynth_set_pitch_env_decay(MonoSynth *const synth, fract32 decay);
-void MonoSynth_set_pitch_env_sustain(MonoSynth *const synth, fract32 sustain);
-void MonoSynth_set_pitch_env_release(MonoSynth *const synth, fract32 release);
-void MonoSynth_set_pitch_env_depth(MonoSynth *const synth, fract32 depth);
+void Aleph_MonoSynth_set_pitch_env_attack(Aleph_MonoSynth *const synth,
+                                          fract32 attack);
+void Aleph_MonoSynth_set_pitch_env_decay(Aleph_MonoSynth *const synth,
+                                         fract32 decay);
+void Aleph_MonoSynth_set_pitch_env_sustain(Aleph_MonoSynth *const synth,
+                                           fract32 sustain);
+void Aleph_MonoSynth_set_pitch_env_release(Aleph_MonoSynth *const synth,
+                                           fract32 release);
+void Aleph_MonoSynth_set_pitch_env_depth(Aleph_MonoSynth *const synth,
+                                         fract32 depth);
 
-void MonoSynth_set_amp_lfo_freq(MonoSynth *const synth, fract32 freq);
-void MonoSynth_set_amp_lfo_depth(MonoSynth *const synth, fract32 depth);
+void Aleph_MonoSynth_set_amp_lfo_freq(Aleph_MonoSynth *const synth,
+                                      fract32 freq);
+void Aleph_MonoSynth_set_amp_lfo_depth(Aleph_MonoSynth *const synth,
+                                       fract32 depth);
 
-void MonoSynth_set_filter_lfo_freq(MonoSynth *const synth, fract32 freq);
-void MonoSynth_set_filter_lfo_depth(MonoSynth *const synth, fract32 depth);
+void Aleph_MonoSynth_set_filter_lfo_freq(Aleph_MonoSynth *const synth,
+                                         fract32 freq);
+void Aleph_MonoSynth_set_filter_lfo_depth(Aleph_MonoSynth *const synth,
+                                          fract32 depth);
 
-void MonoSynth_set_pitch_lfo_freq(MonoSynth *const synth, fract32 freq);
-void MonoSynth_set_pitch_lfo_depth(MonoSynth *const synth, fract32 depth);
+void Aleph_MonoSynth_set_pitch_lfo_freq(Aleph_MonoSynth *const synth,
+                                        fract32 freq);
+void Aleph_MonoSynth_set_pitch_lfo_depth(Aleph_MonoSynth *const synth,
+                                         fract32 depth);
 
-void MonoSynth_set_gate(MonoSynth *const synth, bool gate);
-void MonoSynth_set_phase_reset(MonoSynth *const synth, bool reset);
+void Aleph_MonoSynth_set_gate(Aleph_MonoSynth *const synth, bool gate);
+void Aleph_MonoSynth_set_phase_reset(Aleph_MonoSynth *const synth, bool reset);
 
 #ifdef __cplusplus
 }
