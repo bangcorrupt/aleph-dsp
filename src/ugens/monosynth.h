@@ -104,7 +104,7 @@ typedef t_Aleph_MonoSynth *Aleph_MonoSynth;
 
 /*----- Extern function prototypes -----------------------------------*/
 
-void Aleph_MonoSynth_init(Aleph_MonoSynth *const synth, t_Aleph *aleph);
+void Aleph_MonoSynth_init(Aleph_MonoSynth *const synth, t_Aleph *const aleph);
 void Aleph_MonoSynth_init_to_pool(Aleph_MonoSynth *const synth,
                                   Mempool *const mempool);
 void Aleph_MonoSynth_free(Aleph_MonoSynth *const synth);

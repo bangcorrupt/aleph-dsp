@@ -65,7 +65,7 @@ extern "C" {
 
 //==============================================================================
 
-#define MPOOL_ALIGN_SIZE (16)
+#define MPOOL_ALIGN_SIZE (8)
 
 /// TODO: Find a better place for this.
 //
@@ -97,8 +97,6 @@ typedef struct t_Mempool t_Mempool;
 typedef t_Mempool *Mempool;
 
 struct t_Mempool {
-    /// TODO: See aleph-mempool.c:Mempool_free()
-    //
     t_Mempool *mempool;
     t_Aleph *aleph;
     char *mpool;        // start of the mpool
