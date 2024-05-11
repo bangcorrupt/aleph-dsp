@@ -15,8 +15,9 @@
                        Copyright bangcorrupt 2024
 
 ----------------------------------------------------------------------*/
+
 /*
- * @file    monosynth.c
+ * @file    aleph_monosynth.c
  *
  * @brief   Monosynth module.
  *
@@ -44,6 +45,7 @@
 /*----- Static function prototypes -----------------------------------*/
 
 /*----- Extern function implementations ------------------------------*/
+
 void Aleph_MonoSynth_init(Aleph_MonoSynth *const synth, t_Aleph *const aleph) {
 
     Aleph_MonoSynth_init_to_pool(synth, &aleph->mempool);

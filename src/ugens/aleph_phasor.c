@@ -15,6 +15,7 @@
                        Copyright bangcorrupt 2024
 
 ----------------------------------------------------------------------*/
+
 /*
  * @file    aleph_phasor.c
  *
@@ -53,8 +54,8 @@ void Aleph_Phasor_init_to_pool(Aleph_Phasor *const phasor,
 
     ph->mempool = mp;
 
-    ph->phase = 0;
-    ph->freq = 1;
+    ph->phase = ALEPH_PHASOR_DEFAULT_PHASE;
+    ph->freq = ALEPH_PHASOR_DEFAULT_FREQ;
 }
 
 void Aleph_Phasor_free(Aleph_Phasor *const phasor) {
@@ -120,36 +121,67 @@ int32_t Aleph_Phasor_pos_read(Aleph_Phasor *const phasor) {
     return ((uint32_t)ph->phase) / 2;
 }
 
-void Aleph_QuadraturePhasor_init(t_Aleph_QuadraturePhasor *phasor) {
+void Aleph_Quasor_init(Aleph_Quasor *quasor, t_Aleph *aleph) {
 
-    phasor->sin_phase = 0;
-    phasor->cos_phase = FR32_MAX / 2;
+    Aleph_Quasor_init_to_pool(quasor, &aleph->mempool);
 }
 
-void Aleph_QuadraturePhasor_pos_next_dynamic(t_Aleph_QuadraturePhasor *phasor,
-                                             fract32 freq) {
-    phasor->cos_phase += freq;
-    phasor->sin_phase = phasor->cos_phase + FR32_MAX;
+void Aleph_Quasor_init_to_pool(Aleph_Quasor *const quasor,
+                               Mempool *const mempool) {
+
+    t_Mempool *mp = *mempool;
+
+    t_Aleph_Quasor *qu = *quasor =
+        (t_Aleph_Quasor *)mpool_alloc(sizeof(t_Aleph_Quasor), mp);
+
+    qu->mempool = mp;
+
+    qu->sin_phase = ALEPH_QUASOR_DEFAULT_SIN_PHASE;
+    qu->cos_phase = ALEPH_QUASOR_DEFAULT_COS_PHASE;
+    qu->freq = ALEPH_QUASOR_DEFAULT_FREQ;
 }
 
-int32_t Aleph_QuadraturePhasor_sin_read(t_Aleph_QuadraturePhasor *phasor) {
+void Aleph_Quasor_free(Aleph_Quasor *const quasor) {
 
-    return phasor->sin_phase;
+    t_Aleph_Quasor *qu = *quasor;
+
+    mpool_free((char *)qu, qu->mempool);
 }
 
-int32_t Aleph_QuadraturePhasor_cos_read(t_Aleph_QuadraturePhasor *phasor) {
+int32_t Aleph_Quasor_advance(Aleph_Quasor *const quasor) {
 
-    return phasor->cos_phase;
+    t_Aleph_Quasor *qu = *quasor;
+
+    qu->cos_phase += qu->freq;
+    qu->sin_phase = qu->cos_phase + FR32_MAX;
 }
 
-int32_t Aleph_QuadraturePhasor_pos_sin_read(t_Aleph_QuadraturePhasor *phasor) {
+int32_t Aleph_Quasor_sin_read(Aleph_Quasor *quasor) {
 
-    return (int32_t)(((uint32_t)phasor->sin_phase) / (uint32_t)2);
+    t_Aleph_Quasor *qu = *quasor;
+
+    return qu->sin_phase;
 }
 
-int32_t Aleph_QuadraturePhasor_pos_cos_read(t_Aleph_QuadraturePhasor *phasor) {
+int32_t Aleph_Quasor_cos_read(Aleph_Quasor *quasor) {
 
-    return (int32_t)(((uint32_t)phasor->cos_phase) / (uint32_t)2);
+    t_Aleph_Quasor *qu = *quasor;
+
+    return qu->cos_phase;
+}
+
+int32_t Aleph_Quasor_pos_sin_read(Aleph_Quasor *quasor) {
+
+    t_Aleph_Quasor *qu = *quasor;
+
+    return (int32_t)(((uint32_t)qu->sin_phase) / (uint32_t)2);
+}
+
+int32_t Aleph_Quasor_pos_cos_read(Aleph_Quasor *quasor) {
+
+    t_Aleph_Quasor *qu = *quasor;
+
+    return (int32_t)(((uint32_t)qu->cos_phase) / (uint32_t)2);
 }
 
 /*----- Static function implementations ------------------------------*/

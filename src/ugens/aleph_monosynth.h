@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------*/
 
 /*
- * @file    monosynth.h
+ * @file    aleph_monosynth.h
  *
  * @brief   Public API for monosynth module.
  *
