@@ -36,6 +36,13 @@ extern "C" {
 
 /*----- Macros and Definitions ---------------------------------------*/
 
+#define ALEPH_PHASOR_DEFAULT_PHASE (0)
+#define ALEPH_PHASOR_DEFAULT_FREQ (1)
+
+#define ALEPH_QUASOR_DEFAULT_SIN_PHASE (0)
+#define ALEPH_QUASOR_DEFAULT_COS_PHASE (FR32_MAX / 2)
+#define ALEPH_QUASOR_DEFAULT_FREQ (1)
+
 typedef struct {
     t_Mempool *mempool;
     int32_t phase;
@@ -45,16 +52,20 @@ typedef struct {
 typedef t_Aleph_Phasor *Aleph_Phasor;
 
 typedef struct {
+    t_Mempool *mempool;
     int32_t cos_phase;
     int32_t sin_phase;
-} t_Aleph_QuadraturePhasor;
+    fract32 freq;
+} t_Aleph_Quasor;
+
+typedef t_Aleph_Quasor *Aleph_Quasor;
 
 /*----- Extern variable declarations ---------------------------------*/
 
 /*----- Extern function prototypes -----------------------------------*/
 
 /// TODO: Functions to set frequency.
-///          Aleph_QuadraturePhasor_next()
+///          Aleph_Quasor_next()
 //
 void Aleph_Phasor_init(Aleph_Phasor *const phasor, t_Aleph *const aleph);
 void Aleph_Phasor_init_to_pool(Aleph_Phasor *const phasor,
@@ -68,13 +79,16 @@ int32_t Aleph_Phasor_read(Aleph_Phasor *const phasor, int32_t freq);
 int32_t Aleph_Phasor_pos_next_dynamic(Aleph_Phasor *const phasor, fract32 freq);
 int32_t Aleph_Phasor_pos_read(Aleph_Phasor *const phasor);
 
-void Aleph_QuadraturePhasor_init(t_Aleph_QuadraturePhasor *phasor);
-void Aleph_QuadraturePhasor_pos_next_dynamic(t_Aleph_QuadraturePhasor *phasor,
-                                             fract32 freq);
-int32_t Aleph_QuadraturePhasor_pos_sin_read(t_Aleph_QuadraturePhasor *phasor);
-int32_t Aleph_QuadraturePhasor_pos_cos_read(t_Aleph_QuadraturePhasor *phasor);
-int32_t Aleph_QuadraturePhasor_sin_read(t_Aleph_QuadraturePhasor *phasor);
-int32_t Aleph_QuadraturePhasor_cos_read(t_Aleph_QuadraturePhasor *phasor);
+void Aleph_Quasor_init(Aleph_Quasor *quasor, t_Aleph *const aleph);
+void Aleph_Quasor_init_to_pool(Aleph_Quasor *const quasor,
+                               Mempool *const mempool);
+void Aleph_Quasor_free(Aleph_Quasor *const quasor);
+int32_t Aleph_Quasor_next(Aleph_Quasor *const quasor);
+void Aleph_Quasor_pos_next_dynamic(Aleph_Quasor *quasor, fract32 freq);
+int32_t Aleph_Quasor_pos_sin_read(Aleph_Quasor *quasor);
+int32_t Aleph_Quasor_pos_cos_read(Aleph_Quasor *quasor);
+int32_t Aleph_Quasor_sin_read(Aleph_Quasor *quasor);
+int32_t Aleph_Quasor_cos_read(Aleph_Quasor *quasor);
 
 #ifdef __cplusplus
 }
