@@ -16,7 +16,7 @@
 
 ----------------------------------------------------------------------*/
 /*
- * @file    monosynth.c
+ * @file    aleph_monosynth.c
  *
  * @brief   Monosynth module.
  *
