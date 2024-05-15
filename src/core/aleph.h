@@ -44,7 +44,6 @@ extern "C" {
 #include "fract_math.h"
 #include "types.h"
 
-
 /*----- Macros and Definitions ---------------------------------------*/
 
 #define TWO_PI (6)

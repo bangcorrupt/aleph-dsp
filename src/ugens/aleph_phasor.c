@@ -97,7 +97,7 @@ int32_t Aleph_Phasor_next_dynamic(Aleph_Phasor *const phasor, fract32 freq) {
     return ph->phase;
 }
 
-int32_t Aleph_Phasor_read(Aleph_Phasor *const phasor, int32_t freq) {
+int32_t Aleph_Phasor_read(Aleph_Phasor *const phasor, fract32 freq) {
 
     t_Aleph_Phasor *ph = *phasor;
 
@@ -148,11 +148,42 @@ void Aleph_Quasor_free(Aleph_Quasor *const quasor) {
     mpool_free((char *)qu, qu->mempool);
 }
 
-int32_t Aleph_Quasor_advance(Aleph_Quasor *const quasor) {
+void Aleph_Quasor_set_freq(Aleph_Quasor *const quasor, fract32 freq) {
+
+    t_Aleph_Quasor *qu = *quasor;
+
+    qu->freq = freq;
+}
+
+void Aleph_Quasor_set_cos_phase(Aleph_Quasor *const quasor, int32_t phase) {
+
+    t_Aleph_Quasor *qu = *quasor;
+
+    qu->cos_phase = phase;
+    qu->sin_phase = qu->cos_phase + FR32_MAX;
+}
+
+void Aleph_Quasor_set_sin_phase(Aleph_Quasor *const quasor, int32_t phase) {
+
+    t_Aleph_Quasor *qu = *quasor;
+
+    qu->sin_phase = phase;
+    qu->cos_phase = qu->sin_phase - FR32_MAX;
+}
+
+void Aleph_Quasor_advance(Aleph_Quasor *const quasor) {
 
     t_Aleph_Quasor *qu = *quasor;
 
     qu->cos_phase += qu->freq;
+    qu->sin_phase = qu->cos_phase + FR32_MAX;
+}
+
+void Aleph_Quasor_advance_dynamic(Aleph_Quasor *const quasor, fract32 freq) {
+
+    t_Aleph_Quasor *qu = *quasor;
+
+    qu->cos_phase += freq;
     qu->sin_phase = qu->cos_phase + FR32_MAX;
 }
 
