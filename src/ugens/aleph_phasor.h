@@ -84,7 +84,7 @@ void Aleph_Quasor_init_to_pool(Aleph_Quasor *const quasor,
                                Mempool *const mempool);
 void Aleph_Quasor_free(Aleph_Quasor *const quasor);
 void Aleph_Quasor_advance(Aleph_Quasor *const quasor);
-void Aleph_Quasor_pos_advance_dynamic(Aleph_Quasor *quasor, fract32 freq);
+void Aleph_Quasor_advance_dynamic(Aleph_Quasor *quasor, fract32 freq);
 void Aleph_Quasor_set_freq(Aleph_Quasor *const quasor, fract32 freq);
 void Aleph_Quasor_set_cos_phase(Aleph_Quasor *const quasor, int32_t phase);
 void Aleph_Quasor_set_sin_phase(Aleph_Quasor *const quasor, int32_t phase);
