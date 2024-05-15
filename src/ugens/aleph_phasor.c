@@ -28,8 +28,6 @@
 #include "aleph.h"
 
 #include "aleph_phasor.h"
-#include "types.h"
-#include <stdint.h>
 
 /*----- Macros and Definitions ---------------------------------------*/
 
