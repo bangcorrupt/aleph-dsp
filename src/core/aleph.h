@@ -4,7 +4,7 @@
 
                 https://github.com/bangcorrupt/aleph-dsp
 
-         Aleph DSP is based on monome/Aleph and spiricom/LEAF.
+         Aleph DSP is based on monome/aleph and spiricom/LEAF.
 
                               MIT License
 
@@ -37,17 +37,20 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "aleph-mempool.h"
+#include "aleph_mempool.h"
 
 #include "fix.h"
+#include "fix16_fract.h"
 #include "fract_math.h"
 #include "types.h"
 
+
 /*----- Macros and Definitions ---------------------------------------*/
 
-#define TWO_PI 6
+#define TWO_PI (6)
+#define ALEPH_MAX_UNISON_VOICES (16)
 
-struct Aleph {
+struct t_Aleph {
     ///@{
     uint32_t samplerate; //!< The current audio sample rate. Set with
                          //!< Aleph_set_samplerate().
@@ -66,11 +69,11 @@ struct Aleph {
                              //!< allocated from the Aleph memory pool will be
                              //!< cleared.
     t_Mempool *mempool;      //!< The default Aleph mempool object.
-    t_Mempool *_internal_mempool;
+    t_Mempool _internal_mempool;
     size_t header_size; //!< The size in bytes of memory region headers within
                         //!< mempools.
     void (*error_callback)(
-        Aleph *const,
+        t_Aleph *const,
         e_Aleph_error_type); //!< A pointer to the callback function for
                              //!< Aleph errors. Can be set by the user.
     int error_state[ALEPH_ERROR_NIL]; //!< An array of flags that indicate which
@@ -95,41 +98,41 @@ struct Aleph {
  @param random A pointer to a random number function. Should return a fract32 >=
  0 and < 1.
  */
-void Aleph_init(Aleph *const aleph, uint32_t samplerate, char *memory,
+void Aleph_init(t_Aleph *const aleph, uint32_t samplerate, char *memory,
                 size_t memory_size, fract32 (*random)(void));
 
 //! Set the sample rate of Aleph.
 /*!
  @param samplerate The new audio sample rate.
  */
-void Aleph_set_samplerate(Aleph *const aleph, uint32_t samplerate);
+void Aleph_set_samplerate(t_Aleph *const aleph, uint32_t samplerate);
 
 //! Get the sample rate of Aleph.
 /*!
  @return The current sample rate as a fract32.
  */
-fract32 Aleph_get_samplerate(Aleph *const aleph);
+fract32 Aleph_get_samplerate(t_Aleph *const aleph);
 
 //! The default callback function for Aleph errors.
 /*!
  @param error_type The type of the error that has occurred.
  */
-void Aleph_default_error_callback(Aleph *const aleph,
+void Aleph_default_error_callback(t_Aleph *const aleph,
                                   e_Aleph_error_type error_type);
 
-void Aleph_internal_error_callback(Aleph *const aleph,
+void Aleph_internal_error_callback(t_Aleph *const aleph,
                                    e_Aleph_error_type whichone);
 
 //! Set the callback function for Aleph errors.
 /*!
  @param callback A pointer to the callback function.
  */
-void Aleph_set_error_callback(Aleph *const aleph,
-                              void (*callback)(Aleph *const,
+void Aleph_set_error_callback(t_Aleph *const aleph,
+                              void (*callback)(t_Aleph *const,
                                                e_Aleph_error_type));
 
 // Return pointer to Aleph mempool.
-t_Mempool *Aleph_get_mempool(Aleph *const aleph);
+t_Mempool *Aleph_get_mempool(t_Aleph *const aleph);
 
 /*! @} */
 

@@ -4,7 +4,7 @@
 
                 https://github.com/bangcorrupt/aleph-dsp
 
-         Aleph DSP is based on monome/Aleph and spiricom/LEAF.
+         Aleph DSP is based on monome/aleph and spiricom/LEAF.
 
                               MIT License
 
@@ -15,10 +15,11 @@
                        Copyright bangcorrupt 2024
 
 ----------------------------------------------------------------------*/
+
 /* Original work by monome, modified by bangcorrupt 2024. */
 
 /*
- * @file    tracking_envelope.c
+ * @file    aleph_tracking_envelope.c
  *
  * @brief   Tracking envelope.
  *
@@ -28,8 +29,8 @@
 
 #include "aleph.h"
 
-#include "interpolate.h"
-#include "tracking_envelope.h"
+#include "aleph_interpolate.h"
+#include "aleph_tracking_envelope.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 
@@ -41,29 +42,39 @@
 
 /*----- Extern function implementations ------------------------------*/
 
-void TrackingEnvLin_init(t_TrackingEnvLin *env) {
+void Aleph_TrackingEnvLin_init(t_Aleph_TrackingEnvLin *env) {
+
     env->val = 0;
-    AsymLinSlew_init(&(env->slew), LINSLEW_10MS, LINSLEW_100MS);
+
+    Aleph_AsymLinSlew_init(&(env->slew), LINSLEW_10MS, LINSLEW_100MS);
 }
 
-fract32 TrackingEnvLin_next(t_TrackingEnvLin *env, fract32 in) {
-    AsymLinSlew_next(&(env->slew), &(env->val), abs_fr1x32(in));
+fract32 Aleph_TrackingEnvLin_next(t_Aleph_TrackingEnvLin *env, fract32 in) {
+
+    Aleph_AsymLinSlew_next(&(env->slew), &(env->val), abs_fr1x32(in));
+
     return env->val;
 }
 
-void TrackingEnvLog_init(t_TrackingEnvLog *env) {
+void Aleph_TrackingEnvLog_init(t_Aleph_TrackingEnvLog *env) {
+
     env->val = 0;
     env->up = SLEW_10MS;
     env->down = SLEW_100MS;
     env->gate = FR32_MAX / 500;
 }
 
-fract32 TrackingEnvLog_next(t_TrackingEnvLog *env, fract32 in) {
+fract32 Aleph_TrackingEnvLog_next(t_Aleph_TrackingEnvLog *env, fract32 in) {
+
     fract32 target = abs_fr1x32(in);
-    if (target > env->val)
+
+    if (target > env->val) {
         SIMPLE_SLEW(env->val, target, env->up);
-    else if (target < env->val)
+
+    } else if (target < env->val) {
         SIMPLE_SLEW(env->val, target, env->down);
+    }
+
     return env->val;
 }
 

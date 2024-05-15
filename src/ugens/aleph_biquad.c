@@ -4,7 +4,7 @@
 
                 https://github.com/bangcorrupt/aleph-dsp
 
-         Aleph DSP is based on monome/Aleph and spiricom/LEAF.
+         Aleph DSP is based on monome/aleph and spiricom/LEAF.
 
                               MIT License
 
@@ -19,22 +19,21 @@
 /* Original work by monome, modified by bangcorrupt 2024. */
 
 /*
- * @file    biquad.c
+ * @file    aleph_biquad.c
  *
  * @brief   Biquad filters.
  */
 
 /*----- Includes -----------------------------------------------------*/
 
-#include <fract_math.h>
 #include <math.h>
+#include <stdint.h>
 
-#include "fix.h"
-#include "types.h"
+#include "aleph.h"
 
-#include "biquad.h"
+#include "aleph_biquad.h"
 
-#include "ricks_tricks.h"
+#include "aleph_utils.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 
@@ -46,7 +45,7 @@
 
 /*----- Extern function implementations ------------------------------*/
 
-void Biquad_init(t_Biquad *bq) {
+void Aleph_Biquad_init(t_Aleph_Biquad *bq) {
     bq->a1 = 0;
     bq->a2 = 0;
     bq->b0 = 0;
@@ -59,10 +58,10 @@ void Biquad_init(t_Biquad *bq) {
     bq->y__ = 0;
 }
 
-int Biquad_next(t_Biquad *bq, fract32 x) {
-    fract32 ret = (mult_fr8x24(bq->b0, x) + mult_fr8x24(bq->b1, bq->x_) +
-                   mult_fr8x24(bq->b2, bq->x__)) -
-                  (mult_fr8x24(bq->a1, bq->y_) + mult_fr8x24(bq->a2, bq->y__));
+fract32 Aleph_Biquad_next(t_Aleph_Biquad *bq, fract32 x) {
+    fract32 ret = (MULT_FR8X24(bq->b0, x) + MULT_FR8X24(bq->b1, bq->x_) +
+                   MULT_FR8X24(bq->b2, bq->x__)) -
+                  (MULT_FR8X24(bq->a1, bq->y_) + MULT_FR8X24(bq->a2, bq->y__));
     bq->y__ = bq->y_;
     bq->y_ = ret;
     bq->x__ = bq->x_;
@@ -70,18 +69,18 @@ int Biquad_next(t_Biquad *bq, fract32 x) {
     return ret;
 }
 
-void Biquad_set_coeffs_from_floats(t_Biquad *bq, float a1, float a2, float b0,
-                                   float b1, float b2) {
-    bq->a1 = float_c8x24(a1);
-    bq->a2 = float_c8x24(a2);
-    bq->b0 = float_c8x24(b0);
-    bq->b1 = float_c8x24(b1);
-    bq->b2 = float_c8x24(b2);
+void Aleph_Biquad_set_coeffs_from_floats(t_Aleph_Biquad *bq, float a1, float a2,
+                                         float b0, float b1, float b2) {
+    bq->a1 = FLOAT_C8X24(a1);
+    bq->a2 = FLOAT_C8X24(a2);
+    bq->b0 = FLOAT_C8X24(b0);
+    bq->b1 = FLOAT_C8X24(b1);
+    bq->b2 = FLOAT_C8X24(b2);
 }
 
-void Biquad_set_lpf(t_Biquad *bq, float f, float q) {
+void Aleph_Biquad_set_lpf(t_Aleph_Biquad *bq, float freq, float q) {
     float a0, a1, a2, b0, b1, b2, omega, alpha;
-    omega = (2 * 3.1415 * f) / 48000.0;
+    omega = (2 * 3.1415 * freq) / 48000.0;
     alpha = sin(omega) / (2.0 * q);
 
     b0 = (1 - cos(omega)) / 2;
@@ -91,11 +90,11 @@ void Biquad_set_lpf(t_Biquad *bq, float f, float q) {
     a1 = -2 * cos(omega);
     a2 = 1 - alpha;
 
-    bq->a1 = float_c8x24(a1 / a0);
-    bq->a2 = float_c8x24(a2 / a0);
-    bq->b0 = float_c8x24(b0 / a0);
-    bq->b1 = float_c8x24(b1 / a0);
-    bq->b2 = float_c8x24(b2 / a0);
+    bq->a1 = FLOAT_C8X24(a1 / a0);
+    bq->a2 = FLOAT_C8X24(a2 / a0);
+    bq->b0 = FLOAT_C8X24(b0 / a0);
+    bq->b1 = FLOAT_C8X24(b1 / a0);
+    bq->b2 = FLOAT_C8X24(b2 / a0);
 }
 
 /*----- Static function implementations ------------------------------*/

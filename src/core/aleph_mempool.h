@@ -67,7 +67,9 @@ extern "C" {
 
 #define MPOOL_ALIGN_SIZE (8)
 
-typedef struct Aleph Aleph;
+/// TODO: Find a better place for this.
+//
+typedef struct t_Aleph t_Aleph;
 
 typedef enum {
     ALEPH_MEMPOOL_OVERRUN = 0,
@@ -92,10 +94,11 @@ typedef struct t_mpool_node {
 } t_mpool_node;
 
 typedef struct t_Mempool t_Mempool;
+typedef t_Mempool *Mempool;
 
 struct t_Mempool {
     t_Mempool *mempool;
-    Aleph *aleph;
+    t_Aleph *aleph;
     char *mpool;        // start of the mpool
     size_t usize;       // used size of the pool
     size_t msize;       // max size of the pool
@@ -110,14 +113,14 @@ struct t_Mempool {
  @param size The size of the chunk of memory to be used as a mempool.
  @param aleph A pointer to the aleph instance.
  */
-void Mempool_init(t_Mempool *const pool, char *memory, size_t size,
-                  Aleph *const aleph);
+void Mempool_init(Mempool *const pool, char *memory, size_t size,
+                  t_Aleph *const aleph);
 
 //! Free a t_Mempool from its mempool.
 /*!
  @param pool A pointer to the t_Mempool to free.
  */
-void Mempool_free(t_Mempool *const pool);
+void Mempool_free(Mempool *const pool);
 
 //! Initialize a t_Mempool for a given memory location and size to a specified
 //! mempool.
@@ -128,8 +131,8 @@ void Mempool_free(t_Mempool *const pool);
  @param pool_to A pointer to the t_Mempool to which this t_Mempool should be
  initialized.
  */
-void Mempool_init_to_pool(t_Mempool *const mp, char *memory, size_t size,
-                          t_Mempool *const mem);
+void Mempool_init_to_pool(Mempool *const mp, char *memory, size_t size,
+                          Mempool *const mem);
 
 /*!￼￼￼
  @} */
@@ -153,17 +156,17 @@ void mpool_free(char *ptr, t_Mempool *pool);
 size_t mpool_get_size(t_Mempool *pool);
 size_t mpool_get_used(t_Mempool *pool);
 
-void aleph_pool_init(Aleph *const aleph, char *memory, size_t size);
+void aleph_pool_init(t_Aleph *const aleph, char *memory, size_t size);
 
-char *aleph_alloc(Aleph *const aleph, size_t size);
-char *aleph_calloc(Aleph *const aleph, size_t size);
+char *aleph_alloc(t_Aleph *const aleph, size_t size);
+char *aleph_calloc(t_Aleph *const aleph, size_t size);
 
-void aleph_free(Aleph *const aleph, char *ptr);
+void aleph_free(t_Aleph *const aleph, char *ptr);
 
-size_t aleph_pool_get_size(Aleph *const aleph);
-size_t aleph_pool_get_used(Aleph *const aleph);
+size_t aleph_pool_get_size(t_Aleph *const aleph);
+size_t aleph_pool_get_used(t_Aleph *const aleph);
 
-char *aleph_pool_get_pool(Aleph *const aleph);
+char *aleph_pool_get_pool(t_Aleph *const aleph);
 
 #ifdef __cplusplus
 }

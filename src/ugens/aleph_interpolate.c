@@ -4,7 +4,7 @@
 
                 https://github.com/bangcorrupt/aleph-dsp
 
-         Aleph DSP is based on monome/Aleph and spiricom/LEAF.
+         Aleph DSP is based on monome/aleph and spiricom/LEAF.
 
                               MIT License
 
@@ -19,7 +19,7 @@
 /* Original work by monome, modified by bangcorrupt 2024. */
 
 /*
- * @file    interpolate.c
+ * @file    aleph_interpolate.c
  *
  * @brief   Iterpolation.
  *
@@ -27,8 +27,9 @@
 
 /*----- Includes -----------------------------------------------------*/
 
-#include "interpolate.h"
 #include <stdint.h>
+
+#include "aleph_interpolate.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 
@@ -54,7 +55,8 @@ float interp_bspline_float(float x, float _y, float y, float y_, float y__) {
     return ((c3 * x + c2) * x + c1) * x + c0;
 }
 
-void RadixLinSlew_init(t_RadixLinSlew *slew, fract32 rate, uint16_t radix) {
+void Aleph_RadixLinSlew_init(t_Aleph_RadixLinSlew *slew, fract32 rate,
+                             uint16_t radix) {
 
     slew->radix = radix;
     slew->remainder = 0;
@@ -62,7 +64,8 @@ void RadixLinSlew_init(t_RadixLinSlew *slew, fract32 rate, uint16_t radix) {
 }
 
 // This guy slews between target and current at *fractional* constant speed
-void RadixLinSlew_next(t_RadixLinSlew *slew, fract32 *current, fract32 target) {
+void Aleph_RadixLinSlew_next(t_Aleph_RadixLinSlew *slew, fract32 *current,
+                             fract32 target) {
 
     fract32 difference = abs_fr1x32(sub_fr1x32(target, *current));
 
@@ -80,13 +83,13 @@ void RadixLinSlew_next(t_RadixLinSlew *slew, fract32 *current, fract32 target) {
         *current += inc;
 }
 
-void LinSlew_init(t_LinSlew *slew, fract32 rate) {
+void LinSlew_init(t_Aleph_LinSlew *slew, fract32 rate) {
     //
     slew->rate = rate;
 }
 
 // This guy slews between target and current at constant speed
-void LinSlew_next(t_LinSlew *slew, fract32 *current, fract32 target) {
+void LinSlew_next(t_Aleph_LinSlew *slew, fract32 *current, fract32 target) {
 
     if (*current > target)
         *current -= min_fr1x32(abs_fr1x32(target - *current), slew->rate);
@@ -94,14 +97,16 @@ void LinSlew_next(t_LinSlew *slew, fract32 *current, fract32 target) {
         *current += min_fr1x32(abs_fr1x32(target - *current), slew->rate);
 }
 
-void AsymLinSlew_init(t_AsymLinSlew *slew, fract32 slew_up, fract32 slew_down) {
+void Aleph_AsymLinSlew_init(t_Aleph_AsymLinSlew *slew, fract32 slew_up,
+                            fract32 slew_down) {
 
     slew->up = slew_up;     //  Previously  LINSLEW_10MS.
     slew->down = slew_down; //  Previously  LINSLEW_100MS.
 }
 
 // This guy slews between target and current at constant speed
-void AsymLinSlew_next(t_AsymLinSlew *slew, fract32 *current, fract32 target) {
+void Aleph_AsymLinSlew_next(t_Aleph_AsymLinSlew *slew, fract32 *current,
+                            fract32 target) {
 
     if (*current > target)
         *current -= min_fr1x32(abs_fr1x32(target - *current), slew->down);
@@ -109,7 +114,8 @@ void AsymLinSlew_next(t_AsymLinSlew *slew, fract32 *current, fract32 target) {
         *current += min_fr1x32(abs_fr1x32(target - *current), slew->up);
 }
 
-void RadixLogSlew_init(t_RadixLogSlew *slew, fract32 rate, uint16_t radix) {
+void Aleph_RadixLogSlew_init(t_Aleph_RadixLogSlew *slew, fract32 rate,
+                             uint16_t radix) {
 
     slew->radix = radix;
     slew->remainder = 0;
@@ -117,7 +123,8 @@ void RadixLogSlew_init(t_RadixLogSlew *slew, fract32 rate, uint16_t radix) {
 }
 
 // This guy slews correctly when the slew rate is less than 1 per audio frame
-void RadixLogSlew_next(t_RadixLogSlew *slew, fract32 *current, fract32 target) {
+void Aleph_RadixLogSlew_next(t_Aleph_RadixLogSlew *slew, fract32 *current,
+                             fract32 target) {
 
     fract32 ratio = slew->rate;
     fract32 difference = abs_fr1x32(sub_fr1x32(target, *current));

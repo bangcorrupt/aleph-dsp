@@ -4,7 +4,7 @@
 
                 https://github.com/bangcorrupt/aleph-dsp
 
-         Aleph DSP is based on monome/Aleph and spiricom/LEAF.
+         Aleph DSP is based on monome/aleph and spiricom/LEAF.
 
                               MIT License
 
@@ -19,20 +19,16 @@
 /* Original work by monome, modified by bangcorrupt 2024. */
 
 /*
- * @file    mix-pan.c
+ * @file    aleph_mix_pan.c
  *
  * @brief   Mixing and panning functions.
  */
 
 /*----- Includes -----------------------------------------------------*/
 
-#include "aleph-mempool.h"
 #include "aleph.h"
 
-#include "fix.h"
-#include "fix16_fract.h"
-#include "mix_pan.h"
-// #include "table.h"
+#include "aleph_mix_pan.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
 
