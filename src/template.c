@@ -4,7 +4,7 @@
 
                 https://github.com/bangcorrupt/aleph-dsp
 
-         Aleph DSP is based on monome/Aleph and spiricom/LEAF.
+         Aleph DSP is based on monome/aleph and spiricom/LEAF.
 
                               MIT License
 
@@ -36,4 +36,4 @@
 
 /*----- Static function implementations ------------------------------*/
 
-/*----- End of file --------------------------------------------------*/
+/*----- END OF FILE --------------------------------------------------*/

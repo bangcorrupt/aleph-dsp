@@ -4,7 +4,7 @@
 
                 https://github.com/bangcorrupt/aleph-dsp
 
-         Aleph DSP is based on monome/Aleph and spiricom/LEAF.
+         Aleph DSP is based on monome/aleph and spiricom/LEAF.
 
                               MIT License
 
@@ -19,16 +19,14 @@
 /* Original work by monome, modified by bangcorrupt 2024. */
 
 /*
- * @file    window.c
+ * @file    aleph_tracking_envelope.h
  *
- * @brief   Window functions.
+ * @brief   Public API for tracking envelope.
  *
  */
 
-/// TODO: Maybe fold this into another module, or move back to ricks_tricks.
-
-#ifndef ALEPH_WINDOW_H
-#define ALEPH_WINDOW_H
+#ifndef ALEPH_TRACKING_ENVELOPE_H
+#define ALEPH_TRACKING_ENVELOPE_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -36,18 +34,35 @@ extern "C" {
 
 /*----- Includes -----------------------------------------------------*/
 
-#include <stdint.h>
+#include "aleph.h"
 
-#include "types.h"
+#include "aleph_interpolate.h"
 
 /*----- Macros and Definitions ---------------------------------------*/
+
+typedef struct {
+    fract32 val;
+    t_Aleph_AsymLinSlew slew;
+
+} t_Aleph_TrackingEnvLin;
+
+typedef struct {
+    fract32 val;
+    fract32 up;
+    fract32 down;
+    fract32 gate;
+
+} t_Aleph_TrackingEnvLog;
 
 /*----- Extern variable declarations ---------------------------------*/
 
 /*----- Extern function prototypes -----------------------------------*/
 
-fract32 flat_top_env(int32_t pos, int32_t fade_ratio);
-fract32 half_wave_env(fract32 pos);
+void Aleph_TrackingEnvLin_init(t_Aleph_TrackingEnvLin *env);
+fract32 Aleph_TrackingEnvLin_next(t_Aleph_TrackingEnvLin *env, fract32 in);
+
+void Aleph_TrackingEnvLog_init(t_Aleph_TrackingEnvLog *env);
+fract32 Aleph_TrackingEnvLog_next(t_Aleph_TrackingEnvLog *env, fract32 in);
 
 #ifdef __cplusplus
 }

@@ -4,7 +4,7 @@
 
                 https://github.com/bangcorrupt/aleph-dsp
 
-         Aleph DSP is based on monome/Aleph and spiricom/LEAF.
+         Aleph DSP is based on monome/aleph and spiricom/LEAF.
 
                               MIT License
 
@@ -40,10 +40,12 @@
 
 /*----- Extern function implementations ------------------------------*/
 
-void Aleph_init(Aleph *const aleph, uint32_t samplerate, char *memory,
-                size_t memorysize, fract32 (*random)(void)) {
-    aleph->_internal_mempool->aleph = aleph;
-    aleph_pool_init(aleph, memory, memorysize);
+void Aleph_init(t_Aleph *const aleph, uint32_t samplerate, char *memory,
+                size_t memory_size, fract32 (*random)(void)) {
+
+    aleph->_internal_mempool.aleph = aleph;
+
+    aleph_pool_init(aleph, memory, memory_size);
 
     aleph->samplerate = samplerate;
 
@@ -66,34 +68,34 @@ void Aleph_init(Aleph *const aleph, uint32_t samplerate, char *memory,
     aleph->free_count = 0;
 }
 
-void Aleph_set_samplerate(Aleph *const aleph, uint32_t samplerate) {
+void Aleph_set_samplerate(t_Aleph *const aleph, uint32_t samplerate) {
     aleph->samplerate = samplerate;
     // aleph->inv_samplerate = 1.0f / samplerate;
     // aleph->twopi_inv_samplerate = aleph->inv_samplerate * TWO_PI;
 }
 
-fract32 Aleph_get_samplerate(Aleph *const aleph) { return aleph->samplerate; }
+fract32 Aleph_get_samplerate(t_Aleph *const aleph) { return aleph->samplerate; }
 
-void Aleph_default_error_callback(Aleph *const aleph,
+void Aleph_default_error_callback(t_Aleph *const aleph,
                                   e_Aleph_error_type whichone) {
     // Not sure what this should do if anything
     // Maybe fine as a placeholder
 }
 
-void Aleph_internal_error_callback(Aleph *const aleph,
+void Aleph_internal_error_callback(t_Aleph *const aleph,
                                    e_Aleph_error_type whichone) {
     aleph->error_state[whichone] = 1;
     aleph->error_callback(aleph, whichone);
 }
 
-void Aleph_set_error_callback(Aleph *const aleph,
-                              void (*callback)(Aleph *const,
+void Aleph_set_error_callback(t_Aleph *const aleph,
+                              void (*callback)(t_Aleph *const,
                                                e_Aleph_error_type)) {
     aleph->error_callback = callback;
 }
 
 // Return pointer to Aleph mempool.
-t_Mempool *Aleph_get_mempool(Aleph *const aleph) { return aleph->mempool; }
+t_Mempool *Aleph_get_mempool(t_Aleph *const aleph) { return aleph->mempool; }
 
 /*----- Static function implementations ------------------------------*/
 
