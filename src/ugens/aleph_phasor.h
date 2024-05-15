@@ -75,7 +75,7 @@ int32_t Aleph_Phasor_next(Aleph_Phasor *const phasor);
 void Aleph_Phasor_set_freq(Aleph_Phasor *const phasor, fract32 freq);
 void Aleph_Phasor_set_phase(Aleph_Phasor *const phasor, int32_t phase);
 int32_t Aleph_Phasor_next_dynamic(Aleph_Phasor *const phasor, fract32 freq);
-int32_t Aleph_Phasor_read(Aleph_Phasor *const phasor, int32_t freq);
+int32_t Aleph_Phasor_read(Aleph_Phasor *const phasor, fract32 freq);
 int32_t Aleph_Phasor_pos_next_dynamic(Aleph_Phasor *const phasor, fract32 freq);
 int32_t Aleph_Phasor_pos_read(Aleph_Phasor *const phasor);
 
@@ -83,8 +83,11 @@ void Aleph_Quasor_init(Aleph_Quasor *quasor, t_Aleph *const aleph);
 void Aleph_Quasor_init_to_pool(Aleph_Quasor *const quasor,
                                Mempool *const mempool);
 void Aleph_Quasor_free(Aleph_Quasor *const quasor);
-int32_t Aleph_Quasor_next(Aleph_Quasor *const quasor);
-void Aleph_Quasor_pos_next_dynamic(Aleph_Quasor *quasor, fract32 freq);
+void Aleph_Quasor_advance(Aleph_Quasor *const quasor);
+void Aleph_Quasor_advance_dynamic(Aleph_Quasor *quasor, fract32 freq);
+void Aleph_Quasor_set_freq(Aleph_Quasor *const quasor, fract32 freq);
+void Aleph_Quasor_set_cos_phase(Aleph_Quasor *const quasor, int32_t phase);
+void Aleph_Quasor_set_sin_phase(Aleph_Quasor *const quasor, int32_t phase);
 int32_t Aleph_Quasor_pos_sin_read(Aleph_Quasor *quasor);
 int32_t Aleph_Quasor_pos_cos_read(Aleph_Quasor *quasor);
 int32_t Aleph_Quasor_sin_read(Aleph_Quasor *quasor);
