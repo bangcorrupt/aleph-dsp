@@ -1,0 +1,3 @@
+[submodule "lib/libfixmath"]
+	path = lib/libfixmath
+	url = git@github.com:bangcorrupt/libfixmath.git
