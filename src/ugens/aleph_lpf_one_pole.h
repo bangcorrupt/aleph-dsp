@@ -60,7 +60,7 @@ void Aleph_LPFOnePole_init(Aleph_LPFOnePole *const lpf, t_Aleph *const aleph);
 void Aleph_LPFOnePole_init_to_pool(Aleph_LPFOnePole *const lpf,
                                    Mempool *const mempool);
 
-fract32 Aleph_LPFOnePole_free(Aleph_LPFOnePole *const lpf);
+void Aleph_LPFOnePole_free(Aleph_LPFOnePole *const lpf);
 
 fract32 Aleph_LPFOnePole_next(Aleph_LPFOnePole *const lpf);
 fract32 Aleph_LPFOnePole_norm_next(Aleph_LPFOnePole *const lpf);

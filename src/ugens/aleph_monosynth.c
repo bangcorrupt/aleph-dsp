@@ -89,6 +89,9 @@ void Aleph_MonoSynth_init_to_pool(Aleph_MonoSynth *const synth,
     Aleph_Oscillator_init_to_pool(&syn->filter_lfo, mempool);
     Aleph_Oscillator_init_to_pool(&syn->pitch_lfo, mempool);
 
+    Aleph_LPFOnePole_init_to_pool(&syn->amp_slew, mempool);
+    Aleph_LPFOnePole_set_output(&syn->amp_slew, syn->amp);
+
     Aleph_LPFOnePole_init_to_pool(&syn->freq_slew, mempool);
     Aleph_LPFOnePole_set_output(&syn->freq_slew, syn->freq);
 
@@ -133,7 +136,7 @@ fract32 Aleph_MonoSynth_next(Aleph_MonoSynth *const synth) {
 
     t_Aleph_MonoSynth *syn = *synth;
 
-    fract32 waveform;
+    fract32 output;
 
     fract32 freq;
     fract32 freq_offset;
@@ -197,22 +200,24 @@ fract32 Aleph_MonoSynth_next(Aleph_MonoSynth *const synth) {
     // Apply pitch LFO.
     freq = add_fr1x32(freq, mult_fr1x32x32(freq, pitch_lfo));
 
+    /// TODO: Set oscillator type (Dual, Unison, etc...).
+
     // Set oscillator frequency.
     Aleph_WaveformDual_set_freq_a(&syn->waveform, freq);
     Aleph_WaveformDual_set_freq_b(&syn->waveform,
                                   fix16_mul_fract(freq, freq_offset));
 
     // Generate waveforms.
-    waveform = Aleph_WaveformDual_next(&syn->waveform);
+    output = Aleph_WaveformDual_next(&syn->waveform);
 
     // Shift right to prevent clipping.
-    waveform = shr_fr1x32(waveform, 1);
+    output = shr_fr1x32(output, 1);
 
     // Apply amp envelope.
-    waveform = mult_fr1x32x32(waveform, amp_env);
+    output = mult_fr1x32x32(output, amp_env);
 
     // Apply amp LFO.
-    waveform = add_fr1x32(waveform, mult_fr1x32x32(waveform, amp_lfo));
+    output = add_fr1x32(output, mult_fr1x32x32(output, amp_lfo));
 
     // Get slewed cutoff.
     cutoff = Aleph_LPFOnePole_next(&syn->cutoff_slew);
@@ -234,31 +239,27 @@ fract32 Aleph_MonoSynth_next(Aleph_MonoSynth *const synth) {
     switch (syn->filter_type) {
 
     case ALEPH_FILTERSVF_TYPE_LPF:
-        waveform =
-            Aleph_FilterSVF_softclip_asym_lpf_next(&syn->filter, waveform);
+        output = Aleph_FilterSVF_softclip_lpf_next(&syn->filter, output);
         break;
 
     case ALEPH_FILTERSVF_TYPE_BPF:
-        waveform =
-            Aleph_FilterSVF_softclip_asym_bpf_next(&syn->filter, waveform);
+        output = Aleph_FilterSVF_softclip_bpf_next(&syn->filter, output);
         break;
 
     case ALEPH_FILTERSVF_TYPE_HPF:
-        waveform =
-            Aleph_FilterSVF_softclip_asym_hpf_next(&syn->filter, waveform);
+        output = Aleph_FilterSVF_softclip_hpf_next(&syn->filter, output);
         break;
 
     default:
         // Default to LPF.
-        waveform =
-            Aleph_FilterSVF_softclip_asym_lpf_next(&syn->filter, waveform);
+        output = Aleph_FilterSVF_softclip_lpf_next(&syn->filter, output);
         break;
     }
 
     // Block DC.
-    waveform = Aleph_HPF_dc_block(&syn->dc_block, waveform);
+    output = Aleph_HPF_dc_block(&syn->dc_block, output);
 
-    return waveform;
+    return output;
 }
 
 void Aleph_MonoSynth_set_shape(Aleph_MonoSynth *const synth,
@@ -267,6 +268,21 @@ void Aleph_MonoSynth_set_shape(Aleph_MonoSynth *const synth,
     t_Aleph_MonoSynth *syn = *synth;
 
     Aleph_WaveformDual_set_shape(&syn->waveform, shape);
+}
+
+void Aleph_MonoSynth_set_amp(Aleph_MonoSynth *const synth, fract32 amp) {
+
+    t_Aleph_MonoSynth *syn = *synth;
+
+    syn->amp = amp;
+    // Aleph_LPFOnePole_set_target(&syn->amp_slew, syn->amp);
+}
+
+void Aleph_MonoSynth_set_phase(Aleph_MonoSynth *const synth, fract32 phase) {
+
+    t_Aleph_MonoSynth *syn = *synth;
+
+    Aleph_WaveformDual_set_phase(&syn->waveform, phase);
 }
 
 void Aleph_MonoSynth_set_freq(Aleph_MonoSynth *const synth, fract32 freq) {
@@ -281,7 +297,8 @@ void Aleph_MonoSynth_set_freq_offset(Aleph_MonoSynth *const synth,
 
     t_Aleph_MonoSynth *syn = *synth;
 
-    Aleph_LPFOnePole_set_target(&syn->freq_offset_slew, freq_offset);
+    // Aleph_LPFOnePole_set_target(&syn->freq_offset_slew, freq_offset);
+    syn->freq_offset = freq_offset;
 }
 
 void Aleph_MonoSynth_set_filter_type(Aleph_MonoSynth *const synth,

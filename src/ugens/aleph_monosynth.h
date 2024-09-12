@@ -73,6 +73,8 @@ typedef struct {
 
     Aleph_HPF dc_block;
 
+    fract32 amp;
+
     Aleph_EnvADSR amp_env;
     Aleph_EnvADSR pitch_env;
     Aleph_EnvADSR filter_env;
@@ -89,6 +91,7 @@ typedef struct {
     fract32 filter_lfo_depth;
     fract32 pitch_lfo_depth;
 
+    Aleph_LPFOnePole amp_slew;
     Aleph_LPFOnePole freq_slew;
     Aleph_LPFOnePole freq_offset_slew;
     Aleph_LPFOnePole cutoff_slew;
@@ -113,6 +116,10 @@ fract32 Aleph_MonoSynth_next(Aleph_MonoSynth *const synth);
 
 void Aleph_MonoSynth_set_shape(Aleph_MonoSynth *const synth,
                                e_Aleph_Waveform_shape shape_a);
+
+void Aleph_MonoSynth_set_amp(Aleph_MonoSynth *const synth, fract32 amp);
+void Aleph_MonoSynth_set_phase(Aleph_MonoSynth *const synth, fract32 phase);
+
 void Aleph_MonoSynth_set_freq(Aleph_MonoSynth *const synth, fract32 freq);
 void Aleph_MonoSynth_set_freq_offset(Aleph_MonoSynth *const synth,
                                      fract32 freq_offset);
