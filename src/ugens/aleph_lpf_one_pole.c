@@ -63,7 +63,7 @@ void Aleph_LPFOnePole_init_to_pool(Aleph_LPFOnePole *const lpf,
     lp->output = ALEPH_FILTER_ONE_POLE_DEFAULT_OUTPUT;
 }
 
-fract32 Aleph_LPFOnePole_free(Aleph_LPFOnePole *const lpf) {
+void Aleph_LPFOnePole_free(Aleph_LPFOnePole *const lpf) {
 
     t_Aleph_LPFOnePole *lp = *lpf;
 
