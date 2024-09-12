@@ -132,212 +132,73 @@ void Aleph_MonoSynth_free(Aleph_MonoSynth *const synth) {
     mpool_free((char *)syn, syn->mempool);
 }
 
-// fract32 Aleph_MonoSynth_next(Aleph_MonoSynth *const synth) {
-//
-//     t_Aleph_MonoSynth *syn = *synth;
-//
-//     fract32 output;
-//
-//     fract32 freq;
-//     fract32 freq_offset;
-//
-//     fract32 amp_lfo;
-//     fract32 filter_lfo;
-//     fract32 pitch_lfo;
-//
-//     fract32 amp_env;
-//     fract32 filter_env;
-//     fract32 pitch_env;
-//
-//     fract32 cutoff;
-//     fract32 res;
-//
-//     // Calculate pitch LFO.
-//     pitch_lfo = Aleph_Oscillator_next(&syn->pitch_lfo);
-//
-//     // Scale pitch LFO depth.
-//     pitch_lfo = mult_fr1x32x32(pitch_lfo, syn->pitch_lfo_depth);
-//
-//     // Calculate pitch envelope.
-//     pitch_env = Aleph_EnvADSR_next(&syn->pitch_env);
-//
-//     // Scale pitch envelope depth.
-//     pitch_env = mult_fr1x32x32(pitch_env, syn->pitch_env_depth);
-//
-//     // Calculate amp LFO.
-//     amp_lfo = Aleph_Oscillator_next(&syn->amp_lfo);
-//
-//     // Scale amp LFO depth.
-//     amp_lfo = mult_fr1x32x32(amp_lfo, syn->amp_lfo_depth);
-//
-//     // Calculate amplitude envelope.
-//     amp_env = Aleph_EnvADSR_next(&syn->amp_env);
-//
-//     // Scale amplitude envelope.
-//     amp_env = mult_fr1x32x32(amp_env, syn->amp_env_depth);
-//
-//     // Calculate filter LFO.
-//     filter_lfo = Aleph_Oscillator_next(&syn->filter_lfo);
-//
-//     // Scale filter LFO depth.
-//     filter_lfo = mult_fr1x32x32(filter_lfo, syn->filter_lfo_depth);
-//
-//     // Calculate filter envelope.
-//     filter_env = Aleph_EnvADSR_next(&syn->filter_env);
-//
-//     // Scale filter envelope depth.
-//     filter_env = mult_fr1x32x32(filter_env, syn->filter_env_depth);
-//
-//     // Get slewed frequency.
-//     freq = Aleph_LPFOnePole_next(&syn->freq_slew);
-//
-//     // Get slewed frequency offset.
-//     freq_offset = Aleph_LPFOnePole_next(&syn->freq_offset_slew);
-//
-//     // Apply pitch envelope.
-//     freq = add_fr1x32(pitch_env, freq);
-//
-//     // Apply pitch LFO.
-//     freq = add_fr1x32(freq, mult_fr1x32x32(freq, pitch_lfo));
-//
-//     /// TODO: Set oscillator type (Dual, Unison, etc...).
-//
-//     // Set oscillator frequency.
-//     Aleph_WaveformDual_set_freq_a(&syn->waveform, freq);
-//     Aleph_WaveformDual_set_freq_b(&syn->waveform,
-//                                   fix16_mul_fract(freq, freq_offset));
-//
-//     // Generate waveforms.
-//     output = Aleph_WaveformDual_next(&syn->waveform);
-//
-//     // Shift right to prevent clipping.
-//     output = shr_fr1x32(output, 1);
-//
-//     // Apply amp envelope.
-//     output = mult_fr1x32x32(output, amp_env);
-//
-//     // Apply amp LFO.
-//     output = add_fr1x32(output, mult_fr1x32x32(output, amp_lfo));
-//
-//     // Get slewed cutoff.
-//     cutoff = Aleph_LPFOnePole_next(&syn->cutoff_slew);
-//
-//     // Get slewed resonance.
-//     res = Aleph_LPFOnePole_next(&syn->res_slew);
-//
-//     // Apply filter envelope.
-//     cutoff = add_fr1x32(filter_env, cutoff);
-//
-//     // Apply filter LFO.
-//     cutoff = add_fr1x32(cutoff, mult_fr1x32x32(cutoff, filter_lfo));
-//
-//     // Set filter cutoff and resonance.
-//     Aleph_FilterSVF_set_coeff(&syn->filter, cutoff);
-//     Aleph_FilterSVF_set_rq(&syn->filter, res);
-//
-//     // Apply filter.
-//     switch (syn->filter_type) {
-//
-//     case ALEPH_FILTERSVF_TYPE_LPF:
-//         output = Aleph_FilterSVF_softclip_asym_lpf_next(&syn->filter,
-//         output); break;
-//
-//     case ALEPH_FILTERSVF_TYPE_BPF:
-//         output = Aleph_FilterSVF_softclip_asym_bpf_next(&syn->filter,
-//         output); break;
-//
-//     case ALEPH_FILTERSVF_TYPE_HPF:
-//         output = Aleph_FilterSVF_softclip_asym_hpf_next(&syn->filter,
-//         output); break;
-//
-//     default:
-//         // Default to LPF.
-//         output = Aleph_FilterSVF_softclip_asym_lpf_next(&syn->filter,
-//         output); break;
-//     }
-//
-//     // Block DC.
-//     output = Aleph_HPF_dc_block(&syn->dc_block, output);
-//
-//     return output;
-// }
-
 fract32 Aleph_MonoSynth_next(Aleph_MonoSynth *const synth) {
 
     t_Aleph_MonoSynth *syn = *synth;
 
     fract32 output;
 
-    fract32 amp;
-
     fract32 freq;
     fract32 freq_offset;
 
-    // fract32 amp_lfo;
-    // fract32 filter_lfo;
-    // fract32 pitch_lfo;
-    //
-    // fract32 amp_env;
-    // fract32 filter_env;
-    // fract32 pitch_env;
+    fract32 amp_lfo;
+    fract32 filter_lfo;
+    fract32 pitch_lfo;
+
+    fract32 amp_env;
+    fract32 filter_env;
+    fract32 pitch_env;
 
     fract32 cutoff;
     fract32 res;
 
-    // // Calculate pitch LFO.
-    // pitch_lfo = Aleph_Oscillator_next(&syn->pitch_lfo);
-    //
-    // // Scale pitch LFO depth.
-    // pitch_lfo = mult_fr1x32x32(pitch_lfo, syn->pitch_lfo_depth);
-    //
-    // // Calculate pitch envelope.
-    // pitch_env = Aleph_EnvADSR_next(&syn->pitch_env);
-    //
-    // // Scale pitch envelope depth.
-    // pitch_env = mult_fr1x32x32(pitch_env, syn->pitch_env_depth);
-    //
-    // // Calculate amp LFO.
-    // amp_lfo = Aleph_Oscillator_next(&syn->amp_lfo);
-    //
-    // // Scale amp LFO depth.
-    // amp_lfo = mult_fr1x32x32(amp_lfo, syn->amp_lfo_depth);
-    //
-    // // Calculate amplitude envelope.
-    // amp_env = Aleph_EnvADSR_next(&syn->amp_env);
-    //
-    // // Scale amplitude envelope.
-    // amp_env = mult_fr1x32x32(amp_env, syn->amp_env_depth);
-    //
-    // // Calculate filter LFO.
-    // filter_lfo = Aleph_Oscillator_next(&syn->filter_lfo);
-    //
-    // // Scale filter LFO depth.
-    // filter_lfo = mult_fr1x32x32(filter_lfo, syn->filter_lfo_depth);
-    //
-    // // Calculate filter envelope.
-    // filter_env = Aleph_EnvADSR_next(&syn->filter_env);
-    //
-    // // Scale filter envelope depth.
-    // filter_env = mult_fr1x32x32(filter_env, syn->filter_env_depth);
+    // Calculate pitch LFO.
+    pitch_lfo = Aleph_Oscillator_next(&syn->pitch_lfo);
 
-    // Get slewed amplitude.
-    // amp = Aleph_LPFOnePole_next(&syn->amp_slew);
+    // Scale pitch LFO depth.
+    pitch_lfo = mult_fr1x32x32(pitch_lfo, syn->pitch_lfo_depth);
 
-    amp = syn->amp;
+    // Calculate pitch envelope.
+    pitch_env = Aleph_EnvADSR_next(&syn->pitch_env);
+
+    // Scale pitch envelope depth.
+    pitch_env = mult_fr1x32x32(pitch_env, syn->pitch_env_depth);
+
+    // Calculate amp LFO.
+    amp_lfo = Aleph_Oscillator_next(&syn->amp_lfo);
+
+    // Scale amp LFO depth.
+    amp_lfo = mult_fr1x32x32(amp_lfo, syn->amp_lfo_depth);
+
+    // Calculate amplitude envelope.
+    amp_env = Aleph_EnvADSR_next(&syn->amp_env);
+
+    // Scale amplitude envelope.
+    amp_env = mult_fr1x32x32(amp_env, syn->amp_env_depth);
+
+    // Calculate filter LFO.
+    filter_lfo = Aleph_Oscillator_next(&syn->filter_lfo);
+
+    // Scale filter LFO depth.
+    filter_lfo = mult_fr1x32x32(filter_lfo, syn->filter_lfo_depth);
+
+    // Calculate filter envelope.
+    filter_env = Aleph_EnvADSR_next(&syn->filter_env);
+
+    // Scale filter envelope depth.
+    filter_env = mult_fr1x32x32(filter_env, syn->filter_env_depth);
 
     // Get slewed frequency.
     freq = Aleph_LPFOnePole_next(&syn->freq_slew);
 
     // Get slewed frequency offset.
-    // freq_offset = Aleph_LPFOnePole_next(&syn->freq_offset_slew);
+    freq_offset = Aleph_LPFOnePole_next(&syn->freq_offset_slew);
 
-    freq_offset = syn->freq_offset;
+    // Apply pitch envelope.
+    freq = add_fr1x32(pitch_env, freq);
 
-    // // Apply pitch envelope.
-    // freq = add_fr1x32(pitch_env, freq);
-    //
-    // // Apply pitch LFO.
-    // freq = add_fr1x32(freq, mult_fr1x32x32(freq, pitch_lfo));
+    // Apply pitch LFO.
+    freq = add_fr1x32(freq, mult_fr1x32x32(freq, pitch_lfo));
 
     /// TODO: Set oscillator type (Dual, Unison, etc...).
 
@@ -352,14 +213,11 @@ fract32 Aleph_MonoSynth_next(Aleph_MonoSynth *const synth) {
     // Shift right to prevent clipping.
     output = shr_fr1x32(output, 1);
 
-    // // Apply amp envelope.
-    // output = mult_fr1x32x32(output, amp_env);
-    //
-    // // Apply amp LFO.
-    // output = add_fr1x32(output, mult_fr1x32x32(output, amp_lfo));
+    // Apply amp envelope.
+    output = mult_fr1x32x32(output, amp_env);
 
-    // Apply amp modulation.
-    output = mult_fr1x32x32(output, amp);
+    // Apply amp LFO.
+    output = add_fr1x32(output, mult_fr1x32x32(output, amp_lfo));
 
     // Get slewed cutoff.
     cutoff = Aleph_LPFOnePole_next(&syn->cutoff_slew);
@@ -367,13 +225,11 @@ fract32 Aleph_MonoSynth_next(Aleph_MonoSynth *const synth) {
     // Get slewed resonance.
     res = Aleph_LPFOnePole_next(&syn->res_slew);
 
-    // res = syn->res;
+    // Apply filter envelope.
+    cutoff = add_fr1x32(filter_env, cutoff);
 
-    // // Apply filter envelope.
-    // cutoff = add_fr1x32(filter_env, cutoff);
-    //
-    // // Apply filter LFO.
-    // cutoff = add_fr1x32(cutoff, mult_fr1x32x32(cutoff, filter_lfo));
+    // Apply filter LFO.
+    cutoff = add_fr1x32(cutoff, mult_fr1x32x32(cutoff, filter_lfo));
 
     // Set filter cutoff and resonance.
     Aleph_FilterSVF_set_coeff(&syn->filter, cutoff);
@@ -384,32 +240,24 @@ fract32 Aleph_MonoSynth_next(Aleph_MonoSynth *const synth) {
 
     case ALEPH_FILTERSVF_TYPE_LPF:
         output = Aleph_FilterSVF_softclip_lpf_next(&syn->filter, output);
-        // output = Aleph_FilterSVF_softclip_asym_lpf_next(&syn->filter,
-        // output); output = Aleph_FilterSVF_lpf_next(&syn->filter, output);
         break;
 
     case ALEPH_FILTERSVF_TYPE_BPF:
-        // output = Aleph_FilterSVF_softclip_asym_bpf_next(&syn->filter,
-        // output);
         output = Aleph_FilterSVF_softclip_bpf_next(&syn->filter, output);
         break;
 
     case ALEPH_FILTERSVF_TYPE_HPF:
-        // output = Aleph_FilterSVF_softclip_asym_hpf_next(&syn->filter,
-        // output);
         output = Aleph_FilterSVF_softclip_hpf_next(&syn->filter, output);
         break;
 
     default:
         // Default to LPF.
-        // output = Aleph_FilterSVF_softclip_asym_lpf_next(&syn->filter,
-        // output);
         output = Aleph_FilterSVF_softclip_lpf_next(&syn->filter, output);
         break;
     }
 
     // Block DC.
-    // output = Aleph_HPF_dc_block(&syn->dc_block, output);
+    output = Aleph_HPF_dc_block(&syn->dc_block, output);
 
     return output;
 }
