@@ -27,7 +27,7 @@ CPU := bf527
 
 # C compilation options
 OPTIMISE ?= -g -O0
-CFLAGS := -mcpu=$(CPU) $(OPTIMISE) -fdata-sections -ffunction-sections -Wall 
+CFLAGS := -mcpu=$(CPU) $(OPTIMISE) -fdata-sections -ffunction-sections -Wall
 
 # Assembly compilation options
 ASM_FLAGS := -x assembler-with-cpp
@@ -47,7 +47,7 @@ SRCS += $(shell find $(LIB_DIR)/libfixmath/libfixmath/  \( -name '*.cpp' -or -na
 SRCS += $(shell find $(TEST_DIR)  \( -name '*.cpp' -or -name '*.c' -or -name '*.S' \))
 
 # Prepends BUILD_DIR and appends .o to every src file.
-# As an example, ./your_dir/hello.cpp turns into: ./build/./your_dir/hello.cpp.o 
+# As an example, ./your_dir/hello.cpp turns into: ./build/./your_dir/hello.cpp.o
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 
 # String substitution (suffix version without %).
@@ -63,7 +63,7 @@ INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
 # The -MMD and -MP flags together generate Makefiles for us.
 # These files will have .d instead of .o as the output.
-CPPFLAGS := $(INC_FLAGS) -MMD -MP -D ARCH_BFIN=1 -D __ADSPBLACKFIN__ -D __ADSPBF523__ 
+CPPFLAGS := $(INC_FLAGS) -MMD -MP -D ARCH_BFIN=1 -D __ADSPBLACKFIN__ -D __ADSPBF523__
 
 
 # Convert ELF to LDR.
@@ -96,4 +96,4 @@ clean:
 # Include the .d makefiles. The - at the front suppresses the errors of missing
 # Makefiles. Initially, all the .d files will be missing, and we don't want those
 # errors to show up.
--include $(DEPS) 
+-include $(DEPS)
