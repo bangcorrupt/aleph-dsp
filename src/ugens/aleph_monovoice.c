@@ -128,7 +128,7 @@ fract32 Aleph_MonoVoice_next(Aleph_MonoVoice *const synth) {
     // Get slewed cutoff.
     cutoff = Aleph_LPFOnePole_next(&syn->cutoff_slew);
 
-    // Set filter cutoff and resonance.
+    // Set filter cutoff.
     Aleph_FilterSVF_set_coeff(&syn->filter, cutoff);
 
     // Apply filter.
