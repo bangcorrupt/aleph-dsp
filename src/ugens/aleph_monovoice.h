@@ -85,7 +85,7 @@ void Aleph_MonoVoice_free(Aleph_MonoVoice *const synth);
 fract32 Aleph_MonoVoice_next(Aleph_MonoVoice *const synth);
 
 void Aleph_MonoVoice_set_shape(Aleph_MonoVoice *const synth,
-                               e_Aleph_Waveform_shape shape_a);
+                               e_Aleph_Waveform_shape shape);
 
 void Aleph_MonoVoice_set_amp(Aleph_MonoVoice *const synth, fract32 amp);
 void Aleph_MonoVoice_set_phase(Aleph_MonoVoice *const synth, fract32 phase);
