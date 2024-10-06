@@ -36,10 +36,13 @@ extern "C" {
 
 #include "aleph_phasor.h"
 
-/*----- Macros and Definitions ---------------------------------------*/
+/*----- Macros -------------------------------------------------------*/
 
 #define WAVEFORM_DEFAULT_FREQ (220 << 16)
 #define WAVEFORM_DEFAULT_PHASE (0)
+
+
+/*----- Typedefs -----------------------------------------------------*/
 
 typedef enum {
     WAVEFORM_SHAPE_SINE,

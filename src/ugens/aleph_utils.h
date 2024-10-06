@@ -36,7 +36,7 @@ extern "C" {
 
 #include "aleph.h"
 
-/*----- Macros and Definitions ---------------------------------------*/
+/*----- Macros -------------------------------------------------------*/
 
 #define TWOPI 6
 #define PI 3

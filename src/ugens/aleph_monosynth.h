@@ -41,7 +41,7 @@ extern "C" {
 #include "aleph_oscillator.h"
 #include "aleph_waveform.h"
 
-/*----- Macros and Definitions ---------------------------------------*/
+/*----- Macros -------------------------------------------------------*/
 
 #define ALEPH_MONOSYNTH_DEFAULT_FREQ (220 << 16)
 #define ALEPH_MONOSYNTH_DEFAULT_FREQ_OFFSET (0)
@@ -59,6 +59,9 @@ extern "C" {
 #define ALEPH_MONOSYNTH_DEFAULT_PITCH_LFO_DEPTH (0)
 
 #define ALEPH_MONOSYNTH_DEFAULT_PHASE_RESET (true)
+
+
+/*----- Typedefs -----------------------------------------------------*/
 
 typedef struct {
 

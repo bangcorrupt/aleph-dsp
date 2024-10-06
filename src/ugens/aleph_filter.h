@@ -36,11 +36,14 @@ extern "C" {
 
 #include "aleph_interpolate.h"
 
-/*----- Macros and Definitions ---------------------------------------*/
+/*----- Macros -------------------------------------------------------*/
 
 #define ALEPH_HPF_DEFAULT_FREQ (0)
 #define ALEPH_LPF_DEFAULT_FREQ (20000 << 16)
 #define ALEPH_BPF_DEFAULT_FREQ (2500 << 16)
+
+
+/*----- Typedefs -----------------------------------------------------*/
 
 typedef struct {
     Mempool mempool;

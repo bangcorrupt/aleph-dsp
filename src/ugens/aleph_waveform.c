@@ -31,7 +31,7 @@
 #include "aleph_phasor.h"
 #include "aleph_waveform.h"
 
-/*----- Macros and Definitions ---------------------------------------*/
+/*----- Macros -------------------------------------------------------*/
 
 /*----- Static variable definitions ----------------------------------*/
 

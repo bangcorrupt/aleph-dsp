@@ -30,7 +30,7 @@
 
 #include "aleph_mix_pan.h"
 
-/*----- Macros and Definitions ---------------------------------------*/
+/*----- Macros -------------------------------------------------------*/
 
 #define PAN_SINE_BUF_SIZE 1024
 #define PAN_SINE_BUF_SIZE_MASK 1023

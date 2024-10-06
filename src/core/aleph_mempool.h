@@ -69,6 +69,9 @@ extern "C" {
 
 /// TODO: Find a better place for this.
 //
+
+/*----- Typedefs -----------------------------------------------------*/
+
 typedef struct t_Aleph t_Aleph;
 
 typedef enum {

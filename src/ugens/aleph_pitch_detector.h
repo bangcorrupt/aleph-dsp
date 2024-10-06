@@ -36,12 +36,15 @@ extern "C" {
 
 #include "aleph_filter.h"
 
-/*----- Macros and Definitions ---------------------------------------*/
+/*----- Macros -------------------------------------------------------*/
 
 #define ALEPH_PITCH_DETECTOR_RADIX_INTERNAL 4
 #define ALEPH_PITCH_DETECTOR_RADIX_EXTERNAL 8
 #define ALEPH_PITCH_DETECTOR_RADIX_TOTAL                                       \
     (ALEPH_PITCH_DETECTOR_RADIX_INTERNAL + ALEPH_PITCH_DETECTOR_RADIX_EXTERNAL)
+
+
+/*----- Typedefs -----------------------------------------------------*/
 
 typedef struct {
     Mempool mempool;

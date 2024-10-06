@@ -38,7 +38,7 @@ extern "C" {
 
 #include "aleph_utils.h"
 
-/*----- Macros and Definitions ---------------------------------------*/
+/*----- Macros -------------------------------------------------------*/
 
 #define SLEW_1MS (FR32_MAX - (TWOPI * NORMALISED_FREQUENCY(1000)))
 #define SLEW_10MS (FR32_MAX - (TWOPI * NORMALISED_FREQUENCY(100)))
@@ -69,6 +69,9 @@ extern "C" {
                               sub_fr1x32((fract32)(x), (fract32)(y)))))
 
 #define SIMPLE_LPF(x, y, hz) SIMPLE_SLEW(x, y, TWOPI *NORMALISED_FREQUENCY(hz))
+
+
+/*----- Typedefs -----------------------------------------------------*/
 
 typedef struct {
     uint16_t radix;

@@ -34,7 +34,7 @@
 
 #include "aleph_pitch_detector.h"
 
-/*----- Macros and Definitions ---------------------------------------*/
+/*----- Macros -------------------------------------------------------*/
 
 /*----- Static variable definitions ----------------------------------*/
 

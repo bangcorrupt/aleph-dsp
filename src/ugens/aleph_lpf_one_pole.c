@@ -28,7 +28,7 @@
 
 #include "aleph_lpf_one_pole.h"
 
-/*----- Macros and Definitions ---------------------------------------*/
+/*----- Macros -------------------------------------------------------*/
 
 // A little under -120db
 #define FR32_COMP_THRESH 0x4000

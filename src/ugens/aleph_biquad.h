@@ -36,7 +36,7 @@ extern "C" {
 
 #include "aleph.h"
 
-/*----- Macros and Definitions ---------------------------------------*/
+/*----- Macros -------------------------------------------------------*/
 
 #define FR8_24_UNITY (1 << 24)
 
@@ -49,6 +49,9 @@ extern "C" {
                ((float)pow(2, my_radix))))
 
 #define FLOAT_C8X24(my_float) FLOAT_TO_RADIX32(my_float, 7)
+
+
+/*----- Typedefs -----------------------------------------------------*/
 
 typedef struct {
     fract32 a1;

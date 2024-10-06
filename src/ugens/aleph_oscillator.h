@@ -38,13 +38,16 @@ extern "C" {
 
 #include "aleph_phasor.h"
 
-/*----- Macros and Definitions ---------------------------------------*/
+/*----- Macros -------------------------------------------------------*/
 
 #define ALEPH_OSCILLATOR_DEFAULT_FREQ (1)
 #define ALEPH_OSCILLATOR_DEFAULT_PHASE (0)
 
 /// TODO:  Make saw bipolar.
 //
+
+/*----- Typedefs -----------------------------------------------------*/
+
 typedef enum {
     ALEPH_OSCILLATOR_SHAPE_SINE,
     ALEPH_OSCILLATOR_SHAPE_TRIANGLE,

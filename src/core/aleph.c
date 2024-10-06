@@ -30,7 +30,7 @@
 #include "aleph.h"
 #include <stdint.h>
 
-/*----- Macros and Definitions ---------------------------------------*/
+/*----- Macros -------------------------------------------------------*/
 
 /*----- Static variable definitions ----------------------------------*/
 

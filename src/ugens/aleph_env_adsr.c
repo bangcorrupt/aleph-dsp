@@ -29,7 +29,7 @@
 #include "aleph_env_adsr.h"
 #include "aleph_interpolate.h"
 
-/*----- Macros and Definitions ---------------------------------------*/
+/*----- Macros -------------------------------------------------------*/
 
 /*----- Static variable definitions ----------------------------------*/
 

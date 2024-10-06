@@ -44,7 +44,7 @@ extern "C" {
 #include "fract_math.h"
 #include "types.h"
 
-/*----- Macros and Definitions ---------------------------------------*/
+/*----- Macros -------------------------------------------------------*/
 
 #define TWO_PI (6)
 #define ALEPH_MAX_UNISON_VOICES (16)

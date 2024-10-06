@@ -32,7 +32,7 @@
 #include "aleph_interpolate.h"
 #include "aleph_tracking_envelope.h"
 
-/*----- Macros and Definitions ---------------------------------------*/
+/*----- Macros -------------------------------------------------------*/
 
 /*----- Static variable definitions ----------------------------------*/
 

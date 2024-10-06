@@ -39,7 +39,7 @@ extern "C" {
 #include "aleph_lpf_one_pole.h"
 #include "aleph_waveform.h"
 
-/*----- Macros and Definitions ---------------------------------------*/
+/*----- Macros -------------------------------------------------------*/
 
 #define ALEPH_MONOVOICE_DEFAULT_FREQ (220 << 16)
 #define ALEPH_MONOVOICE_DEFAULT_FREQ_OFFSET (0)
@@ -49,6 +49,9 @@ extern "C" {
 #define ALEPH_MONOVOICE_DEFAULT_FILTER_TYPE ALEPH_FILTERSVF_TYPE_LPF
 
 #define ALEPH_MONOVOICE_DEFAULT_PHASE_RESET (true)
+
+
+/*----- Typedefs -----------------------------------------------------*/
 
 typedef struct {
 

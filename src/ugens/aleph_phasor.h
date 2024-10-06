@@ -34,7 +34,7 @@ extern "C" {
 
 #include "aleph.h"
 
-/*----- Macros and Definitions ---------------------------------------*/
+/*----- Macros -------------------------------------------------------*/
 
 #define ALEPH_PHASOR_DEFAULT_PHASE (0)
 #define ALEPH_PHASOR_DEFAULT_FREQ (1)
@@ -42,6 +42,9 @@ extern "C" {
 #define ALEPH_QUASOR_DEFAULT_SIN_PHASE (0)
 #define ALEPH_QUASOR_DEFAULT_COS_PHASE (FR32_MAX / 2)
 #define ALEPH_QUASOR_DEFAULT_FREQ (1)
+
+
+/*----- Typedefs -----------------------------------------------------*/
 
 typedef struct {
     t_Mempool *mempool;
