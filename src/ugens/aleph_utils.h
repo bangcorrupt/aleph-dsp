@@ -18,11 +18,10 @@
 
 /* Original work by monome, modified by bangcorrupt 2024. */
 
-/*
+/**
  * @file    aleph_utils.h
  *
  * @brief   Utilities.
- *
  */
 
 #ifndef ALEPH_RICKS_TRICKS_H
@@ -53,10 +52,12 @@ extern "C" {
 #define FADE_OUT(x) sub_fr1x32(FR32_MAX, mult_fr1x32x32(x, x))
 #define FADE_IN(x) FADE_OUT(sub_fr1x32(FR32_MAX, x))
 
-/*----- Extern variable declarations ---------------------------------*/
-
 #define FR32_1_OVER_3 (FR32_MAX / 3)
 #define FR16_1_OVER_3 (FR16_MAX / 3)
+
+/*----- Typedefs -----------------------------------------------------*/
+
+/*----- Extern variable declarations ---------------------------------*/
 
 /*----- Extern function prototypes -----------------------------------*/
 

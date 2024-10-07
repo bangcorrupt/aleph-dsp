@@ -15,11 +15,10 @@
                        Copyright bangcorrupt 2024
 
 ----------------------------------------------------------------------*/
-/*
+/**
  * @file    aleph_lpf_one_pole.c
  *
  * @brief   One pole low pass filter.
- *
  */
 
 /*----- Includes -----------------------------------------------------*/
@@ -32,6 +31,8 @@
 
 // A little under -120db
 #define FR32_COMP_THRESH 0x4000
+
+/*----- Typedefs -----------------------------------------------------*/
 
 /*----- Static variable definitions ----------------------------------*/
 

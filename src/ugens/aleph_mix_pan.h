@@ -18,7 +18,7 @@
 
 /* Original work by monome, modified by bangcorrupt 2024. */
 
-/*
+/**
  * @file    aleph_mix_pan.h
  *
  * @brief   Public API for mixing and panning functions.
@@ -36,6 +36,8 @@ extern "C" {
 #include "aleph.h"
 
 /*----- Macros -------------------------------------------------------*/
+
+/*----- Typedefs -----------------------------------------------------*/
 
 /*----- Extern variable declarations ---------------------------------*/
 

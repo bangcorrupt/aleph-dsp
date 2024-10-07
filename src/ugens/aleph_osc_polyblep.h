@@ -18,11 +18,10 @@
 
 /* Original work by monome, modified by bangcorrupt 2024. */
 
-/*
+/**
  * @file    aleph_osc_polyblep.h
  *
  * @brief   Public API for oscillator polyblep.
- *
  */
 
 #ifndef ALEPH_OSC_POLYBLEP_H
@@ -37,6 +36,8 @@ extern "C" {
 #include "aleph.h"
 
 /*----- Macros -------------------------------------------------------*/
+
+/*----- Typedefs -----------------------------------------------------*/
 
 /*----- Extern variable declarations ---------------------------------*/
 

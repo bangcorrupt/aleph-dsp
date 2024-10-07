@@ -16,11 +16,10 @@
 
 ----------------------------------------------------------------------*/
 
-/*
+/**
  * @file    aleph_phasor.h
  *
  * @brief   Public API for phasors.
- *
  */
 
 #ifndef ALEPH_PHASOR_H
@@ -42,7 +41,6 @@ extern "C" {
 #define ALEPH_QUASOR_DEFAULT_SIN_PHASE (0)
 #define ALEPH_QUASOR_DEFAULT_COS_PHASE (FR32_MAX / 2)
 #define ALEPH_QUASOR_DEFAULT_FREQ (1)
-
 
 /*----- Typedefs -----------------------------------------------------*/
 

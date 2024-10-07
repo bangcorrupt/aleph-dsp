@@ -18,11 +18,10 @@
 
 /* Original work by monome, modified by bangcorrupt 2024. */
 
-/*
+/**
  * @file    aleph_soft_clip.c
  *
  * @brief   Soft clipping.
- *
  */
 
 /// TODO: Maybe fold this into another module or move back to ricks_tricks.
@@ -34,6 +33,8 @@
 #include "aleph_soft_clip.h"
 
 /*----- Macros -------------------------------------------------------*/
+
+/*----- Typedefs -----------------------------------------------------*/
 
 /*----- Static variable definitions ----------------------------------*/
 

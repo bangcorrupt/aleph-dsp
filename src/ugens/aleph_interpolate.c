@@ -18,7 +18,7 @@
 
 /* Original work by monome, modified by bangcorrupt 2024. */
 
-/*
+/**
  * @file    aleph_interpolate.c
  *
  * @brief   Iterpolation.
@@ -32,6 +32,8 @@
 #include "aleph_interpolate.h"
 
 /*----- Macros -------------------------------------------------------*/
+
+/*----- Typedefs -----------------------------------------------------*/
 
 /*----- Static variable definitions ----------------------------------*/
 

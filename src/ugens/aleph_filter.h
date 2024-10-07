@@ -16,11 +16,10 @@
 
 ----------------------------------------------------------------------*/
 
-/*
+/**
  * @file    aleph_filter.h
  *
  * @brief   Public API for ilters.
- *
  */
 
 #ifndef ALEPH_FILTER_H
@@ -41,7 +40,6 @@ extern "C" {
 #define ALEPH_HPF_DEFAULT_FREQ (0)
 #define ALEPH_LPF_DEFAULT_FREQ (20000 << 16)
 #define ALEPH_BPF_DEFAULT_FREQ (2500 << 16)
-
 
 /*----- Typedefs -----------------------------------------------------*/
 

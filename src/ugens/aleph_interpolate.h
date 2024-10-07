@@ -18,11 +18,10 @@
 
 /* Original work by monome, modified by bangcorrupt 2024. */
 
-/*
+/**
  * @file    aleph_interpolate.h
  *
  * @brief   Public API for interpolation.
- *
  */
 
 #ifndef ALEPH_INTERPOLATE_H
@@ -69,7 +68,6 @@ extern "C" {
                               sub_fr1x32((fract32)(x), (fract32)(y)))))
 
 #define SIMPLE_LPF(x, y, hz) SIMPLE_SLEW(x, y, TWOPI *NORMALISED_FREQUENCY(hz))
-
 
 /*----- Typedefs -----------------------------------------------------*/
 

@@ -46,6 +46,12 @@
 
 /* written with C99 style */
 
+/**
+ * @file    aleph_mempool.c
+ *
+ * @brief   Mempool implementation for Aleph DSP.
+ */
+
 /*----- Includes -----------------------------------------------------*/
 
 #include <stdlib.h>
@@ -55,6 +61,8 @@
 #include "aleph_mempool.h"
 
 /*----- Macros -------------------------------------------------------*/
+
+/*----- Typedefs -----------------------------------------------------*/
 
 /*----- Static variable definitions ----------------------------------*/
 

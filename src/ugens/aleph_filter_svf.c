@@ -18,7 +18,7 @@
 
 /* Original work by monome, modified by bangcorrupt 2024. */
 
-/*
+/**
  * @file    aleph_filter_svf.c
  *
  * @brief   A digital state-variable filter for 32-bit fixed point audio.
@@ -33,6 +33,8 @@
 #include "aleph_soft_clip.h"
 
 /*----- Macros -------------------------------------------------------*/
+
+/*----- Typedefs -----------------------------------------------------*/
 
 /*----- Static variable definitions ----------------------------------*/
 

@@ -16,11 +16,10 @@
 
 ----------------------------------------------------------------------*/
 
-/*
+/**
  * @file    aleph_monosynth.h
  *
  * @brief   Public API for monosynth module.
- *
  */
 
 #ifndef ALEPH_MONOSYNTH_H
@@ -59,7 +58,6 @@ extern "C" {
 #define ALEPH_MONOSYNTH_DEFAULT_PITCH_LFO_DEPTH (0)
 
 #define ALEPH_MONOSYNTH_DEFAULT_PHASE_RESET (true)
-
 
 /*----- Typedefs -----------------------------------------------------*/
 

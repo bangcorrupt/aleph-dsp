@@ -18,11 +18,10 @@
 
 /* Original work by monome, modified by bangcorrupt 2024. */
 
-/*
+/**
  * @file    aleph_pitch_detector.c
  *
  * @brief   Pitch detection.
- *
  */
 
 /*----- Includes -----------------------------------------------------*/
@@ -35,6 +34,8 @@
 #include "aleph_pitch_detector.h"
 
 /*----- Macros -------------------------------------------------------*/
+
+/*----- Typedefs -----------------------------------------------------*/
 
 /*----- Static variable definitions ----------------------------------*/
 

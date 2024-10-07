@@ -18,11 +18,10 @@
 
 /* Original work by monome, modified by bangcorrupt 2024. */
 
-/*
+/**
  * @file    aleph_tracking_envelope.c
  *
  * @brief   Tracking envelope.
- *
  */
 
 /*----- Includes -----------------------------------------------------*/
@@ -33,6 +32,8 @@
 #include "aleph_tracking_envelope.h"
 
 /*----- Macros -------------------------------------------------------*/
+
+/*----- Typedefs -----------------------------------------------------*/
 
 /*----- Static variable definitions ----------------------------------*/
 

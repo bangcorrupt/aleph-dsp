@@ -18,7 +18,7 @@
 
 /* Original work by Michael R. Mulshine, modified by bangcorrupt 2024. */
 
-/*
+/**
  * @file    aleph.c
  *
  * @brief   Aleph DSP Library.
@@ -31,6 +31,8 @@
 #include <stdint.h>
 
 /*----- Macros -------------------------------------------------------*/
+
+/*----- Typedefs -----------------------------------------------------*/
 
 /*----- Static variable definitions ----------------------------------*/
 

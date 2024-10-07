@@ -18,11 +18,10 @@
 
 /* Original work by monome, modified by bangcorrupt 2024. */
 
-/*
+/**
  * @file    aleph_window.c
  *
  * @brief   Window functions.
- *
  */
 
 /*----- Includes -----------------------------------------------------*/
@@ -32,6 +31,8 @@
 #include "aleph_utils.h"
 
 /*----- Macros -------------------------------------------------------*/
+
+/*----- Typedefs -----------------------------------------------------*/
 
 /*----- Static variable definitions ----------------------------------*/
 

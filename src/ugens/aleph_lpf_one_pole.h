@@ -16,11 +16,10 @@
 
 ----------------------------------------------------------------------*/
 
-/*
+/**
  * @file    aleph_lpf_one_pole.h
  *
  * @brief   Publice API for one pole low pass filter.
- *
  */
 
 #ifndef ALEPH_LPF_ONE_POLE_H
@@ -41,7 +40,6 @@ extern "C" {
 #define ALEPH_FILTER_ONE_POLE_DEFAULT_COEFF (SLEW_1MS)
 #define ALEPH_FILTER_ONE_POLE_DEFAULT_TARGET (0)
 #define ALEPH_FILTER_ONE_POLE_DEFAULT_OUTPUT (0)
-
 
 /*----- Typedefs -----------------------------------------------------*/
 

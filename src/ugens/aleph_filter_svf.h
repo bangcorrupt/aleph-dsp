@@ -18,7 +18,7 @@
 
 /* Original work by monome, modified by bangcorrupt 2024. */
 
-/*
+/**
  * @file    aleph_filter_svf.h
  *
  * @brief   Public API for digital state-variable filter.
@@ -36,7 +36,6 @@ extern "C" {
 #include "aleph.h"
 
 /*----- Macros -------------------------------------------------------*/
-
 
 /*----- Typedefs -----------------------------------------------------*/
 

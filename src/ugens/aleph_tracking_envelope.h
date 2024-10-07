@@ -18,11 +18,10 @@
 
 /* Original work by monome, modified by bangcorrupt 2024. */
 
-/*
+/**
  * @file    aleph_tracking_envelope.h
  *
  * @brief   Public API for tracking envelope.
- *
  */
 
 #ifndef ALEPH_TRACKING_ENVELOPE_H
@@ -39,7 +38,6 @@ extern "C" {
 #include "aleph_interpolate.h"
 
 /*----- Macros -------------------------------------------------------*/
-
 
 /*----- Typedefs -----------------------------------------------------*/
 

@@ -16,11 +16,10 @@
 
 ----------------------------------------------------------------------*/
 
-/*
+/**
  * @file    aleph_monovoice.h
  *
  * @brief   Public API for monovoice module.
- *
  */
 
 #ifndef ALEPH_MONOVOICE_H
@@ -49,7 +48,6 @@ extern "C" {
 #define ALEPH_MONOVOICE_DEFAULT_FILTER_TYPE ALEPH_FILTERSVF_TYPE_LPF
 
 #define ALEPH_MONOVOICE_DEFAULT_PHASE_RESET (true)
-
 
 /*----- Typedefs -----------------------------------------------------*/
 

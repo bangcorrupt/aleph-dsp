@@ -18,7 +18,7 @@
 
 /* Original work by Michael R. Mulshine, modified by bangcorrupt 2024. */
 
-/*
+/**
  * @file    aleph.h
  *
  * @brief   Public API for Aleph DSP.
@@ -48,6 +48,10 @@ extern "C" {
 
 #define TWO_PI (6)
 #define ALEPH_MAX_UNISON_VOICES (16)
+
+/*----- Typedefs -----------------------------------------------------*/
+
+/*----- Extern variable declarations ---------------------------------*/
 
 struct t_Aleph {
     ///@{
@@ -81,8 +85,6 @@ struct t_Aleph {
     uint32_t free_count;              //!< A count of Aleph memory frees.
                                       ///@}
 };
-
-/*----- Extern variable declarations ---------------------------------*/
 
 /*----- Extern function prototypes -----------------------------------*/
 

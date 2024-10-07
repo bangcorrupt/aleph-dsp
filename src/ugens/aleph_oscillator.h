@@ -18,11 +18,10 @@
 
 /* Original work by monome, modified by bangcorrupt 2024. */
 
-/*
+/**
  * @file    aleph_oscillator.h
  *
  * @brief   Public API for oscillators.
- *
  */
 
 #ifndef ALEPH_OSCILLATOR_H

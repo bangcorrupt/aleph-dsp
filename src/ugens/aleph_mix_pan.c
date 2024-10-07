@@ -18,7 +18,7 @@
 
 /* Original work by monome, modified by bangcorrupt 2024. */
 
-/*
+/**
  * @file    aleph_mix_pan.c
  *
  * @brief   Mixing and panning functions.
@@ -44,6 +44,8 @@ static fract32 sineTab[PAN_SINE_BUF_SIZE] = {
 #include "halfsine_1024.inc"
 };
 */
+
+/*----- Typedefs -----------------------------------------------------*/
 
 /*----- Static variable definitions ----------------------------------*/
 

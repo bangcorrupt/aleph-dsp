@@ -18,11 +18,10 @@
 
 /* Original work by monome, modified by bangcorrupt 2024. */
 
-/*
+/**
  * @file    aleph_oscillator.c
  *
  * @brief   Oscillators.
- *
  */
 
 /*----- Includes -----------------------------------------------------*/
@@ -34,6 +33,8 @@
 #include "aleph_oscillator.h"
 
 /*----- Macros -------------------------------------------------------*/
+
+/*----- Typedefs -----------------------------------------------------*/
 
 /*----- Static variable definitions ----------------------------------*/
 

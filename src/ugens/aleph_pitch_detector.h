@@ -16,11 +16,10 @@
 
 ----------------------------------------------------------------------*/
 
-/*
+/**
  * @file    aleph_pitch_detector.h
  *
  * @brief   Public API for pitch detection.
- *
  */
 
 #ifndef ALEPH_PITCH_DETECTOR_H
@@ -42,7 +41,6 @@ extern "C" {
 #define ALEPH_PITCH_DETECTOR_RADIX_EXTERNAL 8
 #define ALEPH_PITCH_DETECTOR_RADIX_TOTAL                                       \
     (ALEPH_PITCH_DETECTOR_RADIX_INTERNAL + ALEPH_PITCH_DETECTOR_RADIX_EXTERNAL)
-
 
 /*----- Typedefs -----------------------------------------------------*/
 

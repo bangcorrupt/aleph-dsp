@@ -18,11 +18,10 @@
 
 /* Original work by monome, modified by bangcorrupt 2024. */
 
-/*
+/**
  * @file    aleph_soft_clip.h
  *
  * @brief   Public API for soft clipping.
- *
  */
 
 #ifndef ALEPH_SOFT_CLIP_H
@@ -37,6 +36,8 @@ extern "C" {
 #include "aleph.h"
 
 /*----- Macros -------------------------------------------------------*/
+
+/*----- Typedefs -----------------------------------------------------*/
 
 /*----- Extern variable declarations ---------------------------------*/
 

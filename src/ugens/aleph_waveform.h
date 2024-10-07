@@ -16,11 +16,10 @@
 
 ----------------------------------------------------------------------*/
 
-/*
+/**
  * @file    aleph_waveform.h
  *
  * @brief   Public API for basic waveform oscillators using PolyBLEP.
- *
  */
 
 #ifndef ALEPH_WAVEFORM_H
@@ -40,7 +39,6 @@ extern "C" {
 
 #define WAVEFORM_DEFAULT_FREQ (220 << 16)
 #define WAVEFORM_DEFAULT_PHASE (0)
-
 
 /*----- Typedefs -----------------------------------------------------*/
 

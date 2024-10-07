@@ -18,11 +18,10 @@
 
 /* Original work by monome, modified by bangcorrupt 2024. */
 
-/*
+/**
  * @file    aleph_osc_polyblep.c
  *
  * @brief   Oscillator polyblep.
- *
  */
 
 /*----- Includes -----------------------------------------------------*/
@@ -34,6 +33,8 @@
 #include "aleph_osc_polyblep.h"
 
 /*----- Macros -------------------------------------------------------*/
+
+/*----- Typedefs -----------------------------------------------------*/
 
 /*----- Static variable definitions ----------------------------------*/
 

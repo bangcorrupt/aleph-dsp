@@ -18,11 +18,10 @@
 
 /* Original work by monome, modified by bangcorrupt 2024. */
 
-/*
+/**
  * @file    aleph_biquad.h
  *
  * @brief   Public API for biquad filters.
- *
  */
 
 #ifndef ALEPH_BIQUAD_H
@@ -49,7 +48,6 @@ extern "C" {
                ((float)pow(2, my_radix))))
 
 #define FLOAT_C8X24(my_float) FLOAT_TO_RADIX32(my_float, 7)
-
 
 /*----- Typedefs -----------------------------------------------------*/
 
