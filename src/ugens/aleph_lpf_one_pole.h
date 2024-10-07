@@ -37,7 +37,7 @@ extern "C" {
 
 /*----- Macros -------------------------------------------------------*/
 
-#define ALEPH_FILTER_ONE_POLE_DEFAULT_COEFF (SLEW_1MS)
+#define ALEPH_FILTER_ONE_POLE_DEFAULT_COEFF (SLEW_100MS)
 #define ALEPH_FILTER_ONE_POLE_DEFAULT_TARGET (0)
 #define ALEPH_FILTER_ONE_POLE_DEFAULT_OUTPUT (0)
 
