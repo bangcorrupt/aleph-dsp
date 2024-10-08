@@ -136,20 +136,20 @@ fract32 Aleph_MonoVoice_next(Aleph_MonoVoice *const synth) {
     switch (syn->filter_type) {
 
     case ALEPH_FILTERSVF_TYPE_LPF:
-        output = Aleph_FilterSVF_softclip_lpf_next(&syn->filter, output);
+        output = Aleph_FilterSVF_sc_os_lpf_next(&syn->filter, output);
         break;
 
     case ALEPH_FILTERSVF_TYPE_BPF:
-        output = Aleph_FilterSVF_softclip_bpf_next(&syn->filter, output);
+        output = Aleph_FilterSVF_sc_os_bpf_next(&syn->filter, output);
         break;
 
     case ALEPH_FILTERSVF_TYPE_HPF:
-        output = Aleph_FilterSVF_softclip_hpf_next(&syn->filter, output);
+        output = Aleph_FilterSVF_sc_os_hpf_next(&syn->filter, output);
         break;
 
     default:
         // Default to LPF.
-        output = Aleph_FilterSVF_softclip_lpf_next(&syn->filter, output);
+        output = Aleph_FilterSVF_sc_os_lpf_next(&syn->filter, output);
         break;
     }
 

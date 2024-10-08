@@ -102,26 +102,39 @@ void Aleph_FilterSVF_set_peak(Aleph_FilterSVF *const filter, fract32 mix);
 // get next value (with input)
 
 fract32 Aleph_FilterSVF_next(Aleph_FilterSVF *const filter, fract32 in);
+fract32 Aleph_FilterSVF_os_next(Aleph_FilterSVF *const filter, fract32 in);
+
 fract32 Aleph_FilterSVF_hpf_next(Aleph_FilterSVF *const filter, fract32 in);
+
 fract32 Aleph_FilterSVF_bpf_next(Aleph_FilterSVF *const filter, fract32 in);
+
 fract32 Aleph_FilterSVF_lpf_next(Aleph_FilterSVF *const filter, fract32 in);
+fract32 Aleph_FilterSVF_os_lpf_next(Aleph_FilterSVF *const filter, fract32 in);
+
 fract32 Aleph_FilterSVF_notch_next(Aleph_FilterSVF *const filter, fract32 in);
-fract32 Aleph_FilterSVF_softclip_hpf_next(Aleph_FilterSVF *const filter,
-                                          fract32 in);
-fract32 Aleph_FilterSVF_softclip_bpf_next(Aleph_FilterSVF *const filter,
-                                          fract32 in);
-fract32 Aleph_FilterSVF_softclip_lpf_next(Aleph_FilterSVF *const filter,
-                                          fract32 in);
-fract32 Aleph_FilterSVF_softclip_notch_next(Aleph_FilterSVF *const filter,
-                                            fract32 in);
-fract32 Aleph_FilterSVF_softclip_asym_lpf_next(Aleph_FilterSVF *const filter,
-                                               fract32 in);
-fract32 Aleph_FilterSVF_softclip_asym_bpf_next(Aleph_FilterSVF *const filter,
-                                               fract32 in);
-fract32 Aleph_FilterSVF_softclip_asym_hpf_next(Aleph_FilterSVF *const filter,
-                                               fract32 in);
-fract32 Aleph_FilterSVF_softclip_asym_notch_next(Aleph_FilterSVF *const filter,
-                                                 fract32 in);
+
+fract32 Aleph_FilterSVF_sc_hpf_next(Aleph_FilterSVF *const filter, fract32 in);
+fract32 Aleph_FilterSVF_sc_os_hpf_next(Aleph_FilterSVF *const filter,
+                                       fract32 in);
+
+fract32 Aleph_FilterSVF_sc_bpf_next(Aleph_FilterSVF *const filter, fract32 in);
+fract32 Aleph_FilterSVF_sc_os_bpf_next(Aleph_FilterSVF *const filter,
+                                       fract32 in);
+
+fract32 Aleph_FilterSVF_sc_lpf_next(Aleph_FilterSVF *const filter, fract32 in);
+fract32 Aleph_FilterSVF_sc_os_lpf_next(Aleph_FilterSVF *const filter,
+                                       fract32 in);
+
+fract32 Aleph_FilterSVF_sc_notch_next(Aleph_FilterSVF *const filter,
+                                      fract32 in);
+fract32 Aleph_FilterSVF_sc_asym_lpf_next(Aleph_FilterSVF *const filter,
+                                         fract32 in);
+fract32 Aleph_FilterSVF_sc_asym_bpf_next(Aleph_FilterSVF *const filter,
+                                         fract32 in);
+fract32 Aleph_FilterSVF_sc_asym_hpf_next(Aleph_FilterSVF *const filter,
+                                         fract32 in);
+fract32 Aleph_FilterSVF_sc_asym_notch_next(Aleph_FilterSVF *const filter,
+                                           fract32 in);
 
 #ifdef __cplusplus
 }

@@ -240,20 +240,20 @@ fract32 Aleph_MonoSynth_next(Aleph_MonoSynth *const synth) {
     switch (syn->filter_type) {
 
     case ALEPH_FILTERSVF_TYPE_LPF:
-        output = Aleph_FilterSVF_softclip_lpf_next(&syn->filter, output);
+        output = Aleph_FilterSVF_sc_lpf_next(&syn->filter, output);
         break;
 
     case ALEPH_FILTERSVF_TYPE_BPF:
-        output = Aleph_FilterSVF_softclip_bpf_next(&syn->filter, output);
+        output = Aleph_FilterSVF_sc_bpf_next(&syn->filter, output);
         break;
 
     case ALEPH_FILTERSVF_TYPE_HPF:
-        output = Aleph_FilterSVF_softclip_hpf_next(&syn->filter, output);
+        output = Aleph_FilterSVF_sc_hpf_next(&syn->filter, output);
         break;
 
     default:
         // Default to LPF.
-        output = Aleph_FilterSVF_softclip_lpf_next(&syn->filter, output);
+        output = Aleph_FilterSVF_sc_lpf_next(&syn->filter, output);
         break;
     }
 
