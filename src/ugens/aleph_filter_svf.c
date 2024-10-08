@@ -43,11 +43,10 @@
 
 /*----- Static function prototypes -----------------------------------*/
 
-static inline void _calc_frame(Aleph_FilterSVF *const filter, fract32 in);
-static inline void _softclip_calc_frame(Aleph_FilterSVF *const filter,
-                                        fract32 in);
-static inline void _softclip_asym_calc_frame(Aleph_FilterSVF *const filter,
-                                             fract32 in);
+static void _calc_frame(Aleph_FilterSVF *const filter, fract32 in);
+static void _softclip_calc_frame(Aleph_FilterSVF *const filter, fract32 in);
+static void _softclip_asym_calc_frame(Aleph_FilterSVF *const filter,
+                                      fract32 in);
 
 /*----- Extern function implementations ------------------------------*/
 
@@ -382,7 +381,7 @@ const p_Aleph_FilterSVF_func Aleph_FilterSVF_func[3][4] = {
 
 /*----- Static function implementations ------------------------------*/
 
-static inline void _calc_frame(Aleph_FilterSVF *const filter, fract32 in) {
+static void _calc_frame(Aleph_FilterSVF *const filter, fract32 in) {
 
     t_Aleph_FilterSVF *fl = *filter;
 
@@ -396,8 +395,7 @@ static inline void _calc_frame(Aleph_FilterSVF *const filter, fract32 in) {
     fl->band = add_fr1x32(fl->band, mult_fr1x32x32(fl->freq, fl->high));
 }
 
-static inline void _softclip_calc_frame(Aleph_FilterSVF *const filter,
-                                        fract32 in) {
+static void _softclip_calc_frame(Aleph_FilterSVF *const filter, fract32 in) {
 
     t_Aleph_FilterSVF *fl = *filter;
 
@@ -429,8 +427,8 @@ static inline void _softclip_calc_frame(Aleph_FilterSVF *const filter,
         clip_radix);
 }
 
-static inline void _softclip_asym_calc_frame(Aleph_FilterSVF *const filter,
-                                             fract32 in) {
+static void _softclip_asym_calc_frame(Aleph_FilterSVF *const filter,
+                                      fract32 in) {
 
     t_Aleph_FilterSVF *fl = *filter;
 
