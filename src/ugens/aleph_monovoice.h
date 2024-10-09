@@ -97,11 +97,21 @@ void Aleph_MonoVoice_set_freq_offset(Aleph_MonoVoice *const synth,
 
 void Aleph_MonoVoice_set_filter_type(Aleph_MonoVoice *const synth,
                                      e_Aleph_FilterSVF_type type);
+
 void Aleph_MonoVoice_set_cutoff(Aleph_MonoVoice *const synth, fract32 cutoff);
 void Aleph_MonoVoice_set_res(Aleph_MonoVoice *const synth, fract32 res);
 
 void Aleph_MonoVoice_set_gate(Aleph_MonoVoice *const synth, bool gate);
 void Aleph_MonoVoice_set_phase_reset(Aleph_MonoVoice *const synth, bool reset);
+
+void Aleph_MonoVoice_set_amp_slew(Aleph_MonoVoice *const synth,
+                                  fract32 amp_slew);
+
+void Aleph_MonoVoice_set_freq_slew(Aleph_MonoVoice *const synth,
+                                   fract32 freq_slew);
+
+void Aleph_MonoVoice_set_cutoff_slew(Aleph_MonoVoice *const synth,
+                                     fract32 cutoff_slew);
 
 #ifdef __cplusplus
 }

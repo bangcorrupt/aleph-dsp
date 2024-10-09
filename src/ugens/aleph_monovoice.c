@@ -240,6 +240,30 @@ void Aleph_MonoVoice_set_gate(Aleph_MonoVoice *const synth, bool gate) {
     }
 }
 
+void Aleph_MonoVoice_set_amp_slew(Aleph_MonoVoice *const synth,
+                                  fract32 amp_slew) {
+
+    t_Aleph_MonoVoice *syn = *synth;
+
+    Aleph_LPFOnePole_set_coeff(&syn->amp_slew, amp_slew);
+}
+
+void Aleph_MonoVoice_set_freq_slew(Aleph_MonoVoice *const synth,
+                                   fract32 freq_slew) {
+
+    t_Aleph_MonoVoice *syn = *synth;
+
+    Aleph_LPFOnePole_set_coeff(&syn->freq_slew, freq_slew);
+}
+
+void Aleph_MonoVoice_set_cutoff_slew(Aleph_MonoVoice *const synth,
+                                     fract32 cutoff_slew) {
+
+    t_Aleph_MonoVoice *syn = *synth;
+
+    Aleph_LPFOnePole_set_coeff(&syn->cutoff_slew, cutoff_slew);
+}
+
 /*----- Static function implementations ------------------------------*/
 
 /*----- End of file --------------------------------------------------*/
