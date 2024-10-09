@@ -40,6 +40,7 @@ extern "C" {
 
 /*----- Macros -------------------------------------------------------*/
 
+#define ALEPH_MONOVOICE_DEFAULT_AMP (0)
 #define ALEPH_MONOVOICE_DEFAULT_FREQ (220 << 16)
 #define ALEPH_MONOVOICE_DEFAULT_FREQ_OFFSET (0)
 
@@ -56,16 +57,15 @@ typedef struct {
     Mempool mempool;
 
     Aleph_WaveformDual waveform;
-    fract32 freq;
     fract32 freq_offset;
 
     Aleph_FilterSVF filter;
     e_Aleph_FilterSVF_type filter_type;
 
+    Aleph_LPFOnePole amp_slew;
     Aleph_LPFOnePole freq_slew;
     Aleph_LPFOnePole cutoff_slew;
 
-    fract32 amp;
     Aleph_HPF dc_block;
 
     bool phase_reset;

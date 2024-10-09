@@ -62,7 +62,6 @@ void Aleph_MonoVoice_init_to_pool(Aleph_MonoVoice *const synth,
 
     syn->mempool = mp;
 
-    syn->freq = ALEPH_MONOVOICE_DEFAULT_FREQ;
     syn->freq_offset = ALEPH_MONOVOICE_DEFAULT_FREQ_OFFSET;
     syn->filter_type = ALEPH_MONOVOICE_DEFAULT_FILTER_TYPE;
 
@@ -75,11 +74,14 @@ void Aleph_MonoVoice_init_to_pool(Aleph_MonoVoice *const synth,
     Aleph_HPF_init_to_pool(&syn->dc_block, mempool);
 
     Aleph_LPFOnePole_init_to_pool(&syn->freq_slew, mempool);
-    Aleph_LPFOnePole_set_output(&syn->freq_slew, syn->freq);
+    Aleph_LPFOnePole_set_output(&syn->freq_slew, ALEPH_MONOVOICE_DEFAULT_FREQ);
 
     Aleph_LPFOnePole_init_to_pool(&syn->cutoff_slew, mempool);
     Aleph_LPFOnePole_set_output(&syn->cutoff_slew,
                                 ALEPH_MONOVOICE_DEFAULT_CUTOFF);
+
+    Aleph_LPFOnePole_init_to_pool(&syn->amp_slew, mempool);
+    Aleph_LPFOnePole_set_output(&syn->amp_slew, ALEPH_MONOVOICE_DEFAULT_AMP);
 }
 
 void Aleph_MonoVoice_free(Aleph_MonoVoice *const synth) {
@@ -104,6 +106,7 @@ fract32 Aleph_MonoVoice_next(Aleph_MonoVoice *const synth) {
 
     fract32 output;
 
+    fract32 amp;
     fract32 freq;
     fract32 cutoff;
 
@@ -123,8 +126,11 @@ fract32 Aleph_MonoVoice_next(Aleph_MonoVoice *const synth) {
     // Shift right to prevent clipping.
     output = shr_fr1x32(output, 1);
 
+    // Get slewed amplitude.
+    amp = Aleph_LPFOnePole_next(&syn->amp_slew);
+
     // Apply amp modulation.
-    output = mult_fr1x32x32(output, syn->amp);
+    output = mult_fr1x32x32(output, amp);
 
     // Get slewed cutoff.
     cutoff = Aleph_LPFOnePole_next(&syn->cutoff_slew);
@@ -171,7 +177,7 @@ void Aleph_MonoVoice_set_amp(Aleph_MonoVoice *const synth, fract32 amp) {
 
     t_Aleph_MonoVoice *syn = *synth;
 
-    syn->amp = amp;
+    Aleph_LPFOnePole_set_target(&syn->amp_slew, amp);
 }
 
 void Aleph_MonoVoice_set_phase(Aleph_MonoVoice *const synth, fract32 phase) {
