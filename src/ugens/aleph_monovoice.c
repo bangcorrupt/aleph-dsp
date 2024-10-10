@@ -65,8 +65,6 @@ void Aleph_MonoVoice_init_to_pool(Aleph_MonoVoice *const synth,
     syn->freq_offset = ALEPH_MONOVOICE_DEFAULT_FREQ_OFFSET;
     syn->filter_type = ALEPH_MONOVOICE_DEFAULT_FILTER_TYPE;
 
-    syn->phase_reset = ALEPH_MONOVOICE_DEFAULT_PHASE_RESET;
-
     Aleph_WaveformDual_init_to_pool(&syn->waveform, mempool);
 
     Aleph_FilterSVF_init_to_pool(&syn->filter, mempool);
@@ -222,22 +220,6 @@ void Aleph_MonoVoice_set_res(Aleph_MonoVoice *const synth, fract32 res) {
     t_Aleph_MonoVoice *syn = *synth;
 
     Aleph_FilterSVF_set_rq(&syn->filter, res);
-}
-
-void Aleph_MonoVoice_set_phase_reset(Aleph_MonoVoice *const synth, bool reset) {
-
-    t_Aleph_MonoVoice *syn = *synth;
-
-    syn->phase_reset = reset;
-}
-
-void Aleph_MonoVoice_set_gate(Aleph_MonoVoice *const synth, bool gate) {
-
-    t_Aleph_MonoVoice *syn = *synth;
-
-    if (syn->phase_reset && gate) {
-        Aleph_WaveformDual_set_phase(&syn->waveform, 0);
-    }
 }
 
 void Aleph_MonoVoice_set_amp_slew(Aleph_MonoVoice *const synth,

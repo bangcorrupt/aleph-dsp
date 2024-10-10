@@ -48,8 +48,6 @@ extern "C" {
 #define ALEPH_MONOVOICE_DEFAULT_RES (FR32_MAX)
 #define ALEPH_MONOVOICE_DEFAULT_FILTER_TYPE ALEPH_FILTERSVF_TYPE_LPF
 
-#define ALEPH_MONOVOICE_DEFAULT_PHASE_RESET (true)
-
 /*----- Typedefs -----------------------------------------------------*/
 
 typedef struct {
@@ -67,8 +65,6 @@ typedef struct {
     Aleph_LPFOnePole cutoff_slew;
 
     Aleph_HPF dc_block;
-
-    bool phase_reset;
 
 } t_Aleph_MonoVoice;
 
@@ -100,9 +96,6 @@ void Aleph_MonoVoice_set_filter_type(Aleph_MonoVoice *const synth,
 
 void Aleph_MonoVoice_set_cutoff(Aleph_MonoVoice *const synth, fract32 cutoff);
 void Aleph_MonoVoice_set_res(Aleph_MonoVoice *const synth, fract32 res);
-
-void Aleph_MonoVoice_set_gate(Aleph_MonoVoice *const synth, bool gate);
-void Aleph_MonoVoice_set_phase_reset(Aleph_MonoVoice *const synth, bool reset);
 
 void Aleph_MonoVoice_set_amp_slew(Aleph_MonoVoice *const synth,
                                   fract32 amp_slew);
