@@ -61,12 +61,6 @@ extern "C" {
                     mult_fr1x32x32(sub_fr1x32(FR32_MAX, (fract32)(slew)),      \
                                    sub_fr1x32((fract32)(x), (fract32)(y)))))
 
-#define SIMPLE_SLEW_CHEAT(x, y, slew)                                          \
-    (x = add_fr1x32(                                                           \
-         (fract32)(y),                                                         \
-         mult_fr1x32x32_cheat(sub_fr1x32(FR32_MAX, (fract32)(slew)),           \
-                              sub_fr1x32((fract32)(x), (fract32)(y)))))
-
 #define SIMPLE_LPF(x, y, hz) SIMPLE_SLEW(x, y, TWOPI *NORMALISED_FREQUENCY(hz))
 
 /*----- Typedefs -----------------------------------------------------*/
