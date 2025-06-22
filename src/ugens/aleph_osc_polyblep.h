@@ -48,6 +48,9 @@ fract16 square_polyblep(fract32 p, fract32 dp);
 fract16 sine_polyblep(fract32 phase);
 fract16 triangle_polyblep(fract32 phase);
 
+void saw_polyblep_block(fract32 freq, fract32 *buffer, size_t size);
+void saw_polyblep_block_smooth(fract32 *freq, fract32 *buffer, size_t size);
+
 #ifdef __cplusplus
 }
 #endif

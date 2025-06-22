@@ -64,17 +64,31 @@ fract16 saw_polyblep(fract32 p, fract32 dp) {
     return shr_fr1x32(sub_fr1x32(shr_fr1x32(p, 15), _polyblep(p, dp)), 1);
 }
 
-void saw_polyblep_block(fract32 dp, fract32 *buffer, size_t size) {
+void saw_polyblep_block(fract32 freq, fract32 *buffer, size_t size) {
 
-    fract32 p;
+    fract32 phase;
 
     int i;
     for (i = 0; i < size; i++) {
 
-        p = buffer[i];
+        phase = buffer[i];
 
-        buffer[i] =
-            shr_fr1x32(sub_fr1x32(shr_fr1x32(p, 15), _polyblep(p, dp)), 1);
+        buffer[i] = shr_fr1x32(
+            sub_fr1x32(shr_fr1x32(phase, 15), _polyblep(phase, freq)), 1);
+    }
+}
+
+void saw_polyblep_block_smooth(fract32 *freq, fract32 *buffer, size_t size) {
+
+    fract32 phase;
+
+    int i;
+    for (i = 0; i < size; i++) {
+
+        phase = buffer[i];
+
+        buffer[i] = shr_fr1x32(
+            sub_fr1x32(shr_fr1x32(phase, 15), _polyblep(phase, freq[i])), 1);
     }
 }
 
