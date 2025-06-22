@@ -32,6 +32,8 @@
 #include "aleph_filter_svf.h"
 #include "aleph_soft_clip.h"
 #include "fract_math.h"
+#include "fract_typedef.h"
+#include <stddef.h>
 
 /*----- Macros -------------------------------------------------------*/
 
@@ -219,7 +221,31 @@ fract32 Aleph_FilterSVF_sc_os_lpf_next(Aleph_FilterSVF *const filter,
     _softclip_calc_frame(&fl, in);
     out = add_fr1x32(out, shl_fr1x32(fl->low, 1));
 
+    /// TODO: Why do We calculate `out` but return fl->low !?
+    //
     return fl->low;
+}
+
+void Aleph_FilterSVF_sc_os_lpf_next_block(Aleph_FilterSVF *const filter,
+                                          fract32 *input, fract32 *output,
+                                          size_t size) {
+
+    t_Aleph_FilterSVF *fl = *filter;
+
+    fract32 in;
+
+    int i;
+    for (i = 0; i < size; i++) {
+
+        // Allows using same buffer for input and output.
+        in = input[i];
+
+        _softclip_calc_frame(&fl, in);
+        output[i] = shl_fr1x32(fl->low, 1);
+
+        _softclip_calc_frame(&fl, in);
+        output[i] = add_fr1x32(output[i], shl_fr1x32(fl->low, 1));
+    }
 }
 
 fract32 Aleph_FilterSVF_sc_asym_lpf_next(Aleph_FilterSVF *const filter,
