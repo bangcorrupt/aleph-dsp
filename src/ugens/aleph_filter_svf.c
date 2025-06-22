@@ -193,12 +193,12 @@ fract32 Aleph_FilterSVF_os_lpf_next(Aleph_FilterSVF *const filter, fract32 in) {
     fract32 out;
 
     _calc_frame(&fl, in);
-    out = shl_fr1x32(fl->low, 1);
+    out = shr_fr1x32(fl->low, 1);
 
     _calc_frame(&fl, in);
-    out = add_fr1x32(out, shl_fr1x32(fl->low, 1));
+    out = add_fr1x32(out, shr_fr1x32(fl->low, 1));
 
-    return fl->low;
+    return out;
 }
 
 fract32 Aleph_FilterSVF_sc_lpf_next(Aleph_FilterSVF *const filter, fract32 in) {
@@ -217,14 +217,12 @@ fract32 Aleph_FilterSVF_sc_os_lpf_next(Aleph_FilterSVF *const filter,
     fract32 out;
 
     _softclip_calc_frame(&fl, in);
-    out = shl_fr1x32(fl->low, 1);
+    out = shr_fr1x32(fl->low, 1);
 
     _softclip_calc_frame(&fl, in);
-    out = add_fr1x32(out, shl_fr1x32(fl->low, 1));
+    out = add_fr1x32(out, shr_fr1x32(fl->low, 1));
 
-    /// TODO: Why do We calculate `out` but return fl->low !?
-    //
-    return fl->low;
+    return out;
 }
 
 void Aleph_FilterSVF_sc_os_lpf_next_block(Aleph_FilterSVF *const filter,
@@ -234,6 +232,7 @@ void Aleph_FilterSVF_sc_os_lpf_next_block(Aleph_FilterSVF *const filter,
     t_Aleph_FilterSVF *fl = *filter;
 
     fract32 in;
+    fract32 out;
 
     int i;
     for (i = 0; i < size; i++) {
@@ -242,10 +241,12 @@ void Aleph_FilterSVF_sc_os_lpf_next_block(Aleph_FilterSVF *const filter,
         in = input[i];
 
         _softclip_calc_frame(&fl, in);
-        output[i] = shl_fr1x32(fl->low, 1);
+        out = shr_fr1x32(fl->low, 1);
 
         _softclip_calc_frame(&fl, in);
-        output[i] = add_fr1x32(output[i], shl_fr1x32(fl->low, 1));
+        out = add_fr1x32(out, shr_fr1x32(fl->low, 1));
+
+        output[i] = out;
     }
 }
 
@@ -256,6 +257,7 @@ void Aleph_FilterSVF_sc_os_lpf_next_block_smooth(Aleph_FilterSVF *const filter,
     t_Aleph_FilterSVF *fl = *filter;
 
     fract32 in;
+    fract32 out;
 
     int i;
     for (i = 0; i < size; i++) {
@@ -266,10 +268,12 @@ void Aleph_FilterSVF_sc_os_lpf_next_block_smooth(Aleph_FilterSVF *const filter,
         fl->freq = freq[i];
 
         _softclip_calc_frame(&fl, in);
-        output[i] = shl_fr1x32(fl->low, 1);
+        out = shr_fr1x32(fl->low, 1);
 
         _softclip_calc_frame(&fl, in);
-        output[i] = add_fr1x32(output[i], shl_fr1x32(fl->low, 1));
+        out = add_fr1x32(out, shr_fr1x32(fl->low, 1));
+
+        output[i] = out;
     }
 }
 
@@ -297,12 +301,12 @@ fract32 Aleph_FilterSVF_os_bpf_next(Aleph_FilterSVF *const filter, fract32 in) {
     fract32 out;
 
     _calc_frame(&fl, in);
-    out = shl_fr1x32(fl->band, 1);
+    out = shr_fr1x32(fl->band, 1);
 
     _calc_frame(&fl, in);
-    out = add_fr1x32(out, shl_fr1x32(fl->band, 1));
+    out = add_fr1x32(out, shr_fr1x32(fl->band, 1));
 
-    return fl->band;
+    return out;
 }
 
 fract32 Aleph_FilterSVF_sc_bpf_next(Aleph_FilterSVF *const filter, fract32 in) {
@@ -321,12 +325,12 @@ fract32 Aleph_FilterSVF_sc_os_bpf_next(Aleph_FilterSVF *const filter,
     fract32 out;
 
     _softclip_calc_frame(&fl, in);
-    out = shl_fr1x32(fl->band, 1);
+    out = shr_fr1x32(fl->band, 1);
 
     _softclip_calc_frame(&fl, in);
-    out = add_fr1x32(out, shl_fr1x32(fl->band, 1));
+    out = add_fr1x32(out, shr_fr1x32(fl->band, 1));
 
-    return fl->band;
+    return out;
 }
 
 fract32 Aleph_FilterSVF_sc_asym_bpf_next(Aleph_FilterSVF *const filter,
@@ -353,12 +357,12 @@ fract32 Aleph_FilterSVF_os_hpf_next(Aleph_FilterSVF *const filter, fract32 in) {
     fract32 out;
 
     _calc_frame(&fl, in);
-    out = shl_fr1x32(fl->high, 1);
+    out = shr_fr1x32(fl->high, 1);
 
     _calc_frame(&fl, in);
-    out = add_fr1x32(out, shl_fr1x32(fl->high, 1));
+    out = add_fr1x32(out, shr_fr1x32(fl->high, 1));
 
-    return fl->high;
+    return out;
 }
 
 fract32 Aleph_FilterSVF_sc_hpf_next(Aleph_FilterSVF *const filter, fract32 in) {
@@ -377,12 +381,12 @@ fract32 Aleph_FilterSVF_sc_os_hpf_next(Aleph_FilterSVF *const filter,
     fract32 out;
 
     _softclip_calc_frame(&fl, in);
-    out = shl_fr1x32(fl->high, 1);
+    out = shr_fr1x32(fl->high, 1);
 
     _softclip_calc_frame(&fl, in);
-    out = add_fr1x32(out, shl_fr1x32(fl->high, 1));
+    out = add_fr1x32(out, shr_fr1x32(fl->high, 1));
 
-    return fl->high;
+    return out;
 }
 
 fract32 Aleph_FilterSVF_sc_asym_hpf_next(Aleph_FilterSVF *const filter,
