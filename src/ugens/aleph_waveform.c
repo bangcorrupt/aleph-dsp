@@ -235,8 +235,11 @@ void Aleph_WaveformDual_next_block(Aleph_WaveformDual *const wave,
     t_Aleph_WaveformDual *wv = *wave;
 
     // In this case, we can use the same buffer for phase and polyblep output.
-    fract32 *next_a = (fract32 *)mpool_alloc(size, wv->mempool);
-    fract32 *next_b = (fract32 *)mpool_alloc(size, wv->mempool);
+    fract32 *next_a =
+        (fract32 *)mpool_alloc(size * sizeof(fract32), wv->mempool);
+
+    fract32 *next_b =
+        (fract32 *)mpool_alloc(size * sizeof(fract32), wv->mempool);
 
     Aleph_Phasor_next_block(&wv->phasor_a, next_a, size);
     Aleph_Phasor_next_block(&wv->phasor_b, next_b, size);
@@ -305,13 +308,16 @@ void Aleph_WaveformDual_next_block_smooth(Aleph_WaveformDual *const wave,
     t_Aleph_WaveformDual *wv = *wave;
 
     // In this case, we can use the same buffer for phase and polyblep output.
-    fract32 *next_a = (fract32 *)mpool_alloc(size, wv->mempool);
-    fract32 *next_b = (fract32 *)mpool_alloc(size, wv->mempool);
+    fract32 *next_a =
+        (fract32 *)mpool_alloc(size * sizeof(fract32), wv->mempool);
+
+    fract32 *next_b =
+        (fract32 *)mpool_alloc(size * sizeof(fract32), wv->mempool);
 
     /// TODO: `freq_offset` needs to be a parameter of `WaveformDual`.
     ///        Is `WaveformDual` any better than just using two `Waveform`?
     //
-    Aleph_Phasor_next_block_smooth(&wv->phasor_a, freq, next_a, size);
+    // Aleph_Phasor_next_block_smooth(&wv->phasor_a, freq, next_a, size);
 
     /// TODO: `freq_offset`
 
