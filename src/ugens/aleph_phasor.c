@@ -75,16 +75,33 @@ int32_t Aleph_Phasor_next(Aleph_Phasor *const phasor) {
     return ph->phase;
 }
 
-void Aleph_Phasor_next_block(Aleph_Phasor *const phasor, fract32 *output,
+void Aleph_Phasor_next_block(Aleph_Phasor *const phasor, fract32 *buffer,
                              size_t size) {
 
     t_Aleph_Phasor *ph = *phasor;
 
-    while (size--) {
+    int i;
+    for (i = 0; i < size; i++) {
 
         ph->phase += ph->freq;
 
-        *output++ = ph->phase;
+        buffer[i] = ph->phase;
+    }
+}
+
+void Aleph_Phasor_next_block_smooth(Aleph_Phasor *const phasor, fract32 *freq,
+                                    fract32 *buffer, size_t size) {
+
+    t_Aleph_Phasor *ph = *phasor;
+
+    int i;
+    for (i = 0; i < size; i++) {
+
+        ph->freq = freq[i];
+
+        ph->phase += ph->freq;
+
+        buffer[i] = ph->phase;
     }
 }
 
