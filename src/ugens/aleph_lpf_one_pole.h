@@ -70,6 +70,9 @@ void Aleph_LPFOnePole_set_output(Aleph_LPFOnePole *const lpf, fract32 output);
 void Aleph_LPFOnePole_set_coeff(Aleph_LPFOnePole *const lpf, fract32 coeff);
 bool Aleph_LPFOnePole_sync(Aleph_LPFOnePole *const lpf);
 
+void Aleph_LPFOnePole_next_block(Aleph_LPFOnePole *const lpf, fract32 *output,
+                                 size_t size);
+
 #ifdef __cplusplus
 }
 #endif

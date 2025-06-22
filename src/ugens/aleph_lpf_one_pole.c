@@ -24,6 +24,8 @@
 /*----- Includes -----------------------------------------------------*/
 
 #include "aleph.h"
+#include "types.h"
+#include <stddef.h>
 
 #include "aleph_lpf_one_pole.h"
 
@@ -80,6 +82,22 @@ fract32 Aleph_LPFOnePole_next(Aleph_LPFOnePole *const lpf) {
         mult_fr1x32x32(lp->coeff, sub_fr1x32(lp->output, lp->target)));
 
     return lp->output;
+}
+
+void Aleph_LPFOnePole_next_block(Aleph_LPFOnePole *const lpf, fract32 *output,
+                                 size_t size) {
+
+    t_Aleph_LPFOnePole *lp = *lpf;
+
+    int i;
+    for (i = 0; i < size; i++) {
+
+        lp->output = add_fr1x32(
+            lp->target,
+            mult_fr1x32x32(lp->coeff, sub_fr1x32(lp->output, lp->target)));
+
+        output[i] = lp->output;
+    }
 }
 
 void Aleph_LPFOnePole_set_target(Aleph_LPFOnePole *const lpf, fract32 target) {
