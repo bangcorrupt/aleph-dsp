@@ -298,6 +298,82 @@ void Aleph_WaveformDual_next_block(Aleph_WaveformDual *const wave,
     mpool_free((char *)next_b, wv->mempool);
 }
 
+void Aleph_WaveformDual_next_block_smooth(Aleph_WaveformDual *const wave,
+                                          fract32 *freq, fract32 *output,
+                                          size_t size) {
+
+    t_Aleph_WaveformDual *wv = *wave;
+
+    // In this case, we can use the same buffer for phase and polyblep output.
+    fract32 *next_a = (fract32 *)mpool_alloc(size, wv->mempool);
+    fract32 *next_b = (fract32 *)mpool_alloc(size, wv->mempool);
+
+    /// TODO: `freq_offset` needs to be a parameter of `WaveformDual`.
+    ///        Is `WaveformDual` any better than just using two `Waveform`?
+    //
+    Aleph_Phasor_next_block_smooth(&wv->phasor_a, freq, next_a, size);
+
+    /// TODO: `freq_offset`
+
+    Aleph_Phasor_next_block_smooth(&wv->phasor_b, freq, next_b, size);
+
+    switch (wv->shape_a) {
+
+    case WAVEFORM_SHAPE_SINE:
+        sine_polyblep_block(next_a, next_a, size);
+        break;
+
+    case WAVEFORM_SHAPE_TRIANGLE:
+        triangle_polyblep_block(next_a, next_a, size);
+        break;
+
+    case WAVEFORM_SHAPE_SAW:
+        saw_polyblep_block(next_a, wv->phasor_a->freq, next_a, size);
+        break;
+
+    case WAVEFORM_SHAPE_SQUARE:
+        square_polyblep_block(next_a, wv->phasor_a->freq, next_a, size);
+        break;
+
+    default:
+        sine_polyblep_block(next_a, next_a, size);
+        break;
+    }
+
+    switch (wv->shape_b) {
+
+    case WAVEFORM_SHAPE_SINE:
+        sine_polyblep_block(next_b, next_b, size);
+        break;
+
+    case WAVEFORM_SHAPE_TRIANGLE:
+        triangle_polyblep_block(next_b, next_b, size);
+        break;
+
+    case WAVEFORM_SHAPE_SAW:
+        saw_polyblep_block(next_b, wv->phasor_a->freq, next_b, size);
+        break;
+
+    case WAVEFORM_SHAPE_SQUARE:
+        square_polyblep_block(next_b, wv->phasor_a->freq, next_b, size);
+        break;
+
+    default:
+        sine_polyblep_block(next_b, next_b, size);
+        break;
+    }
+
+    int i;
+    for (i = 0; i < size; i++) {
+
+        output[i] =
+            add_fr1x32(shl_fr1x32(next_a[i], 15), shl_fr1x32(next_b[i], 15));
+    }
+
+    mpool_free((char *)next_a, wv->mempool);
+    mpool_free((char *)next_b, wv->mempool);
+}
+
 void Aleph_WaveformDual_set_shape(Aleph_WaveformDual *const wave,
                                   e_Aleph_Waveform_shape shape) {
 

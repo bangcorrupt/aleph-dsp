@@ -119,6 +119,10 @@ void Aleph_WaveformDual_set_phase_b(Aleph_WaveformDual *const wave,
 void Aleph_WaveformDual_next_block(Aleph_WaveformDual *const wave,
                                    fract32 *output, size_t size);
 
+void Aleph_WaveformDual_next_block_smooth(Aleph_WaveformDual *const wave,
+                                          fract32 *freq, fract32 *output,
+                                          size_t size);
+
 /*----- Extern function prototypes -----------------------------------*/
 
 #ifdef __cplusplus
