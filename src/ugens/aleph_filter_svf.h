@@ -136,6 +136,13 @@ fract32 Aleph_FilterSVF_sc_asym_hpf_next(Aleph_FilterSVF *const filter,
 fract32 Aleph_FilterSVF_sc_asym_notch_next(Aleph_FilterSVF *const filter,
                                            fract32 in);
 
+void Aleph_FilterSVF_sc_os_lpf_next_block(Aleph_FilterSVF *const filter,
+                                          fract32 *input, fract32 *output,
+                                          size_t size);
+
+void Aleph_FilterSVF_sc_os_lpf_next_block_smooth(Aleph_FilterSVF *const filter,
+                                                 fract32 *freq, fract32 *input,
+                                                 fract32 *output, size_t size);
 #ifdef __cplusplus
 }
 #endif
