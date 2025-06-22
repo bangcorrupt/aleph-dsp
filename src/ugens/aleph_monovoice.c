@@ -30,8 +30,11 @@
 #include "aleph_filter.h"
 #include "aleph_filter_svf.h"
 #include "aleph_lpf_one_pole.h"
+#include "aleph_mempool.h"
 #include "aleph_oscillator.h"
 #include "aleph_waveform.h"
+#include "types.h"
+#include <stddef.h>
 
 #include "aleph_monovoice.h"
 
@@ -161,6 +164,82 @@ fract32 Aleph_MonoVoice_next(Aleph_MonoVoice *const synth) {
     output = Aleph_HPF_dc_block(&syn->dc_block, output);
 
     return output;
+}
+
+void Aleph_MonoVoice_next_block(Aleph_MonoVoice *const synth, fract32 *output,
+                                size_t size) {
+
+    t_Aleph_MonoVoice *syn = *synth;
+
+    fract32 *amp = (fract32 *)mpool_alloc(size, syn->mempool);
+    fract32 *freq = (fract32 *)mpool_alloc(size, syn->mempool);
+    fract32 *cutoff = (fract32 *)mpool_alloc(size, syn->mempool);
+
+    // Get slewed frequency.
+    Aleph_LPFOnePole_next_block(&syn->freq_slew, freq, size);
+
+    // Set oscillator frequency.
+    // Aleph_WaveformDual_set_freq_a(&syn->waveform, freq);
+    // Aleph_WaveformDual_set_freq_b(&syn->waveform,
+    //                               fix16_mul_fract(freq, syn->freq_offset));
+
+    // Generate waveforms.
+    Aleph_WaveformDual_next_block_smooth(&syn->waveform, freq, output, size);
+
+    // output = shr_fr1x32(output, 1);
+
+    // Get slewed amplitude.
+    Aleph_LPFOnePole_next_block(&syn->amp_slew, amp, size);
+
+    // Apply amp modulation.
+    int i;
+    for (i = 0; i < size; i++) {
+
+        // Shift right to prevent clipping.
+        output[i] = mult_fr1x32x32(shr_fr1x32(output[i], 1), amp[i]);
+    }
+
+    // Get slewed cutoff.
+    Aleph_LPFOnePole_next_block(&syn->cutoff_slew, cutoff, size);
+
+    // Set filter cutoff.
+    // Aleph_FilterSVF_set_coeff(&syn->filter, cutoff);
+
+    // Apply filter.
+    switch (syn->filter_type) {
+
+    case ALEPH_FILTERSVF_TYPE_LPF:
+        Aleph_FilterSVF_sc_os_lpf_next_block_smooth(&syn->filter, freq, output,
+                                                    output, size);
+        break;
+
+    /// TODO: Block process other filters.
+    case ALEPH_FILTERSVF_TYPE_BPF:
+        Aleph_FilterSVF_sc_os_lpf_next_block_smooth(&syn->filter, freq, output,
+                                                    output, size);
+        break;
+
+    case ALEPH_FILTERSVF_TYPE_HPF:
+        Aleph_FilterSVF_sc_os_lpf_next_block_smooth(&syn->filter, freq, output,
+                                                    output, size);
+        break;
+
+    default:
+        // Default to LPF.
+        Aleph_FilterSVF_sc_os_lpf_next_block_smooth(&syn->filter, freq, output,
+                                                    output, size);
+        break;
+    }
+
+    // Block DC.
+    for (i = 0; i < size; i++) {
+
+        output[i] = Aleph_HPF_dc_block(&syn->dc_block, output[i]);
+    }
+
+    mpool_free((char *)amp, syn->mempool);
+    mpool_free((char *)freq, syn->mempool);
+    mpool_free((char *)cutoff, syn->mempool);
 }
 
 void Aleph_MonoVoice_set_shape(Aleph_MonoVoice *const synth,

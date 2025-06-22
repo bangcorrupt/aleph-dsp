@@ -106,6 +106,9 @@ void Aleph_MonoVoice_set_freq_slew(Aleph_MonoVoice *const synth,
 void Aleph_MonoVoice_set_cutoff_slew(Aleph_MonoVoice *const synth,
                                      fract32 cutoff_slew);
 
+void Aleph_MonoVoice_next_block(Aleph_MonoVoice *const synth, fract32 *output,
+                                size_t size);
+
 #ifdef __cplusplus
 }
 #endif
