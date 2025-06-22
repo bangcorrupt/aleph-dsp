@@ -94,7 +94,7 @@ int32_t Aleph_Quasor_pos_cos_read(Aleph_Quasor *quasor);
 int32_t Aleph_Quasor_sin_read(Aleph_Quasor *quasor);
 int32_t Aleph_Quasor_cos_read(Aleph_Quasor *quasor);
 
-void Aleph_Phasor_next_block(Aleph_Phasor *const phasor, fract32 *output,
+void Aleph_Phasor_next_block(Aleph_Phasor *const phasor, fract32 *buffer,
                              size_t size);
 
 void Aleph_Phasor_next_block_smooth(Aleph_Phasor *const phasor, fract32 *freq,
