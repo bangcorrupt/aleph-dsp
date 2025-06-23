@@ -317,7 +317,7 @@ void Aleph_WaveformDual_next_block_smooth(Aleph_WaveformDual *const wave,
     /// TODO: `freq_offset` needs to be a parameter of `WaveformDual`.
     ///        Is `WaveformDual` any better than just using two `Waveform`?
     //
-    // Aleph_Phasor_next_block_smooth(&wv->phasor_a, freq, next_a, size);
+    Aleph_Phasor_next_block_smooth(&wv->phasor_a, freq, next_a, size);
 
     /// TODO: `freq_offset`
 
