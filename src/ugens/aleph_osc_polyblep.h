@@ -57,6 +57,9 @@ void saw_polyblep_block_smooth(fract32 *phase, fract32 *freq, fract32 *output,
 void square_polyblep_block(fract32 *phase, fract32 freq, fract32 *output,
                            size_t size);
 
+void square_polyblep_block_smooth(fract32 *phase, fract32 *freq,
+                                  fract32 *output, size_t size);
+
 void sine_polyblep_block(fract32 *phase, fract32 *output, size_t size);
 
 void triangle_polyblep_block(fract32 *phase, fract32 *output, size_t size);

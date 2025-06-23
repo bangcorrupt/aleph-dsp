@@ -334,11 +334,11 @@ void Aleph_WaveformDual_next_block_smooth(Aleph_WaveformDual *const wave,
         break;
 
     case WAVEFORM_SHAPE_SAW:
-        saw_polyblep_block(next_a, wv->phasor_a->freq, next_a, size);
+        saw_polyblep_block_smooth(next_a, freq, next_a, size);
         break;
 
     case WAVEFORM_SHAPE_SQUARE:
-        square_polyblep_block(next_a, wv->phasor_a->freq, next_a, size);
+        square_polyblep_block_smooth(next_a, freq, next_a, size);
         break;
 
     default:
@@ -357,11 +357,11 @@ void Aleph_WaveformDual_next_block_smooth(Aleph_WaveformDual *const wave,
         break;
 
     case WAVEFORM_SHAPE_SAW:
-        saw_polyblep_block(next_b, wv->phasor_a->freq, next_b, size);
+        saw_polyblep_block_smooth(next_b, freq, next_b, size);
         break;
 
     case WAVEFORM_SHAPE_SQUARE:
-        square_polyblep_block(next_b, wv->phasor_a->freq, next_b, size);
+        square_polyblep_block_smooth(next_b, freq, next_b, size);
         break;
 
     default:

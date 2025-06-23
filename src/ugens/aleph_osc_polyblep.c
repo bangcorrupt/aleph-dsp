@@ -92,6 +92,31 @@ void square_polyblep_block(fract32 *phase, fract32 freq, fract32 *output,
     }
 }
 
+void square_polyblep_block_smooth(fract32 *phase, fract32 *freq,
+                                  fract32 *output, size_t size) {
+
+    fix16 square_raw;
+    fix16 square_pb;
+
+    int i;
+    for (i = 0; i < size; i++) {
+
+        square_raw = 0xFFFF;
+
+        if (phase[i] < 0) {
+
+            square_raw *= -1;
+        }
+
+        square_pb =
+            add_fr1x32(square_raw, _polyblep(phase[i] + FR32_MAX, freq[i]));
+
+        square_pb = sub_fr1x32(square_pb, _polyblep(phase[i], freq[i]));
+
+        output[i] = (fract16)shr_fr1x32(square_pb, 1);
+    }
+}
+
 fract16 saw_polyblep(fract32 p, fract32 dp) {
 
     return shr_fr1x32(sub_fr1x32(shr_fr1x32(p, 15), _polyblep(p, dp)), 1);
@@ -177,16 +202,26 @@ void sine_polyblep_block(fract32 *phase, fract32 *output, size_t size) {
 }
 
 fract16 triangle_polyblep(fract32 phase) {
+
     fract16 phase16;
+
     phase -= FR32_MAX / 2;
+
     if (phase > (1 << 30) || phase < (-1 << 30)) {
+
         phase16 = FR16_MIN - trunc_fr1x32(phase);
+
         return sub_fr1x16(shl_fr1x16(abs_fr1x16(phase16), 1), FR16_MAX);
+
     } else if (phase < (1 << 30) || phase <= (-1 << 30)) {
+
         phase16 = trunc_fr1x32(phase);
+
         return sub_fr1x32(FR16_MAX, shl_fr1x16(abs_fr1x16(phase16), 1));
-    } else
+
+    } else {
         return 0;
+    }
 }
 
 void triangle_polyblep_block(fract32 *phase, fract32 *output, size_t size) {
