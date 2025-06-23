@@ -242,7 +242,7 @@ void triangle_polyblep_block(fract32 *phase, fract32 *output, size_t size) {
             output[i] =
                 sub_fr1x16(shl_fr1x16(abs_fr1x16(phase16), 1), FR16_MAX);
 
-        } else if (phase < (1 << 30) || ph <= (-1 << 30)) {
+        } else if (ph < (1 << 30) || ph <= (-1 << 30)) {
 
             phase16 = trunc_fr1x32(ph);
 
