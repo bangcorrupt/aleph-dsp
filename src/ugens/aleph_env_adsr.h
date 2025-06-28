@@ -48,10 +48,10 @@ typedef struct {
     e_Aleph_EnvADSR_state env_state;
     fract32 env_out;
     fract32 overshoot;
-    fract32 attack_time;
-    fract32 decay_time;
-    fract32 sustain_level;
-    fract32 release_time;
+    fract32 attack;
+    fract32 decay;
+    fract32 sustain;
+    fract32 release;
 } t_Aleph_EnvADSR;
 
 typedef t_Aleph_EnvADSR *Aleph_EnvADSR;
@@ -61,10 +61,10 @@ typedef struct {
     e_Aleph_EnvADSR_state env_state;
     fract16 env_out;
     fract16 overshoot;
-    fract16 attack_time;
-    fract16 decay_time;
-    fract16 sustain_level;
-    fract16 release_time;
+    fract16 attack;
+    fract16 decay;
+    fract16 sustain;
+    fract16 release;
 } t_Aleph_EnvADSR_16;
 
 typedef t_Aleph_EnvADSR_16 *Aleph_EnvADSR_16;

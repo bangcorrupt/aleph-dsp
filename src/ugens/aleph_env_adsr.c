@@ -59,10 +59,10 @@ void Aleph_EnvADSR_init_to_pool(Aleph_EnvADSR *const envelope,
     env->env_state = ADSR_RELEASE;
     env->env_out = 0;
     env->overshoot = FR32_MAX / 10;
-    env->attack_time = SLEW_10MS;
-    env->decay_time = SLEW_100MS;
-    env->sustain_level = FR32_MAX >> 2;
-    env->release_time = SLEW_1S;
+    env->attack = SLEW_10MS;
+    env->decay = SLEW_100MS;
+    env->sustain = FR32_MAX >> 2;
+    env->release = SLEW_1S;
 }
 
 void Aleph_EnvADSR_free(Aleph_EnvADSR *const envelope) {
@@ -91,19 +91,18 @@ fract32 Aleph_EnvADSR_next(Aleph_EnvADSR *envelope) {
     switch (env->env_state) {
 
     case ADSR_ATTACK:
-        normalised_log_slew(&(env->env_out), FR32_MAX, env->attack_time);
+        normalised_log_slew(&(env->env_out), FR32_MAX, env->attack);
         if (env->env_out > FR32_MAX - env->overshoot) {
             env->env_state = ADSR_DECAY;
         }
         break;
 
     case ADSR_DECAY:
-        normalised_log_slew(&(env->env_out), env->sustain_level,
-                            env->decay_time);
+        normalised_log_slew(&(env->env_out), env->sustain, env->decay);
         break;
 
     case ADSR_RELEASE:
-        normalised_log_slew(&(env->env_out), 0, env->release_time);
+        normalised_log_slew(&(env->env_out), 0, env->release);
         break;
     }
 
@@ -114,28 +113,28 @@ void Aleph_EnvADSR_set_attack(Aleph_EnvADSR *const envelope, fract32 attack) {
 
     t_Aleph_EnvADSR *env = *envelope;
 
-    env->attack_time = attack;
+    env->attack = attack;
 }
 
 void Aleph_EnvADSR_set_decay(Aleph_EnvADSR *const envelope, fract32 decay) {
 
     t_Aleph_EnvADSR *env = *envelope;
 
-    env->decay_time = decay;
+    env->decay = decay;
 }
 
 void Aleph_EnvADSR_set_sustain(Aleph_EnvADSR *const envelope, fract32 sustain) {
 
     t_Aleph_EnvADSR *env = *envelope;
 
-    env->sustain_level = sustain;
+    env->sustain = sustain;
 }
 
 void Aleph_EnvADSR_set_release(Aleph_EnvADSR *const envelope, fract32 release) {
 
     t_Aleph_EnvADSR *env = *envelope;
 
-    env->release_time = release;
+    env->release = release;
 }
 
 void Aleph_EnvADSR_16_init(Aleph_EnvADSR_16 *const envelope,
@@ -157,10 +156,10 @@ void Aleph_EnvADSR_16_init_to_pool(Aleph_EnvADSR_16 *const envelope,
     env->env_state = ADSR_RELEASE;
     env->env_out = 0;
     env->overshoot = FR16_MAX / 10;
-    env->attack_time = SLEW_10MS_16;
-    env->decay_time = SLEW_100MS_16;
-    env->sustain_level = FR16_MAX >> 2;
-    env->release_time = SLEW_1S_16;
+    env->attack = SLEW_10MS_16;
+    env->decay = SLEW_100MS_16;
+    env->sustain = FR16_MAX >> 2;
+    env->release = SLEW_1S_16;
 }
 
 void Aleph_EnvADSR_16_set_gate(Aleph_EnvADSR_16 *const envelope, bool gate) {
@@ -182,19 +181,18 @@ fract16 Aleph_EnvADSR_16_next(Aleph_EnvADSR_16 *envelope) {
     switch (env->env_state) {
 
     case ADSR_ATTACK:
-        normalised_log_slew_16(&(env->env_out), FR16_MAX, env->attack_time);
+        normalised_log_slew_16(&(env->env_out), FR16_MAX, env->attack);
         if (env->env_out > FR16_MAX - env->overshoot) {
             env->env_state = ADSR_DECAY;
         }
         break;
 
     case ADSR_DECAY:
-        normalised_log_slew_16(&(env->env_out), env->sustain_level,
-                               env->decay_time);
+        normalised_log_slew_16(&(env->env_out), env->sustain, env->decay);
         break;
 
     case ADSR_RELEASE:
-        normalised_log_slew_16(&(env->env_out), 0, env->release_time);
+        normalised_log_slew_16(&(env->env_out), 0, env->release);
         break;
     }
 
@@ -206,7 +204,7 @@ void Aleph_EnvADSR_16_set_attack(Aleph_EnvADSR_16 *const envelope,
 
     t_Aleph_EnvADSR_16 *env = *envelope;
 
-    env->attack_time = attack;
+    env->attack = attack;
 }
 
 void Aleph_EnvADSR_16_set_decay(Aleph_EnvADSR_16 *const envelope,
@@ -214,7 +212,7 @@ void Aleph_EnvADSR_16_set_decay(Aleph_EnvADSR_16 *const envelope,
 
     t_Aleph_EnvADSR_16 *env = *envelope;
 
-    env->decay_time = decay;
+    env->decay = decay;
 }
 
 void Aleph_EnvADSR_16_set_sustain(Aleph_EnvADSR_16 *const envelope,
@@ -222,7 +220,7 @@ void Aleph_EnvADSR_16_set_sustain(Aleph_EnvADSR_16 *const envelope,
 
     t_Aleph_EnvADSR_16 *env = *envelope;
 
-    env->sustain_level = sustain;
+    env->sustain = sustain;
 }
 
 void Aleph_EnvADSR_16_set_release(Aleph_EnvADSR_16 *const envelope,
@@ -230,7 +228,7 @@ void Aleph_EnvADSR_16_set_release(Aleph_EnvADSR_16 *const envelope,
 
     t_Aleph_EnvADSR_16 *env = *envelope;
 
-    env->release_time = release;
+    env->release = release;
 }
 
 /*----- Static function implementations ------------------------------*/
